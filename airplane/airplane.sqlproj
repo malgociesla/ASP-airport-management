@@ -75,6 +75,6 @@
     <Build Include="GenerateSchedule.sql" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Script1.sql" />
+    <RefactorLog Include="airplane.refactorlog" />
   </ItemGroup>
 </Project>
