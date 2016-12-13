@@ -11,6 +11,9 @@ AS
 
 RETURN 0
 
+
+
+
 	--select DATEADD(day,1,'2006-12-13');
 
 	--SELECT @dateFrom, @dateTo

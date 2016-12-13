@@ -1,0 +1,25 @@
+The goal of the practice is to create an airport portal with basic functionality to add\remove flights, change their statuses and display.
+1. Database design, T-SQL (stored procedures, functions, triggers, etc)
+2. MS SQL Project - import database created manually to new project and continue development there.
+3. ASP.NET MVC + ADO.NET (+ jQueryUI or similar). Create admin page for the portal. SCRUM introduction at some point.
+4. ASP.NET MVC or ASP.NET web API + Entity Framework (+ jQueryUI, knockout JS or similar) Front-end page (probably single page)
+5. Continious integration (Teamcity or Octopus, MS Web Deploy ). Deploy everything we created somewhere (remote Web server, Azure)
+
+
+Functionality:
+1.add/remove (manage) update flight
+2. company 4 each flight
+3. schedule - from/to - filter view
+
+
+0. Import created database into VS SQL Project, make changes so that each table with primary key will have clustered index.
+1. Add Stored Procedure to generate schedule for specified date input. 
+Optional parameter - flightId (specifying which will generate schedule only for that flight)
+2. Function to calculate the number of planes landing at the specified time.
+3. Our airport is small, that's why it is possible to arrive only 4 planes at a time.
+If some scheduled landing intersects with some other landing try to find other time to land iterating landing time with 5 minutes periods untill free landing pass awailable.
+Use trigger.
+4. Console application which calls Stored procedure to generate schedule. Use ADO.NET to connect to database.
+
+
+- Commit and push changes after each task completed.
