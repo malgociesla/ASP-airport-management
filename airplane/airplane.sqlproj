@@ -77,4 +77,8 @@
   <ItemGroup>
     <RefactorLog Include="airplane.refactorlog" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="dbo\Tables\Script1.sql" />
+    <None Include="dbo\Tables\Script2.sql" />
+  </ItemGroup>
 </Project>
