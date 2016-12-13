@@ -4,13 +4,12 @@
     [idFStatus]    UNIQUEIDENTIFIER NULL,
     [idDeparture]  UNIQUEIDENTIFIER NULL,
     [idArrival]    UNIQUEIDENTIFIER NULL,
-    [idFDayOfWeek] UNIQUEIDENTIFIER NULL,
+	[fDayofWeek] [int] NULL,
     [name]         VARCHAR (20)     NULL,
     PRIMARY KEY CLUSTERED ([idFlight] ASC),
     FOREIGN KEY ([idArrival]) REFERENCES [dbo].[Arrival] ([idArrival]),
     FOREIGN KEY ([idCompany]) REFERENCES [dbo].[Company] ([idCompany]),
     FOREIGN KEY ([idDeparture]) REFERENCES [dbo].[Departure] ([idDeparture]),
-    FOREIGN KEY ([idFDayOfWeek]) REFERENCES [dbo].[FDayOfWeek] ([idFDayOfWeek]),
     FOREIGN KEY ([idFStatus]) REFERENCES [dbo].[FStatus] ([idFStatus])
 );
 
