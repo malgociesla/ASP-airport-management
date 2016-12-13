@@ -1,0 +1,9 @@
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\bin\Debug\airplane.dacpac
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\bin\Debug\airplane.dll
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\bin\Debug\airplane.pdb
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\airplane.dll
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\airplane.pdb
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\Model.xml
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\refactor.xml
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\postdeploy.sql
+C:\Users\mciesla\documents\visual studio 2015\Projects\airplane\airplane\obj\Debug\predeploy.sql

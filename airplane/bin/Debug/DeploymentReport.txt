@@ -1,0 +1,33 @@
+﻿** Highlights
+     Tables that will be rebuilt
+       None
+     Clustered indexes that will be dropped
+       None
+     Clustered indexes that will be created
+       None
+     Possible data issues
+       None
+
+** User actions
+     Create
+       [dbo].[Arrival] (Table)
+       [dbo].[City] (Table)
+       [dbo].[Company] (Table)
+       [dbo].[Country] (Table)
+       [dbo].[Departure] (Table)
+       [dbo].[FDayOfWeek] (Table)
+       [dbo].[Flight] (Table)
+       [dbo].[FStatus] (Table)
+       [dbo].[Schedule] (Table)
+       Foreign Key: unnamed constraint on [dbo].[Arrival] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[City] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Departure] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Flight] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Flight] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Flight] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Flight] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Flight] (Foreign Key)
+       Foreign Key: unnamed constraint on [dbo].[Schedule] (Foreign Key)
+       [dbo].[GenerateSchedule] (Procedure)
+
+** Supporting actions

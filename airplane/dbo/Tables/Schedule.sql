@@ -1,7 +1,8 @@
 ﻿CREATE TABLE [dbo].[Schedule] (
     [idSchedule] UNIQUEIDENTIFIER NOT NULL,
     [idFlight]   UNIQUEIDENTIFIER NULL,
-    [Fdate]      DATE             NULL,
+    [departureDT]      DATETIME             NULL,
+    [arrivalDT] DATETIME NULL, 
     PRIMARY KEY CLUSTERED ([idSchedule] ASC),
     FOREIGN KEY ([idFlight]) REFERENCES [dbo].[Flight] ([idFlight])
 );
