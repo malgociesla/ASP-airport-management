@@ -69,7 +69,6 @@
     <Build Include="dbo\Tables\City.sql" />
     <Build Include="dbo\Tables\Departure.sql" />
     <Build Include="dbo\Tables\Arrival.sql" />
-    <Build Include="dbo\Tables\FDayOfWeek.sql" />
     <Build Include="dbo\Tables\Flight.sql" />
     <Build Include="dbo\Tables\Schedule.sql" />
     <Build Include="GenerateSchedule.sql" />
