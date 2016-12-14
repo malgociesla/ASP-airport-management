@@ -1,4 +1,6 @@
-﻿CREATE  PROCEDURE [dbo].[GenerateSchedule]
+﻿--execute [dbo].[GenerateSchedule] @startDate='2016-12-11', @endDate='2016-12-24';
+--execute [dbo].[GenerateSchedule] @startDate='2016-12-11', @endDate='2016-12-24', @flightId='376d7ce7-f1c1-e611-b353-d017c293d790';
+CREATE PROCEDURE [dbo].[GenerateSchedule]
 	@startDate date,
 	@endDate date,
 	@flightId uniqueidentifier =NULL
@@ -16,7 +18,16 @@ AS
 		DECLARE @thisArrivalDT datetime;
 		--cursor
 		DECLARE @flightCursor CURSOR;
-		SET @flightCursor = CURSOR FOR select idFlight from [dbo].[Flight] where fDayofWeek=@startDateDoW
+		--schedule for flight specified by @flightId
+		IF(@flightId) IS NOT NULL
+			BEGIN
+			SET @flightCursor = CURSOR FOR select idFlight from [dbo].[Flight] f where fDayofWeek=@startDateDoW AND f.idFlight=@flightId;
+			END
+		ELSE
+		--schedule for all flights
+			BEGIN
+			SET @flightCursor = CURSOR FOR select idFlight from [dbo].[Flight] where fDayofWeek=@startDateDoW
+			END
 		OPEN @flightCursor
 		FETCH NEXT FROM @flightCursor 
 		INTO @thisIdFlight
@@ -40,6 +51,8 @@ AS
 		--increment date range
 		SET @startDate=DATEADD(day,1,@startDate);
 END;
+		 
+
 
 
 	--select DATEADD(day,1,'2006-12-13');
