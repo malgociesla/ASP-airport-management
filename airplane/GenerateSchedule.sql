@@ -6,19 +6,25 @@
 AS
 	WHILE (@startDate < @endDate)
 	BEGIN
-	
-	SET @startDateDoW = DATEPART(dw,@startDate);
-	PRINT @startDateDoW;
-	--todo: iterate through rows od flights
-	SET @thisIdFlight= select idFlight from [dbo].[Flight] where fDayofWeek=@startDateDoW;
-	SET @thisDepartureTime = select departureTime from [dbo].Departure d inner join [dbo].[Flight] f on d.idDeparture=f.idDeparture where f.idFlight=@thisIdFlight;
-	SET @thisDepartuteDT= cast(@startDate as datetime) + cast (@thisDepartureTime as datetime);
-	SET @thisArrivalTime = select arrivalTime from [dbo].[Arrival] a inner join [dbo].[Flight] f on a.idArrival=f.idArrival where f.idFlight=@thisIdFlight;
-	SET @thisArrivalDT= cast(@startDate as datetime) + cast (@thisArrivalTime as datetime);
-	insert into [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT) values (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT);
-	--select idFlight from [dbo].[Arrival] a inner join [dbo].[Flight] f on a.idArrival=f.idArrival where arrivalTime>@dateTo;
-	SET @startDate=DATEADD(day,1,@startDate); 
-	PRINT @startDate
+		SET @startDateDoW = DATEPART(dw,@startDate);
+		PRINT @startDateDoW;
+		DECLARE @thisIdFlight uniqueidentifier;
+		DECLARE @thisDepartureTime time;
+		DECLARE @thisDepartuteDT datetime;
+		DECLARE @thisArrivalTime time;
+		DECLARE @thisArrivalDT datetime;
+
+		SELECT @thisIdFlight = (select idFlight from [dbo].[Flight] where fDayofWeek=@startDateDoW)
+		WHILE (@thisIdFlight) IS NOT NULL
+		BEGIN
+			SELECT @thisDepartureTime = (select departureTime from [dbo].Departure d inner join [dbo].[Flight] f on d.idDeparture=f.idDeparture where f.idFlight=@thisIdFlight)
+			SET @thisDepartuteDT= cast(@startDate as datetime) + cast (@thisDepartureTime as datetime);
+			SELECT @thisArrivalTime = (select arrivalTime from [dbo].[Arrival] a inner join [dbo].[Flight] f on a.idArrival=f.idArrival where f.idFlight=@thisIdFlight)
+			SET @thisArrivalDT= cast(@startDate as datetime) + cast (@thisArrivalTime as datetime);
+			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT) values (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT)
+			SET @startDate=DATEADD(day,1,@startDate); 
+			PRINT @startDate
+		END
 	END
 
 
