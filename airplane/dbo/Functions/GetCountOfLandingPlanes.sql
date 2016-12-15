@@ -11,8 +11,10 @@ AS
 BEGIN
 	DECLARE @result INT;
 	--landingtime range <+-5>	
-	DECLARE @timeFrom DATETIME= DATEADD(MINUTE,-5,@landingDT)
-	DECLARE @timeTo DATETIME= DATEADD(MINUTE,5,@landingDT)
+	DECLARE @timeFrom DATETIME= DATEADD(MINUTE,-4,@landingDT)
+	SET @timeFrom = DATEADD(SECOND,-59,@timeFrom)
+	DECLARE @timeTo DATETIME= DATEADD(MINUTE,4,@landingDT)
+	SET @timeTo = DATEADD(SECOND,59,@timeTo)
 
 SELECT @result = (SELECT COUNT(arrivalDT)
 				FROM Schedule s
