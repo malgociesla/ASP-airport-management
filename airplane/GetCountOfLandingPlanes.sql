@@ -1,12 +1,20 @@
-﻿CREATE FUNCTION [dbo].[GetCountOfLandingPlanes]
+﻿--DECLARE @result INT;
+--EXEC @result = [dbo].[GetCountOfLandingPlanes] @landingTime='2016-12-14';
+--PRINT @result;
+
+CREATE FUNCTION [dbo].[GetCountOfLandingPlanes]
 (
-	@landingTime time
+	@landingTime TIME
 )
 RETURNS INT
 AS
 BEGIN
-	DECLARE @result int;
+	DECLARE @result INT;
 	--should we chceck arrival location?
-	SET @result=(select count(arrivalTime) from Flight f inner join Arrival a on a.idArrival=f.idArrival where @landingTime=arrivalTime);
+	SET @result=(SELECT COUNT(arrivalTime)
+				FROM Flight f
+					INNER JOIN Arrival a
+					ON a.idArrival=f.idArrival
+				WHERE @landingTime=arrivalTime);
 	RETURN @result;
 END
