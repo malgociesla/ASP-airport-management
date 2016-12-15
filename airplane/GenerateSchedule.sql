@@ -72,6 +72,8 @@ AS
 			CLOSE @flightCursor ;
 			DEALLOCATE @flightCursor;
 		END CATCH
+			CLOSE @flightCursor ;
+			DEALLOCATE @flightCursor;
 		--increment date range
 		SET @fromDate=DATEADD(day,1,@fromDate);
 END;
