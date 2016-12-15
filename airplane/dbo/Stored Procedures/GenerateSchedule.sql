@@ -12,7 +12,7 @@ AS
 	WHILE (@fromDate <= @endDate)
 	BEGIN
 	--get day of the week from date
-		DECLARE @startDateDoW INT = DATEPART(dw, @startDate);
+		DECLARE @startDateDoW INT = DATEPART(dw, @fromDate);
 		DECLARE @thisIdFlight UNIQUEIDENTIFIER;
 		DECLARE @thisDepartureTime TIME;
 		DECLARE @thisDepartureDT DATETIME;
@@ -43,7 +43,7 @@ AS
 		OPEN @flightCursor
 		FETCH NEXT FROM @flightCursor 
 		INTO @thisIdFlight
-
+		IF(@@FETCH_STATUS<>0) PRINT 'Error: GenerateSchedule FETCH_STATUS<>0'
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			--get flight data
