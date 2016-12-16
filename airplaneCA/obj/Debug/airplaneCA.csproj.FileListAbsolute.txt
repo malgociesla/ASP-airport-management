@@ -1,0 +1,6 @@
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\bin\Debug\airplaneCA.exe.config
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\bin\Debug\airplaneCA.exe
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\bin\Debug\airplaneCA.pdb
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\obj\Debug\airplaneCA.csprojResolveAssemblyReference.cache
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\obj\Debug\airplaneCA.exe
+C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\airplaneCA\obj\Debug\airplaneCA.pdb
