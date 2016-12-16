@@ -29,7 +29,7 @@ BEGIN
 	ELSE
 	BEGIN
 	--if there are to many planes landing at the same time
-	WHILE (@planeCount>@maxLandingCapacity)
+	WHILE (@planeCount>=@maxLandingCapacity)
 	BEGIN
 	PRINT 'too many'
 	PRINT @timeCounter
