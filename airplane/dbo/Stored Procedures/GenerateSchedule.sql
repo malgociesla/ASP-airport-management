@@ -44,11 +44,7 @@ AS
 		FETCH NEXT FROM @flightCursor 
 		INTO @thisIdFlight
 		-- did fetching went ok?
-		IF(@@FETCH_STATUS=-1) --WHERE 'fDayofWeek=@startDateDoW' was false
-		BEGIN
-		--increment date range
-		SET @fromDate=DATEADD(day,1,@fromDate);
-		END
+		IF(@@FETCH_STATUS=-1) --PRINT 'FETCH_STATUS -1'
 		IF(@@FETCH_STATUS=-2) PRINT 'FETCH_STATUS -2: Row fetch missing'
 
 		WHILE @@FETCH_STATUS = 0
