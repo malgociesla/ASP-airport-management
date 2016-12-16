@@ -23,3 +23,12 @@ Use trigger.
 
 
 - Commit and push changes after each task completed.
+
+
+--delete from Schedule
+execute [dbo].[GenerateSchedule] @startDate='2016-12-11', @endDate='2016-12-24';
+--select s.idFlight,s.arrivalDT,a.idCity from Schedule s inner join Flight f on s.idFlight=f.idFlight inner join Arrival a on a.idArrival=f.idArrival where s.arrivalDT='2016-12-13 18:00:00.000' and a.idCity='ecf5b8ed-f0c1-e611-b353-d017c293d790'
+--select count(s.idFlight) from Schedule s inner join Flight f on s.idFlight=f.idFlight inner join Arrival a on a.idArrival=f.idArrival where s.arrivalDT='2016-12-13 18:00:00.000' and a.idCity='ecf5b8ed-f0c1-e611-b353-d017c293d790'
+--select * from Schedule --where arrivalDT='2016-12-13 18:00:00.000'
+
+spr instead of insert/update czy update trza specjalnie ogarniac

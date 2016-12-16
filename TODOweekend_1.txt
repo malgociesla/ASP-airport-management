@@ -1,0 +1,16 @@
+1.indexes/clusters
+	https://www.youtube.com/watch?v=ITcOiLSfVJQ this guy describes Indexes pretty well.
+	also you can read something else about indexes
+	just google for it there are a lot of info
+	I also will prepare the list of things you should understand
+	
+2. MVC book
+	Also there is a book about MVC5
+	http://www.apress.com/us/book/9781430265290
+	I believe you can find it somewhere to download)
+	but I definitely recommend to read it
+
+3. ADO.NET
+	http://csharp-station.com/Tutorial/AdoDotNet
+	this site has ugly interface) but describes pretty much all you need
+	https://msdn.microsoft.com/en-us/library/e80y5yhx(v=vs.110).aspx and of course official documentation for refference
