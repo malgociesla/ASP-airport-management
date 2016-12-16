@@ -43,7 +43,14 @@ AS
 		OPEN @flightCursor
 		FETCH NEXT FROM @flightCursor 
 		INTO @thisIdFlight
-		IF(@@FETCH_STATUS<>0) PRINT 'Error: GenerateSchedule FETCH_STATUS<>0'
+		-- did fetching went ok?
+		IF(@@FETCH_STATUS=-1) --WHERE 'fDayofWeek=@startDateDoW' was false
+		BEGIN
+		--increment date range
+		SET @fromDate=DATEADD(day,1,@fromDate);
+		END
+		IF(@@FETCH_STATUS=-2) PRINT 'FETCH_STATUS -2: Row fetch missing'
+
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			--get flight data
@@ -52,13 +59,13 @@ AS
 												INNER JOIN [dbo].[Flight] f 
 												ON d.idDeparture=f.idDeparture
 											WHERE f.idFlight=@thisIdFlight)
-			SET @thisDepartureDT= CAST(@startDate AS DATETIME) + CAST(@thisDepartureTime AS DATETIME);
+			SET @thisDepartureDT= CAST(@fromDate AS DATETIME) + CAST(@thisDepartureTime AS DATETIME);
 			SELECT @thisArrivalTime = (SELECT arrivalTime
 										FROM [dbo].[Arrival] a
 											INNER JOIN [dbo].[Flight] f
 											ON a.idArrival=f.idArrival
 										WHERE f.idFlight=@thisIdFlight)
-			SET @thisArrivalDT= CAST(@startDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
+			SET @thisArrivalDT= CAST(@fromDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
 			--generate schedule
 			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT)
 			VALUES (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT)
