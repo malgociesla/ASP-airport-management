@@ -20,3 +20,34 @@ might be pretty complicated for understanding but very important to know
 This like the basics of how apps should be designed
 https://www.codeproject.com/Articles/703634/SOLID-architecture-principles-using-simple-Csharp
 here you can find more detailed with .NET examples
+6. Composed a plan for SQL
+MS SQL. Things to understand
+Database design:
+1. Data types
+2. Table relations
+3. Indexes
+4. Database normal forms
+
+T-SQL:
+1. Views
+2. Triggers
+3. Stored Procedures
+4. Functions (what are the differences between Function and Stored Procedures, when we should use one or another)
+5. Transactions
+6. Transaction isolation levels
+7. What is 'deadlock' how to prevent them.
+8. Sequence
+9. Joins
+10. Grouping
+
+Should know how to:
+- Use SQL Server Management Studio.
+    Just basic things like:
+    * Connect to database
+    * Make a query
+    * Validate query
+    * Execute query
+    * Debug
+    * View execution plan
+- Use SQL Server Profiler
+Hope we will try to use all of these during the practice
