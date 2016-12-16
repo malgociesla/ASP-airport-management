@@ -16,11 +16,14 @@ namespace airplaneCA
 
             SqlConnection conn = null;
             SqlDataReader rdr = null;
-            string startDate= "2016-12-11";
-            string endDate= "2016-12-24";
+            SqlDataReader rdr2 = null;
+            string startDate;//= "2016-12-11";
+            string endDate;//= "2016-12-24";
 
             try
             {
+                Console.SetWindowSize(239,63);
+                Console.WriteLine("execute [airport].[dbo].[GenerateSchedule] @startDate='2016-12-11', @endDate='2016-12-24'");
                 conn = new SqlConnection("Data Source=.;Initial Catalog=airport;Integrated Security=True");
                 conn.Open();
 
@@ -36,6 +39,10 @@ namespace airplaneCA
 
                 // 3. add parameter to command, which
                 // will be passed to the stored procedure
+                Console.WriteLine("Input @startDate");
+                startDate = Console.ReadLine();
+                Console.WriteLine("Input @endDate");
+                endDate = Console.ReadLine();
 
                 cmd.Parameters.Add(new SqlParameter("@startDate", startDate));
                 cmd.Parameters.Add(new SqlParameter("@endDate", endDate));
@@ -43,7 +50,17 @@ namespace airplaneCA
                 // execute the command
                 rdr = cmd.ExecuteReader();
                 Console.WriteLine(rdr.RecordsAffected);
+                //close reader
+                rdr.Close();
+
+                //print schedule
                 
+                SqlCommand cmdSchedule = new SqlCommand("SELECT * FROM [airport].[dbo].[Schedule] s ORDER BY s.arrivalDT", conn);
+                rdr2= cmdSchedule.ExecuteReader();
+                while (rdr2.Read())
+                {
+                    Console.WriteLine(rdr2[0] + "\t"+ rdr2[1] + "\t" + rdr2[2] + "\t" + rdr2[3] + "\t");
+                }
             }
             finally
             {
