@@ -10,9 +10,20 @@ namespace airplaneCA
 {
     class SQLDataManager
     {
-        private SqlDataReader rdr = null;
-        
-        public void GenerateSchedule()
+        private SqlDataReader rdr;
+        private SqlConnection conn;
+        public SQLDataManager()
+        {
+            rdr = null;
+            conn = null;
+        }
+        public SQLDataManager(SqlConnection sqlConn)
+        {
+            rdr = null;
+            conn = sqlConn;
+        }
+
+        public void GenerateSchedule(string startDate, string endDate)
         {
             SqlCommand cmd = new SqlCommand("GenerateSchedule", conn);
             cmd.CommandType = CommandType.StoredProcedure;

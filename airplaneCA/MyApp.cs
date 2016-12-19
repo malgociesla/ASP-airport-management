@@ -27,6 +27,7 @@ namespace airplaneCA
                 endDate = Console.ReadLine();
 
                 //do work
+                
                 GenerateSchedule();
                 PrintTable("Schedule");
 

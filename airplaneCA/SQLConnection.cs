@@ -12,10 +12,12 @@ namespace airplaneCA
     {
         private string connStr;
         private SqlConnection sqlConn;
+        private SQLDataManager sqlDataManager;
 
         public SQLConnection()
         {
             sqlConn = new SqlConnection();
+            sqlDataManager = new SQLDataManager(sqlConn);
         }
 
         public void SetConnection(string connStr)
