@@ -9,6 +9,21 @@ namespace airplaneCA
 {
     class ScheduleManager : IScheduleManager
     {
+        private object ProcessReader(SqlDataReader dataReader)
+        {
+            List<Schedule> scheduleList = new List<Schedule>();
+                while (dataReader.Read())
+                {
+                    scheduleList.Add(new Schedule()
+                    {
+                        Id = dataReader.GetGuid(0),
+                        IdFlight = dataReader.GetGuid(1),
+                        DepartureDT = dataReader.GetDateTime(2),
+                        ArrivalDT = dataReader.GetDateTime(3)
+                    });
+                }
+            return scheduleList;
+        }
         private AirportRepository _airportRepository;
         public ScheduleManager()
         {
@@ -24,32 +39,17 @@ namespace airplaneCA
 
         public List<Schedule> GetSchedule(string query)
         {
-            SqlDataReader dataReader = null;
             List<Schedule> scheduleList = new List<Schedule>();
             try
             {
-                dataReader = _airportRepository.ExecuteReader(query);               
-                while (dataReader.Read())
-                {
-                    scheduleList.Add(new Schedule()
-                    {
-                        Id = dataReader.GetGuid(0),
-                        IdFlight = dataReader.GetGuid(1),
-                        DepartureDT = dataReader.GetDateTime(2),
-                        ArrivalDT = dataReader.GetDateTime(3)
-                    });
-                }
+                return _airportRepository.ExecuteReader(query, ProcessReader) as List<Schedule>;               
+
             }
             catch(SqlException sqlEx)
             {
             }
-            finally
-            {
-                if(dataReader!=null)
-                dataReader.Close();
-            }
 
-            return scheduleList;
+            return null;
         }
     }
 }

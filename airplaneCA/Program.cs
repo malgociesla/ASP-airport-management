@@ -28,8 +28,11 @@ namespace airplaneCA
             //do work
             _scheduleManager = new ScheduleManager();
             _scheduleManager.GenerateSchedule(startDate, endDate);
-            _scheduleManager.GetSchedule("SELECT * FROM [airport].[dbo].[Schedule]");
-
+            List<Schedule> scheduleList=_scheduleManager.GetSchedule("SELECT * FROM [airport].[dbo].[Schedule]");
+            foreach (Schedule s in scheduleList)
+            {
+                Console.WriteLine(s.ToString());
+            }
             //do not close window
             Console.ReadLine();
         }

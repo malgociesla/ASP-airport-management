@@ -33,14 +33,14 @@ namespace airplaneCA
                     Connection.Open();
                     try
                     {
-                        SqlCommand cmd = new SqlCommand();
+                        SqlCommand cmd = new SqlCommand(storedProcedureName,Connection);
                         cmd.CommandType = CommandType.StoredProcedure;
                         foreach(var item in parameters.Keys)
                         {
                             cmd.Parameters.Add(new SqlParameter(item,parameters[item]));
-                            cmd.ExecuteNonQuery();
                         }
-                    }
+                        cmd.ExecuteNonQuery();
+                }
                     catch (Exception ex)
                     { }
                     finally
@@ -53,8 +53,9 @@ namespace airplaneCA
             
         }
 
-        public SqlDataReader ExecuteReader(string query)
+        public object ExecuteReader(string query, Func<SqlDataReader,object> processReader)
         {
+            object objResult=null;
             SqlDataReader dataReader = null;
             using (var connection = GetSqlConnection())
             {
@@ -63,7 +64,7 @@ namespace airplaneCA
                 {
                     SqlCommand cmd = new SqlCommand(query,connection);
                     dataReader = cmd.ExecuteReader();
-                    return dataReader;
+                    objResult= processReader(dataReader);
                 }
                 catch(Exception ex)
                 { }
@@ -74,7 +75,7 @@ namespace airplaneCA
                     connection.Close();
                 }
             }
-            return dataReader;
+            return objResult;
         }
 
     }
