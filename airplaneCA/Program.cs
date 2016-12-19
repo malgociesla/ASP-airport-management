@@ -10,14 +10,25 @@ namespace airplaneCA
 {
     class Program
     {
+        private static IScheduleManager _scheduleManager;
+
         static void Main(string[] args)
         {
             //set console
             SetConsole();
 
+            //get input
+            string startDate;
+            string endDate;
+            Console.WriteLine("Input @startDate");
+            startDate = Console.ReadLine();
+            Console.WriteLine("Input @endDate");
+            endDate = Console.ReadLine();
+            
             //do work
-            MyApp app = new MyApp();
-            app.Run();
+            _scheduleManager = new ScheduleManager();
+            _scheduleManager.GenerateSchedule(startDate, endDate);
+            _scheduleManager.GetSchedule("SELECT * FROM [airport].[dbo].[Schedule]");
 
             //do not close window
             Console.ReadLine();
