@@ -50,9 +50,13 @@ namespace airplaneCA
             {
                 while (rdr.Read())
                 {
-                    for( int i=0; i < rdr.FieldCount;i++)
-                    Console.WriteLine(i.ToString() + rdr[i] + "\t");
+                    for (int i = 0; i < rdr.FieldCount; i++)
+                    {
+                        Console.Write(rdr[i] + "\t");
+                    }
+                    Console.WriteLine();
                 }
+                
             }
         }
     }
