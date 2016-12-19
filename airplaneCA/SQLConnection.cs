@@ -15,12 +15,13 @@ namespace airplaneCA
 
         public SQLConnection()
         {
-            sqlConn = new SqlConnection();
+            sqlConn = null;
         }
 
         public void SetConnection(string connStr)
         {
             this.connStr = connStr;
+            sqlConn = new SqlConnection(connStr);
         }
         
 

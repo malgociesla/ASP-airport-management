@@ -17,7 +17,7 @@ namespace airplaneCA
         {
             if (conn is SQLConnection)
             {
-                //todo
+                this.conn=((SQLConnection)conn).sqlConn;
             }
         }
 
@@ -48,11 +48,10 @@ namespace airplaneCA
         {
             if (rdr != null)
             {
-                int i = 0;
-                while (rdr.Read() && rdr[i]!=null)
-                {                         
-                    Console.WriteLine(rdr[i] + "\t");
-                    i++;
+                while (rdr.Read())
+                {
+                    for( int i=0; i < rdr.FieldCount;i++)
+                    Console.WriteLine(i.ToString() + rdr[i] + "\t");
                 }
             }
         }
