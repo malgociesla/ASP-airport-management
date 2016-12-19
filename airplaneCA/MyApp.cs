@@ -9,6 +9,7 @@ namespace airplaneCA
     class MyApp
     {
         private IConnection connection;
+        private IDataManager dataManager;
         private static string conStr="Data Source=.;Initial Catalog=airport;Integrated Security=True";
 
         public void Run()
@@ -18,6 +19,7 @@ namespace airplaneCA
                 SetConnection();
                 connection.Open();
 
+                
                 //get input
                 string startDate;
                 string endDate;
@@ -27,9 +29,8 @@ namespace airplaneCA
                 endDate = Console.ReadLine();
 
                 //do work
-                
-                GenerateSchedule();
-                PrintTable("Schedule");
+                dataManager.GenerateSchedule(startDate,endDate);
+                dataManager.PrintTable("Schedule");
 
                 connection.Close();
             }
@@ -46,7 +47,10 @@ namespace airplaneCA
         void SetConnection()
         {
             connection = new SQLConnection();
-            connection.SetConnection(conStr);
+            connection.SetConnection(conStr);          
+            dataManager = new SQLDataManager();
+            dataManager.SetDataManager(connection);
+            
          }
 
     }

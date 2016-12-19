@@ -8,19 +8,17 @@ using System.Data;
 
 namespace airplaneCA
 {
-    class SQLDataManager
+    class SQLDataManager: IDataManager
     {
-        private SqlDataReader rdr;
-        private SqlConnection conn;
-        public SQLDataManager()
+        private SqlDataReader rdr=null;
+        private SqlConnection conn=null;
+
+        public void SetDataManager(IConnection conn)
         {
-            rdr = null;
-            conn = null;
-        }
-        public SQLDataManager(SqlConnection sqlConn)
-        {
-            rdr = null;
-            conn = sqlConn;
+            if (conn is SQLConnection)
+            {
+                //todo
+            }
         }
 
         public void GenerateSchedule(string startDate, string endDate)
@@ -42,7 +40,7 @@ namespace airplaneCA
         {
             rdr.Close();
         }
-        public void Execute(SqlCommand cmd)
+        private void Execute(SqlCommand cmd)
         {
             rdr = cmd.ExecuteReader();
         }

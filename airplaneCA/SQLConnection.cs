@@ -11,19 +11,18 @@ namespace airplaneCA
     class SQLConnection: IConnection
     {
         private string connStr;
-        private SqlConnection sqlConn;
-        private SQLDataManager sqlDataManager;
+        public SqlConnection sqlConn { get; set; }
 
         public SQLConnection()
         {
             sqlConn = new SqlConnection();
-            sqlDataManager = new SQLDataManager(sqlConn);
         }
 
         public void SetConnection(string connStr)
         {
             this.connStr = connStr;
         }
+        
 
         public bool Open()
         {
