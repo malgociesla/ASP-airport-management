@@ -20,13 +20,11 @@ SELECT @result = (SELECT COUNT(arrivalDT)
 				FROM Schedule s
 					INNER JOIN Flight f
 					ON s.idFlight=f.idFlight
-					INNER JOIN Arrival a
-					ON a.idArrival=f.idArrival
 				WHERE arrivalDT
 					BETWEEN @timeFrom
 					AND @timeTo
 				--city hardcoded
-				AND idCity='ecf5b8ed-f0c1-e611-b353-d017c293d790')
+				AND idCityArrival='ecf5b8ed-f0c1-e611-b353-d017c293d790')
 
 	RETURN @result;
 END

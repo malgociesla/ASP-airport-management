@@ -70,8 +70,6 @@
     <Build Include="dbo\Tables\FStatus.sql" />
     <Build Include="dbo\Tables\Country.sql" />
     <Build Include="dbo\Tables\City.sql" />
-    <Build Include="dbo\Tables\Departure.sql" />
-    <Build Include="dbo\Tables\Arrival.sql" />
     <Build Include="dbo\Tables\Flight.sql" />
     <Build Include="dbo\Tables\Schedule.sql" />
     <Build Include="dbo\Stored Procedures\GenerateSchedule.sql" />
@@ -80,9 +78,5 @@
   </ItemGroup>
   <ItemGroup>
     <RefactorLog Include="airplane.refactorlog" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="dbo\Tables\Script1.sql" />
-    <None Include="dbo\Tables\Script2.sql" />
   </ItemGroup>
 </Project>

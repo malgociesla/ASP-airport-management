@@ -18,7 +18,7 @@ namespace AirplaneDB
     public partial class AirportContext : DbContext
     {
         public AirportContext()
-            : base("name=AirportEntities")
+            : base("name=AirportContext")
         {
         }
     

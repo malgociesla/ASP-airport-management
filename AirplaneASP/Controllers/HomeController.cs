@@ -15,26 +15,18 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService= new CityService();
             List<CityDTO> cityList = cityService.GetCities();
-            //ViewBag.CityList = cityList;
 
             return View(cityList);
         }
 
         [HttpPost]
-        public ActionResult Index(CityDTO city)
+        public ActionResult Index(Guid cityID)
         {
             ICityService cityService = new CityService();
-            cityService.Remove(city.ID);
+            cityService.Remove(cityID);
             return View();
         }
 
-        [HttpPost]
-        public ActionResult Remove(CityDTO city)
-        {
-            ICityService cityService = new CityService();
-            cityService.Remove(city.ID);
-            return View();
-        }
 
         public ActionResult About()
         {
