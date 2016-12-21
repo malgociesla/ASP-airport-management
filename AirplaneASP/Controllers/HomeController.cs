@@ -16,6 +16,7 @@ namespace AirplaneASP.Controllers
             List<CityDTO> cityList = cityService.GetCities();
             ViewBag.CityList = cityList;
             ViewBag.CityService = cityService;
+
             return View();
         }
 
