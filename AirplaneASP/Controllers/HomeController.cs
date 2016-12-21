@@ -10,13 +10,29 @@ namespace AirplaneASP.Controllers
 {
     public class HomeController : Controller
     {
+        [HttpGet]
         public ActionResult Index()
         {
             ICityService cityService= new CityService();
             List<CityDTO> cityList = cityService.GetCities();
-            ViewBag.CityList = cityList;
-            ViewBag.CityService = cityService;
+            //ViewBag.CityList = cityList;
 
+            return View(cityList);
+        }
+
+        [HttpPost]
+        public ActionResult Index(CityDTO city)
+        {
+            ICityService cityService = new CityService();
+            cityService.Remove(city.ID);
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Remove(CityDTO city)
+        {
+            ICityService cityService = new CityService();
+            cityService.Remove(city.ID);
             return View();
         }
 
