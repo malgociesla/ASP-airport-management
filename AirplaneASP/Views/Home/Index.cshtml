@@ -13,11 +13,14 @@
         <div class="row">
             <div class="col-md-3">@city.Name</div>
             @using (Html.BeginForm())
-                    {
-                @Html.Hidden("cityID",@city.ID)
-                       <input class="btn btn-sm btn-warning"
+            {
+                // @Html.Hidden("cityID",@city.ID)
+                @Html.ActionLink("Remove", "Remove", "Home", new { cityID = @city.ID },null)
+               <!--
+                           <input class="btn btn-sm btn-warning"
                        type="submit" value=@city.ID />
-                      // @Html.ActionLink
+                   -->
+                    
                 }          
         </div>
 
