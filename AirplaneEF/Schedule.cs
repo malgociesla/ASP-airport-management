@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirplaneDB
+namespace AirplaneEF
 {
     using System;
     using System.Collections.Generic;
@@ -15,7 +15,7 @@ namespace AirplaneDB
     public partial class Schedule
     {
         public System.Guid idSchedule { get; set; }
-        public Nullable<System.Guid> idFlight { get; set; }
+        public System.Guid idFlight { get; set; }
         public Nullable<System.DateTime> departureDT { get; set; }
         public Nullable<System.DateTime> arrivalDT { get; set; }
     

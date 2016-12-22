@@ -7,23 +7,23 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirplaneDB
+namespace AirplaneEF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class FStatu
+    public partial class Country
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FStatu()
+        public Country()
         {
-            this.Flights = new HashSet<Flight>();
+            this.Cities = new HashSet<City>();
         }
     
-        public System.Guid idFStatus { get; set; }
+        public System.Guid idCountry { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<City> Cities { get; set; }
     }
 }

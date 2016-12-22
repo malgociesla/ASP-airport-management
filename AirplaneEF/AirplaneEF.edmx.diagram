@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2f6673dae7524408a7735cad7b70b129" Name="Diagram1">
+        <EntityTypeShape EntityType="AirportEF.City" Width="1.5" PointX="3" PointY="3.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirportEF.Company" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirportEF.Country" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirportEF.Flight" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirportEF.FStatu" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="AirportEF.Schedule" Width="1.5" PointX="7.5" PointY="3.375" IsExpanded="true" />
+        <AssociationConnector Association="AirportEF.FK__City__idCountry__693CA210" ManuallyRouted="false" />
+        <AssociationConnector Association="AirportEF.FK__Flight__idCityAr__70DDC3D8" ManuallyRouted="false" />
+        <AssociationConnector Association="AirportEF.FK__Flight__idCityDe__71D1E811" ManuallyRouted="false" />
+        <AssociationConnector Association="AirportEF.FK__Flight__idCompan__5EBF139D" ManuallyRouted="false" />
+        <AssociationConnector Association="AirportEF.FK__Flight__idFStatu__5FB337D6" ManuallyRouted="false" />
+        <AssociationConnector Association="AirportEF.FK__Schedule__idFlig__66603565" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

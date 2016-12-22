@@ -4,21 +4,13 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-    <Schema Namespace="AirportModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
-        <EntityType Name="Arrival">
-          <Key>
-            <PropertyRef Name="idArrival" />
-          </Key>
-          <Property Name="idArrival" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="idCity" Type="uniqueidentifier" />
-          <Property Name="arrivalTime" Type="time" Precision="7" />
-        </EntityType>
+      <Schema Namespace="AirportEF.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="idCity" />
           </Key>
           <Property Name="idCity" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="idCountry" Type="uniqueidentifier" />
+          <Property Name="idCountry" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Company">
@@ -35,25 +27,19 @@
           <Property Name="idCountry" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
         </EntityType>
-        <EntityType Name="Departure">
-          <Key>
-            <PropertyRef Name="idDeparture" />
-          </Key>
-          <Property Name="idDeparture" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="idCity" Type="uniqueidentifier" />
-          <Property Name="departureTime" Type="time" Precision="7" />
-        </EntityType>
         <EntityType Name="Flight">
           <Key>
             <PropertyRef Name="idFlight" />
           </Key>
           <Property Name="idFlight" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="idCompany" Type="uniqueidentifier" />
-          <Property Name="idFStatus" Type="uniqueidentifier" />
-          <Property Name="idDeparture" Type="uniqueidentifier" />
-          <Property Name="idArrival" Type="uniqueidentifier" />
+          <Property Name="idCompany" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idFStatus" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="20" />
           <Property Name="fDayofWeek" Type="int" />
+          <Property Name="idCityDeparture" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idCityArrival" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="departureTime" Type="time" Precision="7" />
+          <Property Name="arrivalTime" Type="time" Precision="7" />
         </EntityType>
         <EntityType Name="FStatus">
           <Key>
@@ -67,24 +53,14 @@
             <PropertyRef Name="idSchedule" />
           </Key>
           <Property Name="idSchedule" Type="uniqueidentifier" Nullable="false" />
-          <Property Name="idFlight" Type="uniqueidentifier" />
+          <Property Name="idFlight" Type="uniqueidentifier" Nullable="false" />
           <Property Name="departureDT" Type="datetime" />
           <Property Name="arrivalDT" Type="datetime" />
         </EntityType>
-        <Association Name="FK__Arrival__idCity__1BFD2C07">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="Arrival" Type="Self.Arrival" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="City">
-              <PropertyRef Name="idCity" />
-            </Principal>
-            <Dependent Role="Arrival">
-              <PropertyRef Name="idCity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__City__idCountry__5AEE82B9">
-          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+        <Association Name="FK__City__idCountry__693CA210">
+          <End Role="Country" Type="Self.Country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="City" Type="Self.City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Country">
@@ -95,32 +71,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Departure__idCit__1920BF5C">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="Departure" Type="Self.Departure" Multiplicity="*" />
+        <Association Name="FK__Flight__idCityAr__70DDC3D8">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="City">
               <PropertyRef Name="idCity" />
             </Principal>
-            <Dependent Role="Departure">
-              <PropertyRef Name="idCity" />
+            <Dependent Role="Flight">
+              <PropertyRef Name="idCityArrival" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight__idArriva__239E4DCF">
-          <End Role="Arrival" Type="Self.Arrival" Multiplicity="0..1" />
+        <Association Name="FK__Flight__idCityDe__71D1E811">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
-            <Principal Role="Arrival">
-              <PropertyRef Name="idArrival" />
+            <Principal Role="City">
+              <PropertyRef Name="idCity" />
             </Principal>
             <Dependent Role="Flight">
-              <PropertyRef Name="idArrival" />
+              <PropertyRef Name="idCityDeparture" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight__idCompan__20C1E124">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+        <Association Name="FK__Flight__idCompan__5EBF139D">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
@@ -131,20 +107,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight__idDepart__22AA2996">
-          <End Role="Departure" Type="Self.Departure" Multiplicity="0..1" />
-          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Departure">
-              <PropertyRef Name="idDeparture" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="idDeparture" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Flight__idFStatu__21B6055D">
-          <End Role="FStatus" Type="Self.FStatus" Multiplicity="0..1" />
+        <Association Name="FK__Flight__idFStatu__5FB337D6">
+          <End Role="FStatus" Type="Self.FStatus" Multiplicity="1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FStatus">
@@ -155,8 +119,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Schedule__idFlig__276EDEB3">
-          <End Role="Flight" Type="Self.Flight" Multiplicity="0..1" />
+        <Association Name="FK__Schedule__idFlig__66603565">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
           <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Flight">
@@ -175,72 +139,53 @@
         <Function Name="GetCountOfLandingPlanes" Aggregate="false" BuiltIn="false" NiladicFunction="false" IsComposable="true" ParameterTypeSemantics="AllowImplicitConversion" Schema="dbo" ReturnType="int">
           <Parameter Name="landingDT" Type="datetime" Mode="In" />
         </Function>
-        <EntityContainer Name="AirportModelStoreContainer">
-          <EntitySet Name="Arrival" EntityType="Self.Arrival" Schema="dbo" store:Type="Tables" />
+        <EntityContainer Name="AirportEFStoreContainer">
           <EntitySet Name="City" EntityType="Self.City" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Company" EntityType="Self.Company" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Country" EntityType="Self.Country" Schema="dbo" store:Type="Tables" />
-          <EntitySet Name="Departure" EntityType="Self.Departure" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Flight" EntityType="Self.Flight" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="FStatus" EntityType="Self.FStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Schedule" EntityType="Self.Schedule" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__Arrival__idCity__1BFD2C07" Association="Self.FK__Arrival__idCity__1BFD2C07">
-            <End Role="City" EntitySet="City" />
-            <End Role="Arrival" EntitySet="Arrival" />
-          </AssociationSet>
-          <AssociationSet Name="FK__City__idCountry__5AEE82B9" Association="Self.FK__City__idCountry__5AEE82B9">
+          <AssociationSet Name="FK__City__idCountry__693CA210" Association="Self.FK__City__idCountry__693CA210">
             <End Role="Country" EntitySet="Country" />
             <End Role="City" EntitySet="City" />
           </AssociationSet>
-          <AssociationSet Name="FK__Departure__idCit__1920BF5C" Association="Self.FK__Departure__idCit__1920BF5C">
+          <AssociationSet Name="FK__Flight__idCityAr__70DDC3D8" Association="Self.FK__Flight__idCityAr__70DDC3D8">
             <End Role="City" EntitySet="City" />
-            <End Role="Departure" EntitySet="Departure" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Flight__idArriva__239E4DCF" Association="Self.FK__Flight__idArriva__239E4DCF">
-            <End Role="Arrival" EntitySet="Arrival" />
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight__idCompan__20C1E124" Association="Self.FK__Flight__idCompan__20C1E124">
+          <AssociationSet Name="FK__Flight__idCityDe__71D1E811" Association="Self.FK__Flight__idCityDe__71D1E811">
+            <End Role="City" EntitySet="City" />
+            <End Role="Flight" EntitySet="Flight" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Flight__idCompan__5EBF139D" Association="Self.FK__Flight__idCompan__5EBF139D">
             <End Role="Company" EntitySet="Company" />
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight__idDepart__22AA2996" Association="Self.FK__Flight__idDepart__22AA2996">
-            <End Role="Departure" EntitySet="Departure" />
-            <End Role="Flight" EntitySet="Flight" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Flight__idFStatu__21B6055D" Association="Self.FK__Flight__idFStatu__21B6055D">
+          <AssociationSet Name="FK__Flight__idFStatu__5FB337D6" Association="Self.FK__Flight__idFStatu__5FB337D6">
             <End Role="FStatus" EntitySet="FStatus" />
             <End Role="Flight" EntitySet="Flight" />
           </AssociationSet>
-          <AssociationSet Name="FK__Schedule__idFlig__276EDEB3" Association="Self.FK__Schedule__idFlig__276EDEB3">
+          <AssociationSet Name="FK__Schedule__idFlig__66603565" Association="Self.FK__Schedule__idFlig__66603565">
             <End Role="Flight" EntitySet="Flight" />
             <End Role="Schedule" EntitySet="Schedule" />
           </AssociationSet>
         </EntityContainer>
-      </Schema></edmx:StorageModels>
+      </Schema>
+    </edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
-      <Schema Namespace="AirportModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
-        <EntityType Name="Arrival">
-          <Key>
-            <PropertyRef Name="idArrival" />
-          </Key>
-          <Property Name="idArrival" Type="Guid" Nullable="false" />
-          <Property Name="idCity" Type="Guid" />
-          <Property Name="arrivalTime" Type="Time" Precision="7" />
-          <NavigationProperty Name="City" Relationship="Self.FK__Arrival__idCity__1BFD2C07" FromRole="Arrival" ToRole="City" />
-          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idArriva__239E4DCF" FromRole="Arrival" ToRole="Flight" />
-        </EntityType>
+      <Schema Namespace="AirportEF" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
         <EntityType Name="City">
           <Key>
             <PropertyRef Name="idCity" />
           </Key>
           <Property Name="idCity" Type="Guid" Nullable="false" />
-          <Property Name="idCountry" Type="Guid" />
+          <Property Name="idCountry" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Arrivals" Relationship="Self.FK__Arrival__idCity__1BFD2C07" FromRole="City" ToRole="Arrival" />
-          <NavigationProperty Name="Country" Relationship="Self.FK__City__idCountry__164452B1" FromRole="City" ToRole="Country" />
-          <NavigationProperty Name="Departures" Relationship="Self.FK__Departure__idCit__1920BF5C" FromRole="City" ToRole="Departure" />
+          <NavigationProperty Name="Country" Relationship="Self.FK__City__idCountry__693CA210" FromRole="City" ToRole="Country" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idCityAr__70DDC3D8" FromRole="City" ToRole="Flight" />
+          <NavigationProperty Name="Flights1" Relationship="Self.FK__Flight__idCityDe__71D1E811" FromRole="City" ToRole="Flight" />
         </EntityType>
         <EntityType Name="Company">
           <Key>
@@ -248,7 +193,7 @@
           </Key>
           <Property Name="idCompany" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idCompan__20C1E124" FromRole="Company" ToRole="Flight" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idCompan__5EBF139D" FromRole="Company" ToRole="Flight" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
@@ -256,34 +201,26 @@
           </Key>
           <Property Name="idCountry" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Cities" Relationship="Self.FK__City__idCountry__164452B1" FromRole="Country" ToRole="City" />
-        </EntityType>
-        <EntityType Name="Departure">
-          <Key>
-            <PropertyRef Name="idDeparture" />
-          </Key>
-          <Property Name="idDeparture" Type="Guid" Nullable="false" />
-          <Property Name="idCity" Type="Guid" />
-          <Property Name="departureTime" Type="Time" Precision="7" />
-          <NavigationProperty Name="City" Relationship="Self.FK__Departure__idCit__1920BF5C" FromRole="Departure" ToRole="City" />
-          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idDepart__22AA2996" FromRole="Departure" ToRole="Flight" />
+          <NavigationProperty Name="Cities" Relationship="Self.FK__City__idCountry__693CA210" FromRole="Country" ToRole="City" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
             <PropertyRef Name="idFlight" />
           </Key>
           <Property Name="idFlight" Type="Guid" Nullable="false" />
-          <Property Name="idCompany" Type="Guid" />
-          <Property Name="idFStatus" Type="Guid" />
-          <Property Name="idDeparture" Type="Guid" />
-          <Property Name="idArrival" Type="Guid" />
+          <Property Name="idCompany" Type="Guid" Nullable="false" />
+          <Property Name="idFStatus" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="fDayofWeek" Type="Int32" />
-          <NavigationProperty Name="Arrival" Relationship="Self.FK__Flight__idArriva__239E4DCF" FromRole="Flight" ToRole="Arrival" />
-          <NavigationProperty Name="Company" Relationship="Self.FK__Flight__idCompan__20C1E124" FromRole="Flight" ToRole="Company" />
-          <NavigationProperty Name="Departure" Relationship="Self.FK__Flight__idDepart__22AA2996" FromRole="Flight" ToRole="Departure" />
-          <NavigationProperty Name="FStatu" Relationship="Self.FK__Flight__idFStatu__21B6055D" FromRole="Flight" ToRole="FStatus" />
-          <NavigationProperty Name="Schedules" Relationship="Self.FK__Schedule__idFlig__276EDEB3" FromRole="Flight" ToRole="Schedule" />
+          <Property Name="idCityDeparture" Type="Guid" Nullable="false" />
+          <Property Name="idCityArrival" Type="Guid" Nullable="false" />
+          <Property Name="departureTime" Type="Time" Precision="7" />
+          <Property Name="arrivalTime" Type="Time" Precision="7" />
+          <NavigationProperty Name="City" Relationship="Self.FK__Flight__idCityAr__70DDC3D8" FromRole="Flight" ToRole="City" />
+          <NavigationProperty Name="City1" Relationship="Self.FK__Flight__idCityDe__71D1E811" FromRole="Flight" ToRole="City" />
+          <NavigationProperty Name="Company" Relationship="Self.FK__Flight__idCompan__5EBF139D" FromRole="Flight" ToRole="Company" />
+          <NavigationProperty Name="FStatu" Relationship="Self.FK__Flight__idFStatu__5FB337D6" FromRole="Flight" ToRole="FStatus" />
+          <NavigationProperty Name="Schedules" Relationship="Self.FK__Schedule__idFlig__66603565" FromRole="Flight" ToRole="Schedule" />
         </EntityType>
         <EntityType Name="FStatu">
           <Key>
@@ -291,44 +228,22 @@
           </Key>
           <Property Name="idFStatus" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idFStatu__21B6055D" FromRole="FStatus" ToRole="Flight" />
+          <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idFStatu__5FB337D6" FromRole="FStatus" ToRole="Flight" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
             <PropertyRef Name="idSchedule" />
           </Key>
           <Property Name="idSchedule" Type="Guid" Nullable="false" />
-          <Property Name="idFlight" Type="Guid" />
+          <Property Name="idFlight" Type="Guid" Nullable="false" />
           <Property Name="departureDT" Type="DateTime" Precision="3" />
           <Property Name="arrivalDT" Type="DateTime" Precision="3" />
-          <NavigationProperty Name="Flight" Relationship="Self.FK__Schedule__idFlig__276EDEB3" FromRole="Schedule" ToRole="Flight" />
+          <NavigationProperty Name="Flight" Relationship="Self.FK__Schedule__idFlig__66603565" FromRole="Schedule" ToRole="Flight" />
         </EntityType>
-        <Association Name="FK__Arrival__idCity__1BFD2C07">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="Arrival" Type="Self.Arrival" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="City">
-              <PropertyRef Name="idCity" />
-            </Principal>
-            <Dependent Role="Arrival">
-              <PropertyRef Name="idCity" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Flight__idArriva__239E4DCF">
-          <End Role="Arrival" Type="Self.Arrival" Multiplicity="0..1" />
-          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Arrival">
-              <PropertyRef Name="idArrival" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="idArrival" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__City__idCountry__164452B1">
-          <End Role="Country" Type="Self.Country" Multiplicity="0..1" />
+        <Association Name="FK__City__idCountry__693CA210">
+          <End Role="Country" Type="Self.Country" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="City" Type="Self.City" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Country">
@@ -339,20 +254,32 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Departure__idCit__1920BF5C">
-          <End Role="City" Type="Self.City" Multiplicity="0..1" />
-          <End Role="Departure" Type="Self.Departure" Multiplicity="*" />
+        <Association Name="FK__Flight__idCityAr__70DDC3D8">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="City">
               <PropertyRef Name="idCity" />
             </Principal>
-            <Dependent Role="Departure">
-              <PropertyRef Name="idCity" />
+            <Dependent Role="Flight">
+              <PropertyRef Name="idCityArrival" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight__idCompan__20C1E124">
-          <End Role="Company" Type="Self.Company" Multiplicity="0..1" />
+        <Association Name="FK__Flight__idCityDe__71D1E811">
+          <End Role="City" Type="Self.City" Multiplicity="1" />
+          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="City">
+              <PropertyRef Name="idCity" />
+            </Principal>
+            <Dependent Role="Flight">
+              <PropertyRef Name="idCityDeparture" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK__Flight__idCompan__5EBF139D">
+          <End Role="Company" Type="Self.Company" Multiplicity="1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Company">
@@ -363,20 +290,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Flight__idDepart__22AA2996">
-          <End Role="Departure" Type="Self.Departure" Multiplicity="0..1" />
-          <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Departure">
-              <PropertyRef Name="idDeparture" />
-            </Principal>
-            <Dependent Role="Flight">
-              <PropertyRef Name="idDeparture" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK__Flight__idFStatu__21B6055D">
-          <End Role="FStatus" Type="Self.FStatu" Multiplicity="0..1" />
+        <Association Name="FK__Flight__idFStatu__5FB337D6">
+          <End Role="FStatus" Type="Self.FStatu" Multiplicity="1" />
           <End Role="Flight" Type="Self.Flight" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="FStatus">
@@ -387,8 +302,8 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Schedule__idFlig__276EDEB3">
-          <End Role="Flight" Type="Self.Flight" Multiplicity="0..1" />
+        <Association Name="FK__Schedule__idFlig__66603565">
+          <End Role="Flight" Type="Self.Flight" Multiplicity="1" />
           <End Role="Schedule" Type="Self.Schedule" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Flight">
@@ -399,44 +314,34 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AirportContext" annotation:LazyLoadingEnabled="true">
-          <EntitySet Name="Arrivals" EntityType="Self.Arrival" />
+        <EntityContainer Name="AirportEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="Countries" EntityType="Self.Country" />
-          <EntitySet Name="Departures" EntityType="Self.Departure" />
           <EntitySet Name="Flights" EntityType="Self.Flight" />
           <EntitySet Name="FStatus" EntityType="Self.FStatu" />
           <EntitySet Name="Schedules" EntityType="Self.Schedule" />
-          <AssociationSet Name="FK__Arrival__idCity__1BFD2C07" Association="Self.FK__Arrival__idCity__1BFD2C07">
-            <End Role="City" EntitySet="Cities" />
-            <End Role="Arrival" EntitySet="Arrivals" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Flight__idArriva__239E4DCF" Association="Self.FK__Flight__idArriva__239E4DCF">
-            <End Role="Arrival" EntitySet="Arrivals" />
-            <End Role="Flight" EntitySet="Flights" />
-          </AssociationSet>
-          <AssociationSet Name="FK__City__idCountry__164452B1" Association="Self.FK__City__idCountry__164452B1">
+          <AssociationSet Name="FK__City__idCountry__693CA210" Association="Self.FK__City__idCountry__693CA210">
             <End Role="Country" EntitySet="Countries" />
             <End Role="City" EntitySet="Cities" />
           </AssociationSet>
-          <AssociationSet Name="FK__Departure__idCit__1920BF5C" Association="Self.FK__Departure__idCit__1920BF5C">
+          <AssociationSet Name="FK__Flight__idCityAr__70DDC3D8" Association="Self.FK__Flight__idCityAr__70DDC3D8">
             <End Role="City" EntitySet="Cities" />
-            <End Role="Departure" EntitySet="Departures" />
+            <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight__idCompan__20C1E124" Association="Self.FK__Flight__idCompan__20C1E124">
+          <AssociationSet Name="FK__Flight__idCityDe__71D1E811" Association="Self.FK__Flight__idCityDe__71D1E811">
+            <End Role="City" EntitySet="Cities" />
+            <End Role="Flight" EntitySet="Flights" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Flight__idCompan__5EBF139D" Association="Self.FK__Flight__idCompan__5EBF139D">
             <End Role="Company" EntitySet="Companies" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK__Flight__idDepart__22AA2996" Association="Self.FK__Flight__idDepart__22AA2996">
-            <End Role="Departure" EntitySet="Departures" />
-            <End Role="Flight" EntitySet="Flights" />
-          </AssociationSet>
-          <AssociationSet Name="FK__Flight__idFStatu__21B6055D" Association="Self.FK__Flight__idFStatu__21B6055D">
+          <AssociationSet Name="FK__Flight__idFStatu__5FB337D6" Association="Self.FK__Flight__idFStatu__5FB337D6">
             <End Role="FStatus" EntitySet="FStatus" />
             <End Role="Flight" EntitySet="Flights" />
           </AssociationSet>
-          <AssociationSet Name="FK__Schedule__idFlig__276EDEB3" Association="Self.FK__Schedule__idFlig__276EDEB3">
+          <AssociationSet Name="FK__Schedule__idFlig__66603565" Association="Self.FK__Schedule__idFlig__66603565">
             <End Role="Flight" EntitySet="Flights" />
             <End Role="Schedule" EntitySet="Schedules" />
           </AssociationSet>
@@ -451,18 +356,9 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AirportModelStoreContainer" CdmEntityContainer="AirportContext">
-          <EntitySetMapping Name="Arrivals">
-            <EntityTypeMapping TypeName="AirportModel.Arrival">
-              <MappingFragment StoreEntitySet="Arrival">
-                <ScalarProperty Name="idArrival" ColumnName="idArrival" />
-                <ScalarProperty Name="idCity" ColumnName="idCity" />
-                <ScalarProperty Name="arrivalTime" ColumnName="arrivalTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
+        <EntityContainerMapping StorageEntityContainer="AirportEFStoreContainer" CdmEntityContainer="AirportEntities">
           <EntitySetMapping Name="Cities">
-            <EntityTypeMapping TypeName="AirportModel.City">
+            <EntityTypeMapping TypeName="AirportEF.City">
               <MappingFragment StoreEntitySet="City">
                 <ScalarProperty Name="idCity" ColumnName="idCity" />
                 <ScalarProperty Name="idCountry" ColumnName="idCountry" />
@@ -471,7 +367,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Companies">
-            <EntityTypeMapping TypeName="AirportModel.Company">
+            <EntityTypeMapping TypeName="AirportEF.Company">
               <MappingFragment StoreEntitySet="Company">
                 <ScalarProperty Name="idCompany" ColumnName="idCompany" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -479,37 +375,30 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Countries">
-            <EntityTypeMapping TypeName="AirportModel.Country">
+            <EntityTypeMapping TypeName="AirportEF.Country">
               <MappingFragment StoreEntitySet="Country">
                 <ScalarProperty Name="idCountry" ColumnName="idCountry" />
                 <ScalarProperty Name="name" ColumnName="name" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <EntitySetMapping Name="Departures">
-            <EntityTypeMapping TypeName="AirportModel.Departure">
-              <MappingFragment StoreEntitySet="Departure">
-                <ScalarProperty Name="idDeparture" ColumnName="idDeparture" />
-                <ScalarProperty Name="idCity" ColumnName="idCity" />
-                <ScalarProperty Name="departureTime" ColumnName="departureTime" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
           <EntitySetMapping Name="Flights">
-            <EntityTypeMapping TypeName="AirportModel.Flight">
+            <EntityTypeMapping TypeName="AirportEF.Flight">
               <MappingFragment StoreEntitySet="Flight">
                 <ScalarProperty Name="idFlight" ColumnName="idFlight" />
                 <ScalarProperty Name="idCompany" ColumnName="idCompany" />
                 <ScalarProperty Name="idFStatus" ColumnName="idFStatus" />
-                <ScalarProperty Name="idDeparture" ColumnName="idDeparture" />
-                <ScalarProperty Name="idArrival" ColumnName="idArrival" />
                 <ScalarProperty Name="name" ColumnName="name" />
                 <ScalarProperty Name="fDayofWeek" ColumnName="fDayofWeek" />
+                <ScalarProperty Name="idCityDeparture" ColumnName="idCityDeparture" />
+                <ScalarProperty Name="idCityArrival" ColumnName="idCityArrival" />
+                <ScalarProperty Name="departureTime" ColumnName="departureTime" />
+                <ScalarProperty Name="arrivalTime" ColumnName="arrivalTime" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="FStatus">
-            <EntityTypeMapping TypeName="AirportModel.FStatu">
+            <EntityTypeMapping TypeName="AirportEF.FStatu">
               <MappingFragment StoreEntitySet="FStatus">
                 <ScalarProperty Name="idFStatus" ColumnName="idFStatus" />
                 <ScalarProperty Name="name" ColumnName="name" />
@@ -517,7 +406,7 @@
             </EntityTypeMapping>
           </EntitySetMapping>
           <EntitySetMapping Name="Schedules">
-            <EntityTypeMapping TypeName="AirportModel.Schedule">
+            <EntityTypeMapping TypeName="AirportEF.Schedule">
               <MappingFragment StoreEntitySet="Schedule">
                 <ScalarProperty Name="idSchedule" ColumnName="idSchedule" />
                 <ScalarProperty Name="idFlight" ColumnName="idFlight" />
@@ -526,7 +415,7 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
-          <FunctionImportMapping FunctionImportName="GenerateSchedule" FunctionName="AirportModel.Store.GenerateSchedule" />
+          <FunctionImportMapping FunctionImportName="GenerateSchedule" FunctionName="AirportEF.Store.GenerateSchedule" />
         </EntityContainerMapping>
       </Mapping>
     </edmx:Mappings>

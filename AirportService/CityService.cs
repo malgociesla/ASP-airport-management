@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using AirportService.DTO;
-using AirplaneDB;
+using AirplaneEF;
 
 namespace AirportService
 {
@@ -48,7 +48,7 @@ namespace AirportService
             var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
             _airplaneContext.Cities.Remove(city);
             _airplaneContext.SaveChanges();
-            //_airplaneContext.Flights.Where(c=>c.idFlight)
+           // _airplaneContext.Flights.Where(f=>f.)
 
         }
     }

@@ -7,24 +7,22 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirplaneDB
+namespace AirplaneEF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Departure
+    public partial class Company
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Departure()
+        public Company()
         {
             this.Flights = new HashSet<Flight>();
         }
     
-        public System.Guid idDeparture { get; set; }
-        public Nullable<System.Guid> idCity { get; set; }
-        public Nullable<System.TimeSpan> departureTime { get; set; }
+        public System.Guid idCompany { get; set; }
+        public string name { get; set; }
     
-        public virtual City City { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Flight> Flights { get; set; }
     }

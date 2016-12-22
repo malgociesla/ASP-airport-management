@@ -55,14 +55,14 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AirplaneDB\AirplaneDB.csproj">
-      <Project>{1b774eb2-f131-4f08-a9b5-82fbdf833357}</Project>
-      <Name>AirplaneDB</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AirplaneEF\AirplaneEF.csproj">
+      <Project>{fb1af0a1-03eb-425d-8661-990c206e8a3e}</Project>
+      <Name>AirplaneEF</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

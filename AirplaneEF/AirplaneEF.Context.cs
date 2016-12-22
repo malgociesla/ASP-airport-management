@@ -7,7 +7,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirplaneDB
+namespace AirplaneEF
 {
     using System;
     using System.Data.Entity;
@@ -18,7 +18,7 @@ namespace AirplaneDB
     public partial class AirportContext : DbContext
     {
         public AirportContext()
-            : base("name=AirportContext")
+            : base("name=AirportEntities")
         {
         }
     
@@ -27,11 +27,9 @@ namespace AirplaneDB
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<Arrival> Arrivals { get; set; }
         public virtual DbSet<City> Cities { get; set; }
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
-        public virtual DbSet<Departure> Departures { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
         public virtual DbSet<FStatu> FStatus { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }

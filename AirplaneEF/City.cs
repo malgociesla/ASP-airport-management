@@ -7,32 +7,28 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace AirplaneDB
+namespace AirplaneEF
 {
     using System;
     using System.Collections.Generic;
     
-    public partial class Flight
+    public partial class City
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public Flight()
+        public City()
         {
-            this.Schedules = new HashSet<Schedule>();
+            this.Flights = new HashSet<Flight>();
+            this.Flights1 = new HashSet<Flight>();
         }
     
-        public System.Guid idFlight { get; set; }
-        public Nullable<System.Guid> idCompany { get; set; }
-        public Nullable<System.Guid> idFStatus { get; set; }
-        public Nullable<System.Guid> idDeparture { get; set; }
-        public Nullable<System.Guid> idArrival { get; set; }
+        public System.Guid idCity { get; set; }
+        public System.Guid idCountry { get; set; }
         public string name { get; set; }
-        public Nullable<int> fDayofWeek { get; set; }
     
-        public virtual Arrival Arrival { get; set; }
-        public virtual Company Company { get; set; }
-        public virtual Departure Departure { get; set; }
-        public virtual FStatu FStatu { get; set; }
+        public virtual Country Country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Schedule> Schedules { get; set; }
+        public virtual ICollection<Flight> Flights { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Flight> Flights1 { get; set; }
     }
 }
