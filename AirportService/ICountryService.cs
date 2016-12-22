@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AirportService.DTO;
 
 namespace AirportService
 {
     public interface ICountryService
     {
+        Guid Add(string name);
+        void Remove(Guid id);
+        void Edit(Guid id, string name);
+        List<CountryDTO> GetAll();
     }
 }

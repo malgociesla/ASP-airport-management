@@ -10,14 +10,13 @@ namespace AirportService
 {
     public class CityService : ICityService
     {
+        private AirportContext _airplaneContext;
         public CityService()
         {
             _airplaneContext = new AirportContext();
         }
 
-        private AirportContext _airplaneContext;
-
-        public Guid AddCity(string name)
+        public Guid Add(string name)
         {
             City city = new City { name = name };
             _airplaneContext.Cities.Add(city);
@@ -32,7 +31,7 @@ namespace AirportService
             _airplaneContext.SaveChanges();
         }
 
-        public List<CityDTO> GetCities()
+        public List<CityDTO> GetAll()
         {  
             var cities = _airplaneContext.Cities.ToList().Select(c => new CityDTO
             {

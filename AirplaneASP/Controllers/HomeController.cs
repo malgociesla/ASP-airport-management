@@ -14,7 +14,7 @@ namespace AirplaneASP.Controllers
         public ActionResult Index()
         {
             ICityService cityService= new CityService();
-            List<CityDTO> cityList = cityService.GetCities();
+            List<CityDTO> cityList = cityService.GetAll();
 
             return View("Index",cityList);
         }
