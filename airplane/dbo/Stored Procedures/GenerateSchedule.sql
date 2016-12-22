@@ -51,15 +51,11 @@ AS
 		BEGIN
 			--get flight data
 			SELECT @thisDepartureTime = (SELECT departureTime
-											FROM [dbo].Departure d
-												INNER JOIN [dbo].[Flight] f 
-												ON d.idDeparture=f.idDeparture
+											FROM [dbo].[Flight] f 
 											WHERE f.idFlight=@thisIdFlight)
 			SET @thisDepartureDT= CAST(@fromDate AS DATETIME) + CAST(@thisDepartureTime AS DATETIME);
 			SELECT @thisArrivalTime = (SELECT arrivalTime
-										FROM [dbo].[Arrival] a
-											INNER JOIN [dbo].[Flight] f
-											ON a.idArrival=f.idArrival
+										FROM [dbo].[Flight] f
 										WHERE f.idFlight=@thisIdFlight)
 			SET @thisArrivalDT= CAST(@fromDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
 			--generate schedule
