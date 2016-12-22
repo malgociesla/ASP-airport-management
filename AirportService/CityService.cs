@@ -47,8 +47,10 @@ namespace AirportService
         {
             var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
             _airplaneContext.Cities.Remove(city);
+            var flight = _airplaneContext.Flights.Where(f => (f.idCityArrival == id || f.idCityDeparture == id));
+            _airplaneContext.Flights.RemoveRange(flight);
             _airplaneContext.SaveChanges();
-           // _airplaneContext.Flights.Where(f=>f.)
+
 
         }
     }

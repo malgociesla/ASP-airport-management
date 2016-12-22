@@ -4,6 +4,6 @@
     [departureDT] DATETIME         NULL,
     [arrivalDT]   DATETIME         NULL,
     PRIMARY KEY CLUSTERED ([idSchedule] ASC),
-    FOREIGN KEY ([idFlight]) REFERENCES [dbo].[Flight] ([idFlight])
+    FOREIGN KEY ([idFlight]) REFERENCES [dbo].[Flight] ([idFlight]) ON DELETE CASCADE
 );
 
