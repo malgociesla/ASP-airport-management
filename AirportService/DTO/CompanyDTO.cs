@@ -2,7 +2,7 @@
 
 namespace AirportService.DTO
 {
-    public class CountryDTO
+    public class CompanyDTO
     {
         public Guid ID { get; set; }
         public string Name { get; set; }
