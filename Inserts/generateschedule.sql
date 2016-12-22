@@ -1,0 +1,1 @@
+execute [dbo].[GenerateSchedule] @startDate='2016-12-11', @endDate='2016-12-24'
