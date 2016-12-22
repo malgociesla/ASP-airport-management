@@ -18,6 +18,7 @@ namespace AirplaneEF
         public System.Guid idFlight { get; set; }
         public Nullable<System.DateTime> departureDT { get; set; }
         public Nullable<System.DateTime> arrivalDT { get; set; }
+        public string comment { get; set; }
     
         public virtual Flight Flight { get; set; }
     }

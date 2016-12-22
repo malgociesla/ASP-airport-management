@@ -50,9 +50,18 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CityService.cs" />
+    <Compile Include="CountryService.cs" />
     <Compile Include="DTO\CityDTO.cs" />
+    <Compile Include="DTO\CountryDTO.cs" />
+    <Compile Include="DTO\FlightDTO.cs" />
+    <Compile Include="DTO\ScheduleDTO.cs" />
+    <Compile Include="FlightService.cs" />
     <Compile Include="ICityService.cs" />
+    <Compile Include="ICountryService.cs" />
+    <Compile Include="IFlightService.cs" />
+    <Compile Include="IScheduleService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ScheduleService.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
