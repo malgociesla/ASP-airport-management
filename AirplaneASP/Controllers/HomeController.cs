@@ -24,7 +24,9 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             cityService.Remove(cityID);
-            return View();
+           // List<CityDTO> cityList = cityService.GetCities();
+
+            return Index();
         }
 
 

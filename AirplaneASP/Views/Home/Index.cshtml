@@ -16,7 +16,8 @@
                     {
                 @Html.Hidden("cityID",@city.ID)
                        <input class="btn btn-sm btn-warning"
-                       type="submit" value="Remove" />
+                       type="submit" value=@city.ID />
+                      // @Html.ActionLink
                 }          
         </div>
 
