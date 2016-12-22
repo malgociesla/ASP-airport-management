@@ -48,10 +48,11 @@ namespace AirportService
             var city = _airplaneContext.Cities.Where(c => c.idCountry == country.idCountry);
 
             ICityService cityService = new CityService();
-            foreach (var c in city)
-            {
-                cityService.Remove(c.idCity);
-            }
+            if(city!=null)
+                foreach (var c in city)
+                {
+                    cityService.Remove(c.idCity);
+                }
             _airplaneContext.SaveChanges();
         }
     }

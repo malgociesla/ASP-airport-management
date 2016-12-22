@@ -36,6 +36,19 @@ namespace AirportService
             var cities = _airplaneContext.Cities.ToList().Select(c => new CityDTO
             {
                 ID = c.idCity,
+                CountryID=c.idCountry,
+                Name = c.name
+            });
+
+            return cities.ToList();
+        }
+
+        public List<CityDTO> GetByCountry(Guid idCountry)
+        {
+            var cities = _airplaneContext.Cities.Where(c => c.idCountry == idCountry).ToList().Select(c => new CityDTO
+            {
+                ID = c.idCity,
+                CountryID=c.idCountry,
                 Name = c.name
             });
 
