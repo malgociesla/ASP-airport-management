@@ -53,5 +53,7 @@ namespace AirportService
             _airplaneContext.Flights.RemoveRange(flight);
             _airplaneContext.SaveChanges();
         }
+
+
     }
 }
