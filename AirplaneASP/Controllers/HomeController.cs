@@ -46,11 +46,12 @@ namespace AirplaneASP.Controllers
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Countries()
         {
-            ViewBag.Message = "Your contact page.";
+            ICountryService countryService = new CountryService();
+            List<CountryDTO> countryList = countryService.GetAll();
 
-            return View();
+            return View(countryList);
         }
     }
 }

@@ -1,0 +1,17 @@
+﻿@using AirportService.DTO
+@model List<CityDTO>
+@{
+    ViewBag.Title = "Cities";
+}
+<h2>@ViewBag.Title.</h2>
+
+@foreach (var city in @Model)
+{
+    <div class="row">
+        <div class="col-md-3">@city.Name</div>
+        @using (Html.BeginForm())
+        {
+            @Html.ActionLink("Remove", "Remove", "Cities", new { cityID = @city.ID }, null)
+        }
+    </div>
+}

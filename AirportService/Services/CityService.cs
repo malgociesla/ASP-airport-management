@@ -69,8 +69,8 @@ namespace AirportService
         public void Remove(Guid id)
         {
             var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
-            if(city!=null)
-            _airplaneContext.Cities.Remove(city);
+            if (city != null)
+                _airplaneContext.Cities.Remove(city);
 
             var flight = _airplaneContext.Flights.Where(f => (f.idCityArrival == id || f.idCityDeparture == id));
             if(flight!=null)

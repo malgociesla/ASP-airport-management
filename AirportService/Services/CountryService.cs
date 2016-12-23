@@ -46,14 +46,14 @@ namespace AirportService
             {
                 _airplaneContext.Countries.Remove(country);
 
-                //var city = _airplaneContext.Cities.Where(c => c.idCountry == country.idCountry);
+                var city = _airplaneContext.Cities.Where(c => c.idCountry == country.idCountry);
 
-                //ICityService cityService = new CityService();
-                //if(city!=null)
-                //    foreach (var c in city)
-                //    {
-                //        cityService.Remove(c.idCity);
-                //    }
+                ICityService cityService = new CityService();
+                if (city != null)
+                    foreach (var c in city)
+                    {
+                        cityService.Remove(c.idCity);
+                    }
                 _airplaneContext.SaveChanges();
             }
         }
