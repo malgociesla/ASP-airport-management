@@ -4,11 +4,11 @@ using AirportService.DTO;
 
 namespace AirportService
 {
-    public interface IFlightService
+    public interface IFlightStateService
     {
         Guid Add(string name);
         void Remove(Guid id);
         void Edit(Guid id, string name);
-        List<FlightDTO> GetAll();
+        List<FlightStateDTO> GetAll();
     }
 }

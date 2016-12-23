@@ -31,8 +31,8 @@ namespace AirplaneEF
         public virtual DbSet<Company> Companies { get; set; }
         public virtual DbSet<Country> Countries { get; set; }
         public virtual DbSet<Flight> Flights { get; set; }
-        public virtual DbSet<FStatu> FStatus { get; set; }
         public virtual DbSet<Schedule> Schedules { get; set; }
+        public virtual DbSet<FlightState> FlightStates { get; set; }
     
         public virtual int GenerateSchedule(Nullable<System.DateTime> startDate, Nullable<System.DateTime> endDate, Nullable<System.Guid> flightId)
         {

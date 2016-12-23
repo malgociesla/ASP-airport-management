@@ -78,7 +78,7 @@
     <Compile Include="Flight.cs">
       <DependentUpon>AirplaneEF.tt</DependentUpon>
     </Compile>
-    <Compile Include="FStatu.cs">
+    <Compile Include="FlightState.cs">
       <DependentUpon>AirplaneEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -8,7 +8,8 @@ using AirplaneEF;
 
 namespace AirportService
 {
-    public class FlightService : IFlightService
+    public class FlightService
     {
+
     }
 }

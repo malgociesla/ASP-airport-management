@@ -16,9 +16,9 @@ namespace AirportService
             _airplaneContext = new AirportContext();
         }
 
-        public Guid Add(string name)
+        public Guid Add(string name, Guid idCountry)
         {
-            City city = new City { name = name };
+            City city = new City { name = name, idCountry=idCountry };
             _airplaneContext.Cities.Add(city);
             _airplaneContext.SaveChanges();
             return city.idCity;
@@ -29,6 +29,16 @@ namespace AirportService
             var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
             city.name = name;
             _airplaneContext.SaveChanges();
+        }
+        public void Edit(Guid idCity, Guid idCountry)
+        {
+            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == idCountry);
+            if (country != null)
+            {
+                var city = _airplaneContext.Cities.FirstOrDefault(c => c.idCity == idCity);
+                city.idCountry = idCountry;
+                _airplaneContext.SaveChanges();
+            }
         }
 
         public List<CityDTO> GetAll()

@@ -14,7 +14,8 @@ namespace air
         {
             ICityService cityService = new CityService();
             List<CityDTO> objlist= cityService.GetAll();
-            Guid id = cityService.Add("mycity");
+            Guid countryGuid = new Guid("4F906FC3-F0C1-E611-B353-D017C293D790");
+            Guid id = cityService.Add("mycity",countryGuid);
             List<CityDTO> objlist2 = cityService.GetAll();
             Guid id2 = new Guid("01E0D1E0-F0C1-E611-B353-D017C293D790");
             cityService.Edit(id,"secondName");

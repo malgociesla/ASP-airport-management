@@ -12,15 +12,15 @@ namespace AirplaneEF
     using System;
     using System.Collections.Generic;
     
-    public partial class FStatu
+    public partial class FlightState
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public FStatu()
+        public FlightState()
         {
             this.Flights = new HashSet<Flight>();
         }
     
-        public System.Guid idFStatus { get; set; }
+        public System.Guid idFlightState { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

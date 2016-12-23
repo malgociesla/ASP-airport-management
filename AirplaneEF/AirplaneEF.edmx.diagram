@@ -9,14 +9,14 @@
         <EntityTypeShape EntityType="AirportEF.Company" Width="1.5" PointX="3" PointY="6.375" IsExpanded="true" />
         <EntityTypeShape EntityType="AirportEF.Country" Width="1.5" PointX="0.75" PointY="3.625" IsExpanded="true" />
         <EntityTypeShape EntityType="AirportEF.Flight" Width="1.5" PointX="5.25" PointY="2.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="AirportEF.FStatu" Width="1.5" PointX="3" PointY="0.75" IsExpanded="true" />
         <EntityTypeShape EntityType="AirportEF.Schedule" Width="1.5" PointX="7.5" PointY="3.375" IsExpanded="true" />
         <AssociationConnector Association="AirportEF.FK__City__idCountry__693CA210" ManuallyRouted="false" />
         <AssociationConnector Association="AirportEF.FK__Flight__idCityAr__70DDC3D8" ManuallyRouted="false" />
         <AssociationConnector Association="AirportEF.FK__Flight__idCityDe__71D1E811" ManuallyRouted="false" />
         <AssociationConnector Association="AirportEF.FK__Flight__idCompan__5EBF139D" ManuallyRouted="false" />
-        <AssociationConnector Association="AirportEF.FK__Flight__idFStatu__5FB337D6" ManuallyRouted="false" />
         <AssociationConnector Association="AirportEF.FK__Schedule__idFlig__66603565" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="AirportEF.FlightState" Width="1.5" PointX="5.375" PointY="7.875" />
+        <AssociationConnector Association="AirportEF.FK__Flight__idFlight__76969D2E" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

@@ -14,4 +14,46 @@
     <Property Name="ParentElementType" Value="SqlTable" />
     <Property Name="NewName" Value="departureTime" />
   </Operation>
+  <Operation Name="Rename Refactor" Key="b7b84323-08f7-4421-959f-b1e8a1d9e049" ChangeDateTime="12/23/2016 10:08:31">
+    <Property Name="ElementName" Value="[dbo].[Flight].[idFStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Flight]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="idFlightStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="c75f27f5-ade5-4f34-a2ab-9796ef850ec5" ChangeDateTime="12/23/2016 10:08:42">
+    <Property Name="ElementName" Value="[dbo].[FStatus].[idFStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FStatus]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="idFlightStatus" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="320b260d-2644-45e8-83ab-235b5a473c3b" ChangeDateTime="12/23/2016 10:09:02">
+    <Property Name="ElementName" Value="[dbo].[FStatus]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[FlightStatus]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f58d6f77-b6be-4253-8a6f-15a9fc75bdcd" ChangeDateTime="12/23/2016 10:17:37">
+    <Property Name="ElementName" Value="[dbo].[FlightStatus]" />
+    <Property Name="ElementType" Value="SqlTable" />
+    <Property Name="ParentElementName" Value="[dbo]" />
+    <Property Name="ParentElementType" Value="SqlSchema" />
+    <Property Name="NewName" Value="[FlightState]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="7227e67b-6391-46e4-9417-798af914fa7c" ChangeDateTime="12/23/2016 10:17:47">
+    <Property Name="ElementName" Value="[dbo].[FlightState].[idFlightStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[FlightState]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="[idFlightState]" />
+  </Operation>
+  <Operation Name="Rename Refactor" Key="f3710072-bab5-4f10-b083-2c4c115f09aa" ChangeDateTime="12/23/2016 10:18:04">
+    <Property Name="ElementName" Value="[dbo].[Flight].[idFlightStatus]" />
+    <Property Name="ElementType" Value="SqlSimpleColumn" />
+    <Property Name="ParentElementName" Value="[dbo].[Flight]" />
+    <Property Name="ParentElementType" Value="SqlTable" />
+    <Property Name="NewName" Value="idFlightState" />
+  </Operation>
 </Operations>

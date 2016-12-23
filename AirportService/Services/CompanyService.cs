@@ -1,8 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using AirportService.DTO;
 using AirplaneEF;
 
@@ -45,12 +43,14 @@ namespace AirportService
         {
             var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == id);
             if (company != null)
+            { 
                 _airplaneContext.Companies.Remove(company);
 
-            var flight = _airplaneContext.Flights.Where(f => f.idCompany == id);
-            if (flight != null)
-                _airplaneContext.Flights.RemoveRange(flight);
+            //var flight = _airplaneContext.Flights.Where(f => f.idCompany == id);
+            //if (flight != null)
+            //    _airplaneContext.Flights.RemoveRange(flight);
             _airplaneContext.SaveChanges();
+        }
         }
     }
 }
