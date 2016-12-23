@@ -42,7 +42,7 @@ BEGIN
 		--insert data
 		--if we changed arrival time due to collision -> insert @timeCounter insted of arrivalDT
 		INSERT INTO [dbo].[Schedule]
-		SELECT i.idSchedule,i.idFlight,i.departureDT,@timeCounter
+		SELECT i.idSchedule,i.idFlight,i.departureDT,@timeCounter,i.comment
 		FROM inserted AS i
 	END
 END

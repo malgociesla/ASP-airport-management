@@ -59,8 +59,8 @@ AS
 										WHERE f.idFlight=@thisIdFlight)
 			SET @thisArrivalDT= CAST(@fromDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
 			--generate schedule
-			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT)
-			VALUES (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT)
+			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT,comment)
+			VALUES (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT,'')
 			--cursor
 			FETCH NEXT FROM @flightCursor
 			INTO @thisIdFlight 
