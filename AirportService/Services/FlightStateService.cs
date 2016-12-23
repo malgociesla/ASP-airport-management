@@ -30,13 +30,13 @@ namespace AirportService
 
         public List<FlightStateDTO> GetAll()
         {
-            var statuses = _airplaneContext.FlightStates.ToList().Select(c => new FlightStateDTO
+            var states = _airplaneContext.FlightStates.ToList().Select(c => new FlightStateDTO
             {
                 ID = c.idFlightState,
                 Name = c.name
             });
 
-            return statuses.ToList();
+            return states.ToList();
         }
 
         public void Remove(Guid id)

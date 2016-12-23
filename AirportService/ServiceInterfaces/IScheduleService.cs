@@ -16,8 +16,6 @@ namespace AirportService
         void EditDeparture(Guid id, DateTime departureDT);
         void EditArrival(Guid id, DateTime arrivalDT);
         List<ScheduleDTO> GetAll();
-        void GenerateSchedule(DateTime startDate, DateTime endDate);
-        void GenerateSchedule(DateTime startDate, DateTime endDate, Guid flightId);
-        int GetCountOfLandingPlanes(DateTime landingDT);
+        void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId);
     }
 }

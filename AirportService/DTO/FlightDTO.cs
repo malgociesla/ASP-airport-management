@@ -6,12 +6,12 @@ namespace AirportService.DTO
     {
         public Guid ID { get; set; }
         public Guid CompanyID { get; set; }
-        public Guid StatusID { get; set; }
+        public Guid FlightStateID { get; set; }
         public string Name { get; set; }
-        public int DayOfWeek { get; set; }
+        public int? DayOfWeek { get; set; }
         public Guid CityDepartureID { get; set; }
         public Guid CityArrivalID { get; set; }
-        public TimeSpan DepartureTime { get; set; }
-        public TimeSpan ArrivalTime { get; set; }
+        public TimeSpan? DepartureTime { get; set; }
+        public TimeSpan? ArrivalTime { get; set; }
     }
 }

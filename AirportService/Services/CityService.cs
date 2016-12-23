@@ -39,6 +39,7 @@ namespace AirportService
                 city.idCountry = idCountry;
                 _airplaneContext.SaveChanges();
             }
+            //else country doesn't exist
         }
 
         public List<CityDTO> GetAll()
