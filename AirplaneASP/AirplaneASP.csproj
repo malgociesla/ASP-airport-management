@@ -272,6 +272,8 @@
     <Content Include="Views\Cities\List.cshtml" />
     <Content Include="Views\Flights\List.cshtml" />
     <Content Include="Views\Schedules\List.cshtml" />
+    <Content Include="Views\Cities\Add.cshtml" />
+    <Content Include="Views\Countries\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

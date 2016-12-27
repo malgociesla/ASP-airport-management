@@ -4,7 +4,7 @@
     ViewBag.Title = "Countries";
 }
 <h2>@ViewBag.Title.</h2>
-
+@Html.ActionLink("Add", "Add", "Countries")
 @foreach (var country in @Model)
 {
     <div class="row">

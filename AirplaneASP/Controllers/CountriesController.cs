@@ -27,5 +27,18 @@ namespace AirplaneASP.Controllers
 
             return List();
         }
+
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(CountryDTO country)
+        {
+            ICountryService countryService = new CountryService();
+            countryService.Add(country);
+            return List();
+        }
     }
 }

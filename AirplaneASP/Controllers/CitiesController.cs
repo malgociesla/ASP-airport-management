@@ -27,5 +27,18 @@ namespace AirplaneASP.Controllers
 
             return List();
         }
+
+        public ActionResult Add()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(CityDTO city)
+        {
+            ICityService cityService = new CityService();
+            cityService.Add(city);
+            return List();
+        }
     }
 }
