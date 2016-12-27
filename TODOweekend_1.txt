@@ -1,3 +1,7 @@
+.NET
+https://docs.google.com/document/d/1dBUpp_bJaQrdbRSeFGPqsPUInPpTriExoBAsUg9Khgo/edit
+--------------
+SQL:
 1.indexes/clusters
 	https://www.youtube.com/watch?v=ITcOiLSfVJQ this guy describes Indexes pretty well.
 	also you can read something else about indexes
@@ -27,7 +31,7 @@ Database design:
 2. Table relations
 3. Indexes
 4. Database normal forms
-
+---------------
 T-SQL:
 1. Views
 2. Triggers
