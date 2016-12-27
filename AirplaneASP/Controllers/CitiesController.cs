@@ -30,6 +30,9 @@ namespace AirplaneASP.Controllers
 
         public ActionResult Add()
         {
+            ICountryService countryService = new CountryService();
+            List<CountryDTO> countryList = countryService.GetAll();
+            ViewBag.CountryList = countryList;
             return View();
         }
 
