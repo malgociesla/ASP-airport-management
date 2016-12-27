@@ -21,10 +21,10 @@ namespace AirportService
             return country.idCountry;
         }
 
-        public void Edit(Guid id, string name)
+        public void Edit(CountryDTO countryDTO)
         {
-            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == id);
-            country.name = name;
+            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == countryDTO.ID);
+            country.name = countryDTO.Name;
             _airplaneContext.SaveChanges();
         }
 

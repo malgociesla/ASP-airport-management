@@ -21,10 +21,10 @@ namespace AirportService
             return company.idCompany;
         }
 
-        public void Edit(Guid id, string name)
+        public void Edit(CompanyDTO companyDTO)
         {
-            var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == id);
-            company.name = name;
+            var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == companyDTO.ID);
+            company.name = companyDTO.Name;
             _airplaneContext.SaveChanges();
         }
 

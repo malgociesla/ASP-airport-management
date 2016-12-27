@@ -24,22 +24,11 @@ namespace AirportService
             return city.idCity;
         }
 
-        public void Edit(Guid id, string name)
+        public void Edit(CityDTO cityDTO)
         {
-            var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
-            city.name = name;
+            var city = _airplaneContext.Cities.FirstOrDefault(c => c.idCity == cityDTO.ID || c.idCountry==cityDTO.CountryID);
+            city.name = cityDTO.Name;
             _airplaneContext.SaveChanges();
-        }
-        public void Edit(Guid idCity, Guid idCountry)
-        {
-            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == idCountry);
-            if (country != null)
-            {
-                var city = _airplaneContext.Cities.FirstOrDefault(c => c.idCity == idCity);
-                city.idCountry = idCountry;
-                _airplaneContext.SaveChanges();
-            }
-            //else country doesn't exist
         }
 
         public List<CityDTO> GetAll()

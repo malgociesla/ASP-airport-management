@@ -21,10 +21,10 @@ namespace AirportService
             return state.idFlightState;
         }
 
-        public void Edit(Guid id, string name)
+        public void Edit(FlightStateDTO flightStateDTO)
         {
-            var state = _airplaneContext.FlightStates.FirstOrDefault(c => c.idFlightState == id);
-            state.name = name;
+            var state = _airplaneContext.FlightStates.FirstOrDefault(c => c.idFlightState == flightStateDTO.ID);
+            state.name = flightStateDTO.Name;
             _airplaneContext.SaveChanges();
         }
 

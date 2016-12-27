@@ -8,8 +8,7 @@ namespace AirportService
     {
         Guid Add(string name, Guid idCountry);
         void Remove(Guid id);
-        void Edit(Guid id, string name);
-        void Edit(Guid idCity, Guid idCountry);
+        void Edit(CityDTO cityDTO);
         List<CityDTO> GetAll();
         List<CityDTO> GetByCountry(Guid idCountry);
     }

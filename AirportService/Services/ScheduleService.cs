@@ -33,70 +33,16 @@ namespace AirportService
             return schedule.idSchedule;
         }
 
-        public void Edit(Guid id, string comment)
+        public void Edit(ScheduleDTO scheduleDTO)
         {
-            var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.idSchedule == id);
+            var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.idSchedule == scheduleDTO.ID);
             if (schedule != null)
             {
-                schedule.comment = comment;
-                _airplaneContext.SaveChanges();
-            }//else schedule doesn't exist
-        }
+                schedule.idFlight = scheduleDTO.FlightID;
+                schedule.departureDT = scheduleDTO.DepartureDT;
+                schedule.arrivalDT = scheduleDTO.ArrivalDT;
+                schedule.comment = scheduleDTO.Comment;
 
-        public void Edit(Guid id, Guid idFlight)
-        {
-            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.idFlight == idFlight);
-            if (flight != null)
-            {
-                var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.idSchedule == id);
-                if (schedule != null)
-                {
-                    schedule.idFlight = idFlight;
-                    _airplaneContext.SaveChanges();
-                }//else schedule doesn't exist
-            }
-            //else flight doesn't exist
-        }
-
-        public void Edit(Guid id, Guid idFlight, DateTime departureDT, DateTime arrivalDT)
-        {
-            Edit(id,idFlight,departureDT,arrivalDT,"");
-        }
-
-        public void Edit(Guid id, Guid idFlight, DateTime departureDT, DateTime arrivalDT, string comment)
-        {
-            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.idFlight == idFlight);
-            if (flight != null)
-            {
-                var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.idSchedule == id);
-                if (schedule != null)
-                {
-                    schedule.idFlight = idFlight;
-                    schedule.departureDT = departureDT;
-                    schedule.arrivalDT = arrivalDT;
-                    schedule.comment = comment;
-                    _airplaneContext.SaveChanges();
-                }//else schedule doesn't exist
-        }
-        //else flight doesn't exist
-    }
-
-    public void EditArrival(Guid id, DateTime arrivalDT)
-        {
-            var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.idSchedule == id);
-            if (schedule != null)
-            {
-                schedule.arrivalDT = arrivalDT;
-                _airplaneContext.SaveChanges();
-            }//else schedule doesn't exist
-        }
-
-        public void EditDeparture(Guid id, DateTime departureDT)
-        {
-            var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.idSchedule == id);
-            if (schedule != null)
-            {
-                schedule.departureDT = departureDT;
                 _airplaneContext.SaveChanges();
             }//else schedule doesn't exist
         }

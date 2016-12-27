@@ -8,7 +8,7 @@ namespace AirportService
     {
         Guid Add(string name);
         void Remove(Guid id);
-        void Edit(Guid id, string name);
+        void Edit(CompanyDTO companyDTO);
         List<CompanyDTO> GetAll();
     }
 }
