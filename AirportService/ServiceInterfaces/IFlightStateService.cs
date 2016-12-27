@@ -6,7 +6,7 @@ namespace AirportService
 {
     public interface IFlightStateService
     {
-        Guid Add(string name);
+        Guid Add(FlightStateDTO flightStateDTO);
         void Remove(Guid id);
         void Edit(FlightStateDTO flightStateDTO);
         List<FlightStateDTO> GetAll();

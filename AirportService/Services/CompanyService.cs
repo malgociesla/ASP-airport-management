@@ -13,9 +13,9 @@ namespace AirportService
         {
             _airplaneContext = new AirportContext();
         }
-        public Guid Add(string name)
+        public Guid Add(CompanyDTO companyDTO)
         {
-            Company company = new Company { name = name };
+            Company company = new Company { name = companyDTO.Name };
             _airplaneContext.Companies.Add(company);
             _airplaneContext.SaveChanges();
             return company.idCompany;

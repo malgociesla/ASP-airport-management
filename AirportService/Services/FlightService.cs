@@ -14,18 +14,18 @@ namespace AirportService
             _airplaneContext = new AirportContext();
         }
 
-        public Guid Add(Guid idCompany, Guid idState, string name, int dayOfWeek, Guid idCityDeparture, Guid idCityArrival, TimeSpan departureTime, TimeSpan arrivalTime)
+        public Guid Add(FlightDTO flightDTO)
         {
             Flight flight = new Flight
             {
-                idCompany=idCompany,
-                idFlightState=idState,
-                name=name,
-                fDayofWeek=dayOfWeek,
-                idCityDeparture=idCityDeparture,
-                idCityArrival=idCityArrival,
-                departureTime=departureTime,
-                arrivalTime=arrivalTime
+                idCompany= flightDTO.CompanyID,
+                idFlightState= flightDTO.FlightStateID,
+                name= flightDTO.Name,
+                fDayofWeek= flightDTO.DayOfWeek,
+                idCityDeparture= flightDTO.CityDepartureID,
+                idCityArrival= flightDTO.CityArrivalID,
+                departureTime= flightDTO.DepartureTime,
+                arrivalTime= flightDTO.ArrivalTime
             };
             _airplaneContext.Flights.Add(flight);
             _airplaneContext.SaveChanges();

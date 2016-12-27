@@ -14,19 +14,14 @@ namespace AirportService
             _airplaneContext = new AirportContext();
         }
 
-        public Guid Add(Guid idFlight, DateTime departureDT, DateTime arrivalDT)
-        {
-            return Add(idFlight, departureDT, arrivalDT,"");
-        }
-
-        public Guid Add(Guid idFlight, DateTime departureDT, DateTime arrivalDT, string comment)
+        public Guid Add(ScheduleDTO scheduleDTO)
         {
             Schedule schedule = new Schedule
             {
-                idFlight = idFlight,
-                departureDT = departureDT,
-                arrivalDT = arrivalDT,
-                comment=comment
+                idFlight = scheduleDTO.FlightID,
+                departureDT = scheduleDTO.DepartureDT,
+                arrivalDT = scheduleDTO.ArrivalDT,
+                comment= scheduleDTO.Comment
             };
             _airplaneContext.Schedules.Add(schedule);
             _airplaneContext.SaveChanges();

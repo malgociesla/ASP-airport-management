@@ -6,8 +6,7 @@ namespace AirportService
 {
     public interface IScheduleService
     {
-        Guid Add(Guid idFlight, DateTime departureDT, DateTime arrivalDT);
-        Guid Add(Guid idFlight, DateTime departureDT, DateTime arrivalDT, string comment);
+        Guid Add(ScheduleDTO scheduleDTO);
         void Remove(Guid id);
         void Edit(ScheduleDTO scheduleDTO);
         List<ScheduleDTO> GetAll();

@@ -6,7 +6,7 @@ namespace AirportService
 {
     public interface ICompanyService
     {
-        Guid Add(string name);
+        Guid Add(CompanyDTO companyDTO);
         void Remove(Guid id);
         void Edit(CompanyDTO companyDTO);
         List<CompanyDTO> GetAll();

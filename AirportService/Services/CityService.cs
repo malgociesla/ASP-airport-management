@@ -16,9 +16,9 @@ namespace AirportService
             _airplaneContext = new AirportContext();
         }
 
-        public Guid Add(string name, Guid idCountry)
+        public Guid Add(CityDTO cityDTO)
         {
-            City city = new City { name = name, idCountry=idCountry };
+            City city = new City { name = cityDTO.Name, idCountry= cityDTO.CountryID };
             _airplaneContext.Cities.Add(city);
             _airplaneContext.SaveChanges();
             return city.idCity;

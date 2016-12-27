@@ -6,7 +6,7 @@ namespace AirportService
 {
     public interface ICityService
     {
-        Guid Add(string name, Guid idCountry);
+        Guid Add(CityDTO cityDTO);
         void Remove(Guid id);
         void Edit(CityDTO cityDTO);
         List<CityDTO> GetAll();

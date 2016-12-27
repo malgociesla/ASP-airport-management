@@ -13,9 +13,9 @@ namespace AirportService
         {
             _airplaneContext = new AirportContext();
         }
-        public Guid Add(string name)
+        public Guid Add(FlightStateDTO flightStateDTO)
         {
-            FlightState state = new FlightState { name = name };
+            FlightState state = new FlightState { name = flightStateDTO.Name };
             _airplaneContext.FlightStates.Add(state);
             _airplaneContext.SaveChanges();
             return state.idFlightState;
