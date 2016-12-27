@@ -9,7 +9,7 @@
           <Key>
             <PropertyRef Name="idCity" />
           </Key>
-          <Property Name="idCity" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idCity" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="idCountry" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="50" />
         </EntityType>
@@ -17,21 +17,21 @@
           <Key>
             <PropertyRef Name="idCompany" />
           </Key>
-          <Property Name="idCompany" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idCompany" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="varchar" MaxLength="100" />
         </EntityType>
         <EntityType Name="Country">
           <Key>
             <PropertyRef Name="idCountry" />
           </Key>
-          <Property Name="idCountry" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idCountry" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="varchar" MaxLength="50" />
         </EntityType>
         <EntityType Name="Flight">
           <Key>
             <PropertyRef Name="idFlight" />
           </Key>
-          <Property Name="idFlight" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idFlight" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="idCompany" Type="uniqueidentifier" Nullable="false" />
           <Property Name="idFlightState" Type="uniqueidentifier" Nullable="false" />
           <Property Name="name" Type="varchar" MaxLength="20" />
@@ -45,14 +45,14 @@
           <Key>
             <PropertyRef Name="idFlightState" />
           </Key>
-          <Property Name="idFlightState" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idFlightState" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="varchar" MaxLength="30" />
         </EntityType>
         <EntityType Name="Schedule">
           <Key>
             <PropertyRef Name="idSchedule" />
           </Key>
-          <Property Name="idSchedule" Type="uniqueidentifier" Nullable="false" />
+          <Property Name="idSchedule" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
           <Property Name="idFlight" Type="uniqueidentifier" Nullable="false" />
           <Property Name="departureDT" Type="datetime" />
           <Property Name="arrivalDT" Type="datetime" />
@@ -186,7 +186,7 @@
           <Key>
             <PropertyRef Name="idCity" />
           </Key>
-          <Property Name="idCity" Type="Guid" Nullable="false" />
+          <Property Name="idCity" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idCountry" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Country" Relationship="Self.FK__City__idCountry__693CA210" FromRole="City" ToRole="Country" />
@@ -197,7 +197,7 @@
           <Key>
             <PropertyRef Name="idCompany" />
           </Key>
-          <Property Name="idCompany" Type="Guid" Nullable="false" />
+          <Property Name="idCompany" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Flights" Relationship="Self.FK__Flight__idCompan__5EBF139D" FromRole="Company" ToRole="Flight" />
         </EntityType>
@@ -205,7 +205,7 @@
           <Key>
             <PropertyRef Name="idCountry" />
           </Key>
-          <Property Name="idCountry" Type="Guid" Nullable="false" />
+          <Property Name="idCountry" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Cities" Relationship="Self.FK__City__idCountry__693CA210" FromRole="Country" ToRole="City" />
         </EntityType>
@@ -213,7 +213,7 @@
           <Key>
             <PropertyRef Name="idFlight" />
           </Key>
-          <Property Name="idFlight" Type="Guid" Nullable="false" />
+          <Property Name="idFlight" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idCompany" Type="Guid" Nullable="false" />
           <Property Name="name" Type="String" MaxLength="20" FixedLength="false" Unicode="false" />
           <Property Name="fDayofWeek" Type="Int32" />
@@ -232,7 +232,7 @@
           <Key>
             <PropertyRef Name="idSchedule" />
           </Key>
-          <Property Name="idSchedule" Type="Guid" Nullable="false" />
+          <Property Name="idSchedule" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="idFlight" Type="Guid" Nullable="false" />
           <Property Name="departureDT" Type="DateTime" Precision="3" />
           <Property Name="arrivalDT" Type="DateTime" Precision="3" />
@@ -301,7 +301,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="AirportEntities" annotation:LazyLoadingEnabled="true">
+        <EntityContainer Name="AirportContext" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Cities" EntityType="Self.City" />
           <EntitySet Name="Companies" EntityType="Self.Company" />
           <EntitySet Name="Countries" EntityType="Self.Country" />
@@ -342,7 +342,7 @@
           <Key>
             <PropertyRef Name="idFlightState" />
           </Key>
-          <Property Name="idFlightState" Type="Guid" Nullable="false" />
+          <Property Name="idFlightState" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="Flights" Relationship="AirportEF.FK__Flight__idFlight__76969D2E" FromRole="FlightState" ToRole="Flight" />
         </EntityType>
@@ -365,7 +365,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="AirportEFStoreContainer" CdmEntityContainer="AirportEntities">
+        <EntityContainerMapping StorageEntityContainer="AirportEFStoreContainer" CdmEntityContainer="AirportContext">
           <EntitySetMapping Name="Cities">
             <EntityTypeMapping TypeName="AirportEF.City">
               <MappingFragment StoreEntitySet="City">
