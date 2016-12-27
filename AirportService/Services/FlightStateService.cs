@@ -24,8 +24,11 @@ namespace AirportService
         public void Edit(FlightStateDTO flightStateDTO)
         {
             var state = _airplaneContext.FlightStates.FirstOrDefault(c => c.idFlightState == flightStateDTO.ID);
-            state.name = flightStateDTO.Name;
-            _airplaneContext.SaveChanges();
+            if (state != null)
+            {
+                state.name = flightStateDTO.Name;
+                _airplaneContext.SaveChanges();
+            }
         }
 
         public List<FlightStateDTO> GetAll()

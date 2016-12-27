@@ -24,8 +24,11 @@ namespace AirportService
         public void Edit(CountryDTO countryDTO)
         {
             var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == countryDTO.ID);
-            country.name = countryDTO.Name;
-            _airplaneContext.SaveChanges();
+            if (country != null)
+            {
+                country.name = countryDTO.Name;
+                _airplaneContext.SaveChanges();
+            }
         }
 
         public List<CountryDTO> GetAll()

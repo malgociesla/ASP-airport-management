@@ -24,8 +24,11 @@ namespace AirportService
         public void Edit(CompanyDTO companyDTO)
         {
             var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == companyDTO.ID);
-            company.name = companyDTO.Name;
-            _airplaneContext.SaveChanges();
+            if (company != null)
+            {
+                company.name = companyDTO.Name;
+                _airplaneContext.SaveChanges();
+            }
         }
 
         public List<CompanyDTO> GetAll()
