@@ -48,10 +48,6 @@ namespace AirportService
             if (company != null)
             { 
                 _airplaneContext.Companies.Remove(company);
-
-            //var flight = _airplaneContext.Flights.Where(f => f.idCompany == id);
-            //if (flight != null)
-            //    _airplaneContext.Flights.RemoveRange(flight);
             _airplaneContext.SaveChanges();
         }
         }

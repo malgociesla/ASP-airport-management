@@ -47,16 +47,12 @@ namespace AirportService
             var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == id);
             if (country != null)
             {
-                _airplaneContext.Countries.Remove(country);
-
                 var city = _airplaneContext.Cities.Where(c => c.idCountry == country.idCountry);
-
                 ICityService cityService = new CityService();
-                if (city != null)
-                    foreach (var c in city)
-                    {
+                if (city.Any())
+                    foreach (var c in city)                   
                         cityService.Remove(c.idCity);
-                    }
+                _airplaneContext.Countries.Remove(country);
                 _airplaneContext.SaveChanges();
             }
         }

@@ -62,12 +62,13 @@ namespace AirportService
         {
             var city = _airplaneContext.Cities.FirstOrDefault(c=> c.idCity==id);
             if (city != null)
+            {
+                var flight = _airplaneContext.Flights.Where(f => (f.idCityArrival == id || f.idCityDeparture == id));
+                if (flight.Any())
+                    _airplaneContext.Flights.RemoveRange(flight);
                 _airplaneContext.Cities.Remove(city);
-
-            var flight = _airplaneContext.Flights.Where(f => (f.idCityArrival == id || f.idCityDeparture == id));
-            if(flight!=null)
-            _airplaneContext.Flights.RemoveRange(flight);
-            _airplaneContext.SaveChanges();
+                _airplaneContext.SaveChanges();
+            }
         }
 
 
