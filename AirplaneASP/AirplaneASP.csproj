@@ -247,7 +247,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Countries\Countries.cshtml" />
+    <Content Include="Views\Countries\List.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
     <Content Include="Views\Account\_ExternalLoginsListPartial.cshtml" />
     <Content Include="Views\Account\ConfirmEmail.cshtml" />
@@ -269,9 +269,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
-    <Content Include="Views\Cities\Cities.cshtml" />
-    <Content Include="Views\Flights\Flights.cshtml" />
-    <Content Include="Views\Schedules\Schedules.cshtml" />
+    <Content Include="Views\Cities\List.cshtml" />
+    <Content Include="Views\Flights\List.cshtml" />
+    <Content Include="Views\Schedules\List.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

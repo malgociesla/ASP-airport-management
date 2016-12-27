@@ -11,12 +11,12 @@ namespace AirplaneASP.Controllers
     public class FlightsController : Controller
     {
         [HttpGet]
-        public ActionResult Flights()
+        public ActionResult List()
         {
             IFlightService flightService = new FlightService();
             List<FlightDTO> flightList = flightService.GetAll();
 
-            return View("Flights", flightList);
+            return View("List", flightList);
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace AirplaneASP.Controllers
             IFlightService flightService = new FlightService();
             flightService.Remove(flightID);
 
-            return Flights();
+            return List();
         }
     }
 }

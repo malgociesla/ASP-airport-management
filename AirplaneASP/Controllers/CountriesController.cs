@@ -11,12 +11,12 @@ namespace AirplaneASP.Controllers
     public class CountriesController : Controller
     {
         [HttpGet]
-        public ActionResult Countries()
+        public ActionResult List()
         {
             ICountryService countryService = new CountryService();
             List<CountryDTO> countryList = countryService.GetAll();
 
-            return View("Countries",countryList);
+            return View("List",countryList);
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace AirplaneASP.Controllers
             ICountryService countryService = new CountryService();
             countryService.Remove(countryID);
 
-            return Countries();
+            return List();
         }
     }
 }

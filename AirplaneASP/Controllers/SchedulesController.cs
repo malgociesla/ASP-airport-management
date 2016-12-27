@@ -11,12 +11,12 @@ namespace AirplaneASP.Controllers
     public class SchedulesController : Controller
     {
         [HttpGet]
-        public ActionResult Schedules()
+        public ActionResult List()
         {
             IScheduleService scheduleService = new ScheduleService();
             List<ScheduleDTO> scheduleList = scheduleService.GetAll();
 
-            return View("Schedules", scheduleList);
+            return View("List", scheduleList);
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace AirplaneASP.Controllers
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Remove(scheduleID);
 
-            return Schedules();
+            return List();
         }
     }
 }

@@ -11,12 +11,12 @@ namespace AirplaneASP.Controllers
     public class CitiesController : Controller
     {
         [HttpGet]
-        public ActionResult Cities()
+        public ActionResult List()
         {
             ICityService cityService = new CityService();
             List<CityDTO> cityList = cityService.GetAll();
 
-            return View("Cities",cityList);
+            return View("List",cityList);
         }
 
         [HttpGet]
@@ -25,7 +25,7 @@ namespace AirplaneASP.Controllers
             ICityService cityService = new CityService();
             cityService.Remove(cityID);
 
-            return Cities();
+            return List();
         }
     }
 }
