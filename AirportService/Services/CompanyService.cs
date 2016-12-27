@@ -8,7 +8,7 @@ namespace AirportService
 {
     public class CompanyService : ICompanyService
     {
-        private AirportContext _airplaneContext;
+        private readonly AirportContext _airplaneContext;
         public CompanyService()
         {
             _airplaneContext = new AirportContext();

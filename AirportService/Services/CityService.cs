@@ -10,7 +10,7 @@ namespace AirportService
 {
     public class CityService : ICityService
     {
-        private AirportContext _airplaneContext;
+        private readonly AirportContext _airplaneContext;
         public CityService()
         {
             _airplaneContext = new AirportContext();

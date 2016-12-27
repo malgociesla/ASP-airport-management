@@ -8,7 +8,7 @@ namespace AirportService
 {
     public class ScheduleService:IScheduleService
     {
-        private AirportContext _airplaneContext;
+        private readonly AirportContext _airplaneContext;
         public ScheduleService()
         {
             _airplaneContext = new AirportContext();

@@ -8,7 +8,7 @@ namespace AirportService
 {
     public class FStatusService : IFlightStateService
     {
-        private AirportContext _airplaneContext;
+        private readonly AirportContext _airplaneContext;
         public FStatusService()
         {
             _airplaneContext = new AirportContext();
