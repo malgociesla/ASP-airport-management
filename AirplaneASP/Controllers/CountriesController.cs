@@ -40,5 +40,21 @@ namespace AirplaneASP.Controllers
             countryService.Add(country);
             return List();
         }
+
+        [HttpGet]
+        public ActionResult Edit(Guid countryID)
+        {
+            ICountryService countryService = new CountryService();
+            CountryDTO countryItem = countryService.GetAll().FirstOrDefault(c => c.ID == countryID);
+            return View("Edit", countryItem);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CountryDTO country)
+        {
+            ICountryService countryService = new CountryService();
+            countryService.Edit(country);
+            return List();
+        }
     }
 }

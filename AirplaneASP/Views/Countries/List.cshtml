@@ -24,11 +24,12 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-       <!--
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+ 
+            @Html.ActionLink("Edit", "Edit", new { countryID = item.ID }) |
+            <!--
+           @Html.ActionLink("Details", "Details", new { id=item.ID }) |
         -->
-            @Html.ActionLink("Remove", "Remove", new { countryID=item.ID })
+            @Html.ActionLink("Remove", "Remove", new { countryID = item.ID })
         </td>
     </tr>
 }
