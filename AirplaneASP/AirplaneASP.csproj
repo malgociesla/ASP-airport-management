@@ -282,6 +282,7 @@
     <Content Include="Views\Schedules\GenerateSchedule.cshtml" />
     <Content Include="Views\Companies\Edit.cshtml" />
     <Content Include="Views\Countries\Edit.cshtml" />
+    <Content Include="Views\Cities\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
