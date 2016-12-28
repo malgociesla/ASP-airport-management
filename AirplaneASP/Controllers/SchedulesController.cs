@@ -27,5 +27,16 @@ namespace AirplaneASP.Controllers
 
             return List();
         }
+
+        public ActionResult GenerateSchedule()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult GenerateSchedule(DateTime startDate, DateTime endDate, Guid flightID)
+        {
+            return List();
+        }
     }
 }

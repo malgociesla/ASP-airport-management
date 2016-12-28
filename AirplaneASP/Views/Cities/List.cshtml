@@ -1,17 +1,42 @@
-﻿@using AirportService.DTO
-@model List<CityDTO>
+﻿@model IEnumerable<AirportService.DTO.CityDTO>
+
 @{
     ViewBag.Title = "Cities";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<h2>@ViewBag.Title.</h2>
-@Html.ActionLink("Add", "Add", "Cities")
-@foreach (var city in @Model)
-{
-    <div class="row">
-        <div class="col-md-3">@city.Name</div>
-        @using (Html.BeginForm())
-        {
-            @Html.ActionLink("Remove", "Remove", "Cities", new { cityID = @city.ID }, null)
-        }
-    </div>
+
+<h2>Cities</h2>
+
+<p>
+    @Html.ActionLink("Add", "Add","Cities")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CountryID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Name)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.CountryID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Name)
+        </td>
+        <td>
+       <!--
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+        -->
+            @Html.ActionLink("Remove", "Remove", new { cityID=item.ID })
+        </td>
+    </tr>
 }
+
+</table>
