@@ -66,8 +66,9 @@
             @Html.DisplayFor(modelItem => item.ArrivalTime)
         </td>
         <td>
-         <!--
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+         
+            @Html.ActionLink("Edit", "Edit", new { flightID = item.ID }) |
+        <!--
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
          -->
             @Html.ActionLink("Remove", "Remove", new { flightID=item.ID })

@@ -52,5 +52,35 @@ namespace AirplaneASP.Controllers
             flightService.Add(flight);
             return List();
         }
+
+
+        [HttpGet]
+        public ActionResult Edit(Guid flightID)
+        {
+            IFlightService flightService = new FlightService();
+            FlightDTO flightItem = flightService.GetAll().FirstOrDefault(f => f.ID == flightID);
+
+            ICompanyService companyService = new CompanyService();
+            List<CompanyDTO> companyList = companyService.GetAll();
+            ViewBag.CompanyList = companyList;
+
+            IFlightStateService flightStateService = new FlightStateService();
+            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+            ViewBag.FlightStateList = flightStateList;
+
+            ICityService cityService = new CityService();
+            List<CityDTO> cityList = cityService.GetAll();
+            ViewBag.CityList = cityList;
+
+            return View("Edit", flightItem);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(FlightDTO flight)
+        {
+            IFlightService flightService = new FlightService();
+            flightService.Edit(flight);
+            return List();
+        }
     }
 }
