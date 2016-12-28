@@ -197,6 +197,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\CitiesController.cs" />
+    <Compile Include="Controllers\CompaniesController.cs" />
     <Compile Include="Controllers\CountriesController.cs" />
     <Compile Include="Controllers\FlightsController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
@@ -275,6 +276,8 @@
     <Content Include="Views\Cities\Add.cshtml" />
     <Content Include="Views\Countries\Add.cshtml" />
     <Content Include="Views\Flights\Add.cshtml" />
+    <Content Include="Views\Companies\List.cshtml" />
+    <Content Include="Views\Companies\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
