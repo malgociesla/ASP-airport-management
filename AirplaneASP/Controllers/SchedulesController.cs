@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
+using AirplaneASP.Models.Schedule;
 
 namespace AirplaneASP.Controllers
 {
@@ -30,12 +31,17 @@ namespace AirplaneASP.Controllers
 
         public ActionResult GenerateSchedule()
         {
+            IFlightService flightService = new FlightService();
+            List<FlightDTO> flightList = flightService.GetAll();
+            ViewBag.FlightList = flightList;
             return View();
         }
 
         [HttpPost]
-        public ActionResult GenerateSchedule(DateTime startDate, DateTime endDate, Guid flightID)
+        public ActionResult GenerateSchedule(GenerateScheduleModel generateScheduleModel)
         {
+            IScheduleService scheduleService = new ScheduleService();
+            scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
             return List();
         }
     }
