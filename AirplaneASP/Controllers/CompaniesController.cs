@@ -40,5 +40,21 @@ namespace AirplaneASP.Controllers
             companyService.Add(company);
             return List();
         }
+
+        [HttpGet]
+        public ActionResult Edit(Guid companyID)
+        {
+            ICompanyService companyService = new CompanyService();
+            CompanyDTO companyItem = companyService.GetAll().FirstOrDefault(c=>c.ID==companyID);
+            return View("Edit",companyItem);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(CompanyDTO company)
+        {
+            ICompanyService companyService = new CompanyService();
+            companyService.Edit(company);
+            return List();
+        }
     }
 }
