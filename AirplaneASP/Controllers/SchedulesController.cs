@@ -44,5 +44,27 @@ namespace AirplaneASP.Controllers
             scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
             return List();
         }
+
+
+        [HttpGet]
+        public ActionResult Edit(Guid scheduleID)
+        {
+            IScheduleService scheduleService = new ScheduleService();
+            ScheduleDTO scheduleItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == scheduleID);
+
+            IFlightService flightService = new FlightService();
+            List<FlightDTO> flightList = flightService.GetAll();
+            ViewBag.FlightList = flightList;
+
+            return View("Edit", scheduleItem);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ScheduleDTO schedule)
+        {
+            IScheduleService scheduleService = new ScheduleService();
+            scheduleService.Edit(schedule);
+            return List();
+        }
     }
 }
