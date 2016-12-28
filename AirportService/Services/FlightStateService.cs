@@ -6,10 +6,10 @@ using AirplaneEF;
 
 namespace AirportService
 {
-    public class FStatusService : IFlightStateService
+    public class FlightStateService : IFlightStateService
     {
         private readonly AirportContext _airplaneContext;
-        public FStatusService()
+        public FlightStateService()
         {
             _airplaneContext = new AirportContext();
         }

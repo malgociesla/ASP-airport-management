@@ -274,6 +274,7 @@
     <Content Include="Views\Schedules\List.cshtml" />
     <Content Include="Views\Cities\Add.cshtml" />
     <Content Include="Views\Countries\Add.cshtml" />
+    <Content Include="Views\Flights\Add.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

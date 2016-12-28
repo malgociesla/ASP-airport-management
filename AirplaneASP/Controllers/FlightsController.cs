@@ -27,5 +27,30 @@ namespace AirplaneASP.Controllers
 
             return List();
         }
+
+        public ActionResult Add()
+        {
+            ICompanyService companyService = new CompanyService();
+            List<CompanyDTO> companyList = companyService.GetAll();
+            ViewBag.CompanyList = companyList;
+
+            IFlightStateService flightStateService = new FlightStateService();
+            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+            ViewBag.FlightStateList=flightStateList;
+
+            ICityService cityService = new CityService();
+            List<CityDTO> cityList = cityService.GetAll();
+            ViewBag.CityList = cityList;
+
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Add(FlightDTO flight)
+        {
+            IFlightService flightService = new FlightService();
+            flightService.Add(flight);
+            return List();
+        }
     }
 }
