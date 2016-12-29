@@ -19,6 +19,9 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().FlightID)
         </th>
         <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FlightStateID)
+        </th>
+        <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().DepartureDT)
         </th>
         <th>
@@ -34,6 +37,9 @@
     <tr>
         <td>
             @Html.DisplayFor(modelItem => item.FlightID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlightStateID)
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.DepartureDT)

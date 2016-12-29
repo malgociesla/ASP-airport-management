@@ -28,13 +28,11 @@ namespace AirplaneEF
         public System.Guid idCityArrival { get; set; }
         public Nullable<System.TimeSpan> departureTime { get; set; }
         public Nullable<System.TimeSpan> arrivalTime { get; set; }
-        public System.Guid idFlightState { get; set; }
     
         public virtual City City { get; set; }
         public virtual City City1 { get; set; }
         public virtual Company Company { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Schedule> Schedules { get; set; }
-        public virtual FlightState FlightState { get; set; }
     }
 }

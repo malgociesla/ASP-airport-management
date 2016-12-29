@@ -19,6 +19,7 @@ namespace AirportService
             Schedule schedule = new Schedule
             {
                 idFlight = scheduleDTO.FlightID,
+                idFlightState = scheduleDTO.FlightStateID,
                 departureDT = scheduleDTO.DepartureDT,
                 arrivalDT = scheduleDTO.ArrivalDT,
                 comment= scheduleDTO.Comment
@@ -34,6 +35,7 @@ namespace AirportService
             if (schedule != null)
             {
                 schedule.idFlight = scheduleDTO.FlightID;
+                schedule.idFlightState = scheduleDTO.FlightStateID;
                 schedule.departureDT = scheduleDTO.DepartureDT;
                 schedule.arrivalDT = scheduleDTO.ArrivalDT;
                 schedule.comment = scheduleDTO.Comment;
@@ -53,6 +55,7 @@ namespace AirportService
             var schedules = _airplaneContext.Schedules.ToList().Select(s => new ScheduleDTO
             {
                 ID = s.idSchedule,
+                FlightStateID=s.idFlightState,
                 FlightID=s.idFlight,
                 DepartureDT=s.departureDT,
                 ArrivalDT=s.arrivalDT,

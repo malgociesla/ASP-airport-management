@@ -13,7 +13,9 @@ AS
 	BEGIN
 	--get day of the week from date
 		DECLARE @startDateDoW INT = DATEPART(dw, @fromDate);
-		DECLARE @thisIdFlight UNIQUEIDENTIFIER;
+		DECLARE @thisIdFlight UNIQUEIDENTIFIER
+		--hardcoded flight state
+		DECLARE @thisIdFlightState UNIQUEIDENTIFIER ='5EBE4A2F-F0C1-E611-B353-D017C293D790'		
 		DECLARE @thisDepartureTime TIME;
 		DECLARE @thisDepartureDT DATETIME;
 		DECLARE @thisArrivalTime TIME;
@@ -59,8 +61,8 @@ AS
 										WHERE f.idFlight=@thisIdFlight)
 			SET @thisArrivalDT= CAST(@fromDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
 			--generate schedule
-			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,departureDT,arrivalDT,comment)
-			VALUES (NEWID(),@thisIdFlight,@thisDepartureDT,@thisArrivalDT,'')
+			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,idFlightState,departureDT,arrivalDT,comment)
+			VALUES (NEWID(),@thisIdFlight,@thisIdFlightState,@thisDepartureDT,@thisArrivalDT,'')
 			--cursor
 			FETCH NEXT FROM @flightCursor
 			INTO @thisIdFlight 

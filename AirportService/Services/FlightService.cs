@@ -19,7 +19,6 @@ namespace AirportService
             Flight flight = new Flight
             {
                 idCompany= flightDTO.CompanyID,
-                idFlightState= flightDTO.FlightStateID,
                 name= flightDTO.Name,
                 fDayofWeek= flightDTO.DayOfWeek,
                 idCityDeparture= flightDTO.CityDepartureID,
@@ -38,7 +37,6 @@ namespace AirportService
             if (flight != null)
             {
                 flight.idCompany = flightDTO.CompanyID;
-                flight.idFlightState = flightDTO.FlightStateID;
                 flight.name = flightDTO.Name;
                 flight.fDayofWeek = flightDTO.DayOfWeek;
                 flight.idCityDeparture = flightDTO.CityDepartureID;
@@ -56,7 +54,6 @@ namespace AirportService
             {
                 ID = f.idFlight,
                 CompanyID=f.idCompany,
-                FlightStateID=f.idFlightState,
                 Name=f.name,
                 DayOfWeek=f.fDayofWeek,
                 CityDepartureID=f.idCityDeparture,

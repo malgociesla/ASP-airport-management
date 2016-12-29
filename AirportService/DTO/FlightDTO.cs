@@ -6,7 +6,6 @@ namespace AirportService.DTO
     {
         public Guid ID { get; set; }
         public Guid CompanyID { get; set; }
-        public Guid FlightStateID { get; set; }
         public string Name { get; set; }
         public int? DayOfWeek { get; set; }
         public Guid CityDepartureID { get; set; }

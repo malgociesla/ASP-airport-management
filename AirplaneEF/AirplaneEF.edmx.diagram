@@ -16,7 +16,7 @@
         <AssociationConnector Association="AirportEF.FK__Flight__idCompan__5EBF139D" ManuallyRouted="false" />
         <AssociationConnector Association="AirportEF.FK__Schedule__idFlig__66603565" ManuallyRouted="false" />
         <EntityTypeShape EntityType="AirportEF.FlightState" Width="1.5" PointX="5.375" PointY="7.875" />
-        <AssociationConnector Association="AirportEF.FK__Flight__idFlight__76969D2E" />
+        <AssociationConnector Association="AirportEF.FK__Schedule__idFlig__08B54D69" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

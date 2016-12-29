@@ -49,7 +49,7 @@ BEGIN
 		BEGIN
 			PRINT 'trigger on insert'
 			INSERT INTO [dbo].[Schedule]
-			SELECT i.idSchedule,i.idFlight,i.departureDT,@timeCounter,i.comment
+			SELECT i.idSchedule,i.idFlight,i.idFlightState,i.departureDT,@timeCounter,i.comment
 			FROM inserted AS i
 		END
 		ELSE
@@ -58,6 +58,7 @@ BEGIN
 			PRINT 'trigger on update'
 			UPDATE Schedule
 			SET idFlight = i.idFlight,
+				idFlightState = i.idFlightState,
 				departureDT = i.departureDT,
 				arrivalDT = @timeCounter,
 				comment = i.comment

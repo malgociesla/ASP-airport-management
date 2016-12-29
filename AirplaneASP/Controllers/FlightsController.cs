@@ -34,10 +34,6 @@ namespace AirplaneASP.Controllers
             List<CompanyDTO> companyList = companyService.GetAll();
             ViewBag.CompanyList = companyList;
 
-            IFlightStateService flightStateService = new FlightStateService();
-            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
-            ViewBag.FlightStateList=flightStateList;
-
             ICityService cityService = new CityService();
             List<CityDTO> cityList = cityService.GetAll();
             ViewBag.CityList = cityList;
@@ -63,10 +59,6 @@ namespace AirplaneASP.Controllers
             ICompanyService companyService = new CompanyService();
             List<CompanyDTO> companyList = companyService.GetAll();
             ViewBag.CompanyList = companyList;
-
-            IFlightStateService flightStateService = new FlightStateService();
-            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
-            ViewBag.FlightStateList = flightStateList;
 
             ICityService cityService = new CityService();
             List<CityDTO> cityList = cityService.GetAll();

@@ -63,6 +63,10 @@ namespace AirplaneASP.Controllers
             List<FlightDTO> flightList = flightService.GetAll();
             ViewBag.FlightList = flightList;
 
+            IFlightStateService flightStateService = new FlightStateService();
+            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+            ViewBag.FlightStateList = flightStateList;
+
             ViewBag.Page = page;
 
             return View("Edit", scheduleItem);

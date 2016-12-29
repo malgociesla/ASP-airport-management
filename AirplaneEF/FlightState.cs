@@ -17,13 +17,13 @@ namespace AirplaneEF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public FlightState()
         {
-            this.Flights = new HashSet<Flight>();
+            this.Schedules = new HashSet<Schedule>();
         }
     
         public System.Guid idFlightState { get; set; }
         public string name { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<Schedule> Schedules { get; set; }
     }
 }
