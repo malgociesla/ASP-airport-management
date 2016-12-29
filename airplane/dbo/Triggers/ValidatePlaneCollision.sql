@@ -41,8 +41,29 @@ BEGIN
 	--if planes can land
 		--insert data
 		--if we changed arrival time due to collision -> insert @timeCounter insted of arrivalDT
-		INSERT INTO [dbo].[Schedule]
-		SELECT i.idSchedule,i.idFlight,i.departureDT,@timeCounter,i.comment
-		FROM inserted AS i
+
+		IF(NOT EXISTS
+			(SELECT s.idSchedule
+			FROM Schedule s, inserted
+			WHERE s.idSchedule = inserted.idSchedule))
+		BEGIN
+			PRINT 'trigger on insert'
+			INSERT INTO [dbo].[Schedule]
+			SELECT i.idSchedule,i.idFlight,i.departureDT,@timeCounter,i.comment
+			FROM inserted AS i
+		END
+		ELSE
+		--update
+		BEGIN
+			PRINT 'trigger on update'
+			UPDATE Schedule
+			SET idFlight = i.idFlight,
+				departureDT = i.departureDT,
+				arrivalDT = @timeCounter,
+				comment = i.comment
+			FROM Schedule s, inserted i
+			WHERE s.idSchedule = i.idSchedule
+		END
+
 	END
 END
