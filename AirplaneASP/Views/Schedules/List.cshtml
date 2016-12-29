@@ -1,5 +1,8 @@
-﻿@model IEnumerable<AirportService.DTO.ScheduleDTO>
+﻿@model PagedList.IPagedList<ScheduleDTO>
+@using PagedList.Mvc;
+@using AirportService.DTO;
 
+<link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
     ViewBag.Title = "Schedules";
     Layout = "~/Views/Shared/_Layout.cshtml";
@@ -13,16 +16,16 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FlightID)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().FlightID)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DepartureDT)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().DepartureDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ArrivalDT)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ArrivalDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Comment)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
         </th>
         <th></th>
     </tr>
@@ -43,13 +46,18 @@
         </td>
         <td>
       
-            @Html.ActionLink("Edit", "Edit", new { scheduleID=item.ID }) |
+            @Html.ActionLink("Edit", "Edit", new { scheduleID=item.ID, page = Model.PageNumber }) |
        <!--
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
         -->
-            @Html.ActionLink("Remove", "Remove", new { scheduleID=item.ID })
+            @Html.ActionLink("Remove", "Remove", new { scheduleID = item.ID, page=Model.PageNumber})
         </td>
     </tr>
 }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("List",
+    new { page }))

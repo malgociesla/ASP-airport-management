@@ -6,27 +6,34 @@ using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
 using AirplaneASP.Models.Schedule;
+using PagedList;
 
 namespace AirplaneASP.Controllers
 {
     public class SchedulesController : Controller
     {
         [HttpGet]
-        public ActionResult List()
+        public ActionResult List(int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
             List<ScheduleDTO> scheduleList = scheduleService.GetAll();
 
-            return View("List", scheduleList);
+            if (page == null || page < 1) page = 1;
+
+            //pagination
+            int pageSize = 6;
+            int pageNumber = (page ?? 1);
+
+            return View("List", scheduleList.ToPagedList(pageNumber,pageSize));
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid scheduleID)
+        public ActionResult Remove(Guid scheduleID, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Remove(scheduleID);
 
-            return List();
+            return List(page);
         }
 
         public ActionResult GenerateSchedule()
@@ -42,12 +49,12 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
-            return List();
+            return List(null);
         }
 
 
         [HttpGet]
-        public ActionResult Edit(Guid scheduleID)
+        public ActionResult Edit(Guid scheduleID, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
             ScheduleDTO scheduleItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == scheduleID);
@@ -56,15 +63,18 @@ namespace AirplaneASP.Controllers
             List<FlightDTO> flightList = flightService.GetAll();
             ViewBag.FlightList = flightList;
 
+            ViewBag.Page = page;
+
             return View("Edit", scheduleItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(ScheduleDTO schedule)
+        public ActionResult Edit(ScheduleDTO schedule, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Edit(schedule);
-            return List();
+            return List(page);
         }
+
     }
 }

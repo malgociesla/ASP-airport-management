@@ -16,7 +16,7 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
         @Html.HiddenFor(model => model.ID)
-
+        @Html.Hidden("page", (object)ViewBag.Page.ToString())
         <div class="form-group">
             @Html.LabelFor(model => model.FlightID, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -51,12 +51,12 @@
 
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Save" class="btn btn-default" />
+                <input name="Save" type="submit" value="Save" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List","Schedules")
+    @Html.ActionLink("Back to List", "List","Schedules", new { page = ViewBag.Page }, null)
 </div>
