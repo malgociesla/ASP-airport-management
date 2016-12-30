@@ -11,25 +11,7 @@
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav">
-                    <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString()== "Schedules" ? "active" : "")">@Html.ActionLink("Schedules", "List", "Schedules")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Flights" ? "active" : "")">@Html.ActionLink("Flights", "List", "Flights")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Cities" ? "active" : "")">@Html.ActionLink("Cities", "List", "Cities")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Countries" ? "active" : "")">@Html.ActionLink("Countries", "List", "Countries")</li>
-                    <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Companies" ? "active" : "")">@Html.ActionLink("Companies", "List", "Companies")</li>
-                </ul>
-                @Html.Partial("_LoginPartial")
-            </div>
+        @Html.Partial("NavigationBar")
         </div>
     </div>
     <div class="container body-content">
