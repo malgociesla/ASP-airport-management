@@ -30,12 +30,12 @@
             @Html.DisplayFor(modelItem => item.Name)
         </td>
         <td>
-            @Html.ActionLink("Edit", "Edit", new { cityID = item.ID }) |
+            @Html.ActionLink("Edit", "Edit", new { id = item.ID }) |
             <!--
        @Html.ActionLink("Details", "Details", new { id=item.ID }) |
         -->
 
-            @Html.ActionLink("Remove", "Remove", new { cityID=item.ID })
+            @Html.ActionLink("Remove", "Remove", new { id=item.ID })
         </td>
     </tr>
 }

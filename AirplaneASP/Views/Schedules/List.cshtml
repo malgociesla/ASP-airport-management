@@ -52,11 +52,11 @@
         </td>
         <td>
       
-            @Html.ActionLink("Edit", "Edit", new { scheduleID=item.ID, page = Model.PageNumber }) |
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID, page = Model.PageNumber }) |
        <!--
             @Html.ActionLink("Details", "Details", new { id=item.ID }) |
         -->
-            @Html.ActionLink("Remove", "Remove", new { scheduleID = item.ID, page=Model.PageNumber})
+            @Html.ActionLink("Remove", "Remove", new { id = item.ID, page=Model.PageNumber})
         </td>
     </tr>
 }

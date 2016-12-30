@@ -28,12 +28,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid scheduleID, int? page)
+        public ActionResult Remove(Guid id, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
-            scheduleService.Remove(scheduleID);
-
-            return List(page);
+            scheduleService.Remove(id);
+            //return List(page);
+            return RedirectToAction("List",page);
         }
 
         public ActionResult GenerateSchedule()
@@ -49,15 +49,16 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
-            return List(null);
+            //return List(null);
+            return RedirectToAction("List",0);
         }
 
 
         [HttpGet]
-        public ActionResult Edit(Guid scheduleID, int? page)
+        public ActionResult Edit(Guid id, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
-            ScheduleDTO scheduleItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == scheduleID);
+            ScheduleDTO scheduleItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
 
             IFlightService flightService = new FlightService();
             List<FlightDTO> flightList = flightService.GetAll();
@@ -77,7 +78,8 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Edit(schedule);
-            return List(page);
+            //return List(page);
+            return RedirectToAction("List",page);
         }
 
     }

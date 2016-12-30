@@ -20,12 +20,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid companyID)
+        public ActionResult Remove(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            companyService.Remove(companyID);
-
-            return List();
+            companyService.Remove(id);
+            //return List();
+            return RedirectToAction("List");
         }
 
         public ActionResult Add()
@@ -38,14 +38,15 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             companyService.Add(company);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public ActionResult Edit(Guid companyID)
+        public ActionResult Edit(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            CompanyDTO companyItem = companyService.GetAll().FirstOrDefault(c=>c.ID==companyID);
+            CompanyDTO companyItem = companyService.GetAll().FirstOrDefault(c=>c.ID==id);
             return View("Edit",companyItem);
         }
 
@@ -54,7 +55,8 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             companyService.Edit(company);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
     }
 }

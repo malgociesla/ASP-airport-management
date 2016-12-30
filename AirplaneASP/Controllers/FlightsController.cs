@@ -22,10 +22,10 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid flightID)
+        public ActionResult Remove(Guid id)
         {
             IFlightService flightService = new FlightService();
-            flightService.Remove(flightID);
+            flightService.Remove(id);
 
             //return List();
             return RedirectToAction("List");
@@ -56,10 +56,10 @@ namespace AirplaneASP.Controllers
 
         [HttpGet]
         //[Route("Edit/{flightID}")]
-        public ActionResult Edit(Guid flightID)
+        public ActionResult Edit(Guid id)
         {
             IFlightService flightService = new FlightService();
-            FlightDTO flightItem = flightService.GetAll().FirstOrDefault(f => f.ID == flightID);
+            FlightDTO flightItem = flightService.GetAll().FirstOrDefault(f => f.ID == id);
 
             ICompanyService companyService = new CompanyService();
             List<CompanyDTO> companyList = companyService.GetAll();

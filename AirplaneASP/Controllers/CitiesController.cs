@@ -20,10 +20,10 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid cityID)
+        public ActionResult Remove(Guid id)
         {
             ICityService cityService = new CityService();
-            cityService.Remove(cityID);
+            cityService.Remove(id);
             //return List();
             return RedirectToAction("List");
         }
@@ -46,10 +46,10 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Edit(Guid cityID)
+        public ActionResult Edit(Guid id)
         {
             ICityService cityService = new CityService();
-            CityDTO cityItem = cityService.GetAll().FirstOrDefault(c => c.ID == cityID);
+            CityDTO cityItem = cityService.GetAll().FirstOrDefault(c => c.ID == id);
 
             ICountryService countryService = new CountryService();
             List<CountryDTO> countryList = countryService.GetAll();

@@ -20,12 +20,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpGet]
-        public ActionResult Remove(Guid countryID)
+        public ActionResult Remove(Guid id)
         {
             ICountryService countryService = new CountryService();
-            countryService.Remove(countryID);
-
-            return List();
+            countryService.Remove(id);
+            //return List();
+            return RedirectToAction("List");
         }
 
         public ActionResult Add()
@@ -38,14 +38,15 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             countryService.Add(country);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
         [HttpGet]
-        public ActionResult Edit(Guid countryID)
+        public ActionResult Edit(Guid id)
         {
             ICountryService countryService = new CountryService();
-            CountryDTO countryItem = countryService.GetAll().FirstOrDefault(c => c.ID == countryID);
+            CountryDTO countryItem = countryService.GetAll().FirstOrDefault(c => c.ID == id);
             return View("Edit", countryItem);
         }
 
@@ -54,7 +55,8 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             countryService.Edit(country);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
     }
 }
