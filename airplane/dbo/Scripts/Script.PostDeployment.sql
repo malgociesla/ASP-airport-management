@@ -1,6 +1,6 @@
 ﻿MERGE INTO FlightState AS Target 
 USING (VALUES 
-  ('797B3409-0002-40E3-AF00-9F81FB2773A2',N'normal'), 
+  ('5EBE4A2F-F0C1-E611-B353-D017C293D790',N'normal'), 
   ('B2006D41-7688-42D9-A6DB-6AFD8C58AC1C',N'delayed')
 ) 
 AS Source (idFlightState, name) 
