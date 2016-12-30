@@ -64,6 +64,5 @@ BEGIN
 			FROM Schedule s, inserted i
 			WHERE s.idSchedule = i.idSchedule
 		END
-
 	END
 END
