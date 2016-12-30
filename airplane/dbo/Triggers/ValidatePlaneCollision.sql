@@ -16,17 +16,6 @@ BEGIN
 	--check how many planes are landing at the same time
 	DECLARE @planeCount INT	
 	EXEC @planeCount = [dbo].[GetCountOfLandingPlanes] @landingDT=@timeCounter
-
-	--check if plane was added before to the schedule
-	DECLARE @exist INT;
-	SELECT @exist = (SELECT count(s.idFlight)
-					FROM inserted i
-						INNER JOIN Schedule s
-						ON s.idFlight=i.idFlight
-					WHERE s.idFlight=i.idFlight AND s.arrivalDT=i.arrivalDT)
-
-	IF(@exist<>0) PRINT 'this flight has already been inserted to schedule'
-	ELSE
 	BEGIN
 	--if there are to many planes landing at the same time
 	WHILE (@planeCount>=@maxLandingCapacity)
@@ -42,15 +31,25 @@ BEGIN
 		--insert data
 		--if we changed arrival time due to collision -> insert @timeCounter insted of arrivalDT
 
+		--if flight wasn't inserted before
 		IF(NOT EXISTS
-			(SELECT s.idSchedule
-			FROM Schedule s, inserted
-			WHERE s.idSchedule = inserted.idSchedule))
+		(SELECT s.idSchedule
+		FROM Schedule s, inserted
+		WHERE s.idSchedule = inserted.idSchedule))
+		
 		BEGIN
-			PRINT 'trigger on insert'
-			INSERT INTO [dbo].[Schedule]
-			SELECT i.idSchedule,i.idFlight,i.idFlightState,i.departureDT,@timeCounter,i.comment
-			FROM inserted AS i
+			IF(NOT EXISTS 	(SELECT s.idFlight
+					FROM inserted i
+						INNER JOIN Schedule s
+						ON s.idFlight=i.idFlight
+					WHERE s.idFlight=i.idFlight AND s.arrivalDT=i.arrivalDT))
+			BEGIN
+				PRINT 'trigger on insert'
+				INSERT INTO [dbo].[Schedule]
+				SELECT i.idSchedule,i.idFlight,i.idFlightState,i.departureDT,@timeCounter,i.comment
+				FROM inserted AS i
+			END
+			ELSE PRINT 'schedule for that flight has already been generated'
 		END
 		ELSE
 		--update
