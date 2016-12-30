@@ -24,8 +24,8 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             cityService.Remove(cityID);
-
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
         public ActionResult Add()
@@ -41,7 +41,8 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             cityService.Add(city);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
         [HttpGet]
@@ -62,7 +63,8 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             cityService.Edit(city);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
     }
 }

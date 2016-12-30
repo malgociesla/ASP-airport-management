@@ -8,9 +8,11 @@ using AirportService.DTO;
 
 namespace AirplaneASP.Controllers
 {
+    //[RoutePrefix("Flights")]
     public class FlightsController : Controller
     {
         [HttpGet]
+
         public ActionResult List()
         {
             IFlightService flightService = new FlightService();
@@ -25,7 +27,8 @@ namespace AirplaneASP.Controllers
             IFlightService flightService = new FlightService();
             flightService.Remove(flightID);
 
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
         public ActionResult Add()
@@ -46,11 +49,13 @@ namespace AirplaneASP.Controllers
         {
             IFlightService flightService = new FlightService();
             flightService.Add(flight);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
 
 
         [HttpGet]
+        //[Route("Edit/{flightID}")]
         public ActionResult Edit(Guid flightID)
         {
             IFlightService flightService = new FlightService();
@@ -72,7 +77,8 @@ namespace AirplaneASP.Controllers
         {
             IFlightService flightService = new FlightService();
             flightService.Edit(flight);
-            return List();
+            //return List();
+            return RedirectToAction("List");
         }
     }
 }
