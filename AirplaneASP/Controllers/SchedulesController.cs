@@ -5,7 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
-using AirplaneASP.Models.Schedule;
+using AirplaneASP.Models.Schedules;
 using PagedList;
 
 namespace AirplaneASP.Controllers

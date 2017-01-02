@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
+using AirplaneASP.Models.Companies;
 
 namespace AirplaneASP.Controllers
 {
@@ -14,7 +15,13 @@ namespace AirplaneASP.Controllers
         public ActionResult List()
         {
             ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> companyList = companyService.GetAll();
+            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompaniesModel> companyList = new List<CompaniesModel>();
+            foreach (CompanyDTO cmp in cmpList)
+            {
+                CompaniesModel companyItem = new CompaniesModel { ID = cmp.ID, Name = cmp.Name };
+                companyList.Add(companyItem);
+            }
 
             return View("List", companyList);
         }
@@ -24,7 +31,7 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             companyService.Remove(id);
-            //return List();
+
             return RedirectToAction("List");
         }
 
@@ -34,11 +41,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(CompanyDTO company)
+        public ActionResult Add(CompaniesModel company)
         {
             ICompanyService companyService = new CompanyService();
-            companyService.Add(company);
-            //return List();
+            CompanyDTO cmp = new CompanyDTO { ID=company.ID, Name=company.Name};
+            companyService.Add(cmp);
+ 
             return RedirectToAction("List");
         }
 
@@ -46,16 +54,19 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            CompanyDTO companyItem = companyService.GetAll().FirstOrDefault(c=>c.ID==id);
+            CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c=>c.ID==id);
+            CompaniesModel companyItem = new CompaniesModel { ID=cmpItem.ID, Name=cmpItem.Name };
+
             return View("Edit",companyItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(CompanyDTO company)
+        public ActionResult Edit(CompaniesModel company)
         {
             ICompanyService companyService = new CompanyService();
-            companyService.Edit(company);
-            //return List();
+            CompanyDTO cmp = new CompanyDTO { ID= company.ID, Name=company.Name};
+            companyService.Edit(cmp);
+
             return RedirectToAction("List");
         }
     }
