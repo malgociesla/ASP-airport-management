@@ -43,11 +43,15 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Add(CountryModel country)
         {
-            ICountryService countryService = new CountryService();
-            CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
-            countryService.Add(ctr);
+            if (ModelState.IsValid)
+            {
+                ICountryService countryService = new CountryService();
+                CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+                countryService.Add(ctr);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else return View();
         }
 
         [HttpGet]
@@ -63,11 +67,15 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Edit(CountryModel country)
         {
-            ICountryService countryService = new CountryService();
-            CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
-            countryService.Edit(ctr);
+            if (ModelState.IsValid)
+            {
+                ICountryService countryService = new CountryService();
+                CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+                countryService.Edit(ctr);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else return View();
         }
     }
 }

@@ -53,11 +53,28 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Add(CityModel city)
         {
-            ICityService cityService = new CityService();
-            CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
-            cityService.Add(ci);
+            if (ModelState.IsValid)
+            {
+                ICityService cityService = new CityService();
+                CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+                cityService.Add(ci);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else
+            {
+                ICountryService countryService = new CountryService();
+                List<CountryDTO> ctrList = countryService.GetAll();
+                List<CountryModel> countryList = new List<CountryModel>();
+                foreach (CountryDTO ctr in ctrList)
+                {
+                    CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
+                    countryList.Add(ctrItem);
+                }
+                ViewBag.CountryList = countryList;
+
+                return View();
+            }
         }
 
         [HttpGet]
@@ -83,11 +100,28 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Edit(CityModel city)
         {
-            ICityService cityService = new CityService();
-            CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
-            cityService.Edit(ci);
+            if (ModelState.IsValid)
+            {
+                ICityService cityService = new CityService();
+                CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+                cityService.Edit(ci);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else
+            {
+                ICountryService countryService = new CountryService();
+                List<CountryDTO> ctrList = countryService.GetAll();
+                List<CountryModel> countryList = new List<CountryModel>();
+                foreach (CountryDTO ctr in ctrList)
+                {
+                    CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
+                    countryList.Add(ctrItem);
+                }
+                ViewBag.CountryList = countryList;
+
+                return View();
+            }
         }
     }
 }

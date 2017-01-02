@@ -67,11 +67,38 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Add(FlightModel flight)
         {
-            IFlightService flightService = new FlightService();
-            FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
-            flightService.Add(fli);
+            if (ModelState.IsValid)
+            {
+                IFlightService flightService = new FlightService();
+                FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
+                flightService.Add(fli);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else
+            {
+                ICompanyService companyService = new CompanyService();
+                List<CompanyDTO> cmpList = companyService.GetAll();
+                List<CompanyModel> companyList = new List<CompanyModel>();
+                foreach (CompanyDTO cmp in cmpList)
+                {
+                    CompanyModel cmpItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
+                    companyList.Add(cmpItem);
+                }
+                ViewBag.CompanyList = companyList;
+
+                ICityService cityService = new CityService();
+                List<CityDTO> ciList = cityService.GetAll();
+                List<CityModel> cityList = new List<CityModel>();
+                foreach (CityDTO ci in ciList)
+                {
+                    CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
+                    cityList.Add(ciItem);
+                }
+                ViewBag.CityList = cityList;
+
+                return View();
+            }
         }
 
 
@@ -109,11 +136,38 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Edit(FlightModel flight)
         {
-            IFlightService flightService = new FlightService();
-            FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
-            flightService.Edit(fli);
+            if (ModelState.IsValid)
+            {
+                IFlightService flightService = new FlightService();
+                FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
+                flightService.Edit(fli);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
+            }
+            else
+            {
+                ICompanyService companyService = new CompanyService();
+                List<CompanyDTO> cmpList = companyService.GetAll();
+                List<CompanyModel> companyList = new List<CompanyModel>();
+                foreach (CompanyDTO cmp in cmpList)
+                {
+                    CompanyModel cmpItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
+                    companyList.Add(cmpItem);
+                }
+                ViewBag.CompanyList = companyList;
+
+                ICityService cityService = new CityService();
+                List<CityDTO> ciList = cityService.GetAll();
+                List<CityModel> cityList = new List<CityModel>();
+                foreach (CityDTO ci in ciList)
+                {
+                    CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
+                    cityList.Add(ciItem);
+                }
+                ViewBag.CityList = cityList;
+
+                return View();
+            }
         }
     }
 }

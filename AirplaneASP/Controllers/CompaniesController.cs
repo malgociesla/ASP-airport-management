@@ -43,11 +43,15 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Add(CompanyModel company)
         {
-            ICompanyService companyService = new CompanyService();
-            CompanyDTO cmp = new CompanyDTO { ID=company.ID, Name=company.Name};
-            companyService.Add(cmp);
- 
-            return RedirectToAction("List");
+            if (ModelState.IsValid)
+            {
+                ICompanyService companyService = new CompanyService();
+                CompanyDTO cmp = new CompanyDTO { ID = company.ID, Name = company.Name };
+                companyService.Add(cmp);
+
+                return RedirectToAction("List");
+            }
+            else return View();
         }
 
         [HttpGet]
@@ -63,11 +67,15 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult Edit(CompanyModel company)
         {
-            ICompanyService companyService = new CompanyService();
-            CompanyDTO cmp = new CompanyDTO { ID= company.ID, Name=company.Name};
-            companyService.Edit(cmp);
+            if (ModelState.IsValid)
+            {
+                ICompanyService companyService = new CompanyService();
+                CompanyDTO cmp = new CompanyDTO { ID= company.ID, Name=company.Name};
+                companyService.Edit(cmp);
 
-            return RedirectToAction("List");
+                return RedirectToAction("List");
         }
+            else return View();
+    }
     }
 }
