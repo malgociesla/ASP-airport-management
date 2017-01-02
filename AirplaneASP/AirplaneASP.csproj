@@ -215,10 +215,14 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
-    <Compile Include="Models\Companies\CompaniesModel.cs" />
+    <Compile Include="Models\Cities\CityModel.cs" />
+    <Compile Include="Models\Companies\CompanyModel.cs" />
+    <Compile Include="Models\Countries\CountryModel.cs" />
+    <Compile Include="Models\Flights\FlightModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
     <Compile Include="Models\Schedules\GenerateScheduleModel.cs" />
+    <Compile Include="Models\Schedules\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -299,9 +303,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Models\Cities\" />
-    <Folder Include="Models\Countries\" />
-    <Folder Include="Models\Flights\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />

@@ -16,10 +16,10 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             List<CompanyDTO> cmpList = companyService.GetAll();
-            List<CompaniesModel> companyList = new List<CompaniesModel>();
+            List<CompanyModel> companyList = new List<CompanyModel>();
             foreach (CompanyDTO cmp in cmpList)
             {
-                CompaniesModel companyItem = new CompaniesModel { ID = cmp.ID, Name = cmp.Name };
+                CompanyModel companyItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
                 companyList.Add(companyItem);
             }
 
@@ -41,7 +41,7 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(CompaniesModel company)
+        public ActionResult Add(CompanyModel company)
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmp = new CompanyDTO { ID=company.ID, Name=company.Name};
@@ -55,13 +55,13 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c=>c.ID==id);
-            CompaniesModel companyItem = new CompaniesModel { ID=cmpItem.ID, Name=cmpItem.Name };
+            CompanyModel companyItem = new CompanyModel { ID=cmpItem.ID, Name=cmpItem.Name };
 
             return View("Edit",companyItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(CompaniesModel company)
+        public ActionResult Edit(CompanyModel company)
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmp = new CompanyDTO { ID= company.ID, Name=company.Name};

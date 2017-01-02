@@ -7,6 +7,7 @@ using AirportService;
 using AirportService.DTO;
 using AirplaneASP.Models.Schedules;
 using PagedList;
+using AirplaneASP.Models.Flights;
 
 namespace AirplaneASP.Controllers
 {
@@ -22,6 +23,12 @@ namespace AirplaneASP.Controllers
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);              
             IScheduleService scheduleService = new ScheduleService();
             IPagedList<ScheduleDTO> schedulePage = scheduleService.GetPage(pageNumber,pageSize);
+            //IPagedList<ScheduleModel> schedulePage = schdPage.All();
+            //foreach (ScheduleDTO schdItem in schdPage)
+            //{
+            //    ScheduleModel schd = new ScheduleModel { ID = schdItem.ID, FlightID = schdItem.FlightID, FlightStateID = schdItem.FlightStateID, DepartureDT = schdItem.DepartureDT, ArrivalDT = schdItem.ArrivalDT, Comment = schdItem.Comment };
+            //    schedulePage.Add(schd);
+            //}
 
             return View("List", schedulePage);
         }
@@ -31,15 +38,22 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Remove(id);
-            //return List(page);
+
             return RedirectToAction("List",page);
         }
 
         public ActionResult GenerateSchedule()
         {
             IFlightService flightService = new FlightService();
-            List<FlightDTO> flightList = flightService.GetAll();
+            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightModel> flightList = new List<FlightModel>();
+            foreach (FlightDTO fli in fliList)
+            {
+                FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                flightList.Add(fliItem);
+            }
             ViewBag.FlightList = flightList;
+
             return View();
         }
 
@@ -48,7 +62,7 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
-            //return List(null);
+
             return RedirectToAction("List",0);
         }
 
@@ -57,10 +71,17 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
-            ScheduleDTO scheduleItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
+            ScheduleDTO schdItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
+            ScheduleModel scheduleItem = new ScheduleModel { ID = schdItem.ID, FlightID = schdItem.FlightID, FlightStateID = schdItem.FlightStateID, DepartureDT = schdItem.DepartureDT, ArrivalDT = schdItem.ArrivalDT, Comment = schdItem.Comment };
 
             IFlightService flightService = new FlightService();
-            List<FlightDTO> flightList = flightService.GetAll();
+            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightModel> flightList = new List<FlightModel>();
+            foreach (FlightDTO fli in fliList)
+            {
+                FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                flightList.Add(fliItem);
+            }
             ViewBag.FlightList = flightList;
 
             IFlightStateService flightStateService = new FlightStateService();
@@ -73,11 +94,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Edit(ScheduleDTO schedule, int? page)
+        public ActionResult Edit(ScheduleModel schedule, int? page)
         {
             IScheduleService scheduleService = new ScheduleService();
-            scheduleService.Edit(schedule);
-            //return List(page);
+            ScheduleDTO schd = new ScheduleDTO { ID = schedule.ID, FlightID = schedule.FlightID, FlightStateID = schedule.FlightStateID, DepartureDT = schedule.DepartureDT, ArrivalDT = schedule.ArrivalDT, Comment = schedule.Comment };
+            scheduleService.Edit(schd);
+
             return RedirectToAction("List",page);
         }
 

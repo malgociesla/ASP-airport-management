@@ -5,6 +5,9 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
+using AirplaneASP.Models.Flights;
+using AirplaneASP.Models.Companies;
+using AirplaneASP.Models.Cities;
 
 namespace AirplaneASP.Controllers
 {
@@ -16,7 +19,13 @@ namespace AirplaneASP.Controllers
         public ActionResult List()
         {
             IFlightService flightService = new FlightService();
-            List<FlightDTO> flightList = flightService.GetAll();
+            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightModel> flightList = new List<FlightModel>();
+            foreach (FlightDTO fli in fliList)
+            {
+                FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                flightList.Add(fliItem);
+            }
 
             return View("List", flightList);
         }
@@ -27,29 +36,41 @@ namespace AirplaneASP.Controllers
             IFlightService flightService = new FlightService();
             flightService.Remove(id);
 
-            //return List();
             return RedirectToAction("List");
         }
 
         public ActionResult Add()
         {
             ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> companyList = companyService.GetAll();
+            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompanyModel> companyList = new List<CompanyModel>();
+            foreach (CompanyDTO cmp in cmpList)
+            {
+                CompanyModel cmpItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
+                companyList.Add(cmpItem);
+            }
             ViewBag.CompanyList = companyList;
 
             ICityService cityService = new CityService();
-            List<CityDTO> cityList = cityService.GetAll();
+            List<CityDTO> ciList = cityService.GetAll();
+            List<CityModel> cityList = new List<CityModel>();
+            foreach (CityDTO ci in ciList)
+            {
+                CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
+                cityList.Add(ciItem);
+            }
             ViewBag.CityList = cityList;
 
             return View();
         }
 
         [HttpPost]
-        public ActionResult Add(FlightDTO flight)
+        public ActionResult Add(FlightModel flight)
         {
             IFlightService flightService = new FlightService();
-            flightService.Add(flight);
-            //return List();
+            FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
+            flightService.Add(fli);
+
             return RedirectToAction("List");
         }
 
@@ -59,25 +80,39 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             IFlightService flightService = new FlightService();
-            FlightDTO flightItem = flightService.GetAll().FirstOrDefault(f => f.ID == id);
+            FlightDTO fliItem = flightService.GetAll().FirstOrDefault(f => f.ID == id);
+            FlightModel flightItem = new FlightModel { ID = fliItem.ID, CompanyID = fliItem.CompanyID, Name = fliItem.Name, DayOfWeek = fliItem.DayOfWeek, CityDepartureID = fliItem.CityDepartureID, CityArrivalID = fliItem.CityArrivalID, DepartureTime = fliItem.DepartureTime, ArrivalTime = fliItem.ArrivalTime };
 
             ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> companyList = companyService.GetAll();
+            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompanyModel> companyList = new List<CompanyModel>();
+            foreach (CompanyDTO cmp in cmpList)
+            {
+                CompanyModel cmpItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
+                companyList.Add(cmpItem);
+            }
             ViewBag.CompanyList = companyList;
 
             ICityService cityService = new CityService();
-            List<CityDTO> cityList = cityService.GetAll();
+            List<CityDTO> ciList = cityService.GetAll();
+            List<CityModel> cityList = new List<CityModel>();
+            foreach (CityDTO ci in ciList)
+            {
+                CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
+                cityList.Add(ciItem);
+            }
             ViewBag.CityList = cityList;
 
             return View("Edit", flightItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(FlightDTO flight)
+        public ActionResult Edit(FlightModel flight)
         {
             IFlightService flightService = new FlightService();
-            flightService.Edit(flight);
-            //return List();
+            FlightDTO fli = new FlightDTO { ID = flight.ID, CompanyID = flight.CompanyID, Name = flight.Name, DayOfWeek = flight.DayOfWeek, CityDepartureID = flight.CityDepartureID, CityArrivalID = flight.CityArrivalID, DepartureTime = flight.DepartureTime, ArrivalTime = flight.ArrivalTime };
+            flightService.Edit(fli);
+
             return RedirectToAction("List");
         }
     }

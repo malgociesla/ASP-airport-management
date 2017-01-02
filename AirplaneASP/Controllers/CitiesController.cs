@@ -5,6 +5,8 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
+using AirplaneASP.Models.Cities;
+using AirplaneASP.Models.Countries;
 
 namespace AirplaneASP.Controllers
 {
@@ -14,7 +16,13 @@ namespace AirplaneASP.Controllers
         public ActionResult List()
         {
             ICityService cityService = new CityService();
-            List<CityDTO> cityList = cityService.GetAll();
+            List<CityDTO> ciList = cityService.GetAll();
+            List<CityModel> cityList = new List<CityModel>();
+            foreach (CityDTO ci in ciList)
+            {
+                CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
+                cityList.Add(ciItem);
+            }
 
             return View("List",cityList);
         }
@@ -24,24 +32,31 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             cityService.Remove(id);
-            //return List();
+
             return RedirectToAction("List");
         }
 
         public ActionResult Add()
         {
             ICountryService countryService = new CountryService();
-            List<CountryDTO> countryList = countryService.GetAll();
+            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryModel> countryList = new List<CountryModel>();
+            foreach (CountryDTO ctr in ctrList)
+            {
+                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
+                countryList.Add(ctrItem);
+            }
             ViewBag.CountryList = countryList;
             return View();
         }
 
         [HttpPost]
-        public ActionResult Add(CityDTO city)
+        public ActionResult Add(CityModel city)
         {
             ICityService cityService = new CityService();
-            cityService.Add(city);
-            //return List();
+            CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+            cityService.Add(ci);
+
             return RedirectToAction("List");
         }
 
@@ -49,21 +64,29 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICityService cityService = new CityService();
-            CityDTO cityItem = cityService.GetAll().FirstOrDefault(c => c.ID == id);
+            CityDTO ciItem = cityService.GetAll().FirstOrDefault(c => c.ID == id);
+            CityModel cityItem = new CityModel { ID = ciItem.ID, CountryID = ciItem.CountryID, Name = ciItem.Name };
 
             ICountryService countryService = new CountryService();
-            List<CountryDTO> countryList = countryService.GetAll();
+            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryModel> countryList = new List<CountryModel>();
+            foreach (CountryDTO ctr in ctrList)
+            {
+                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
+                countryList.Add(ctrItem);
+            }
             ViewBag.CountryList = countryList;
 
             return View("Edit", cityItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(CityDTO city)
+        public ActionResult Edit(CityModel city)
         {
             ICityService cityService = new CityService();
-            cityService.Edit(city);
-            //return List();
+            CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+            cityService.Edit(ci);
+
             return RedirectToAction("List");
         }
     }

@@ -5,6 +5,7 @@ using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
+using AirplaneASP.Models.Countries;
 
 namespace AirplaneASP.Controllers
 {
@@ -14,7 +15,13 @@ namespace AirplaneASP.Controllers
         public ActionResult List()
         {
             ICountryService countryService = new CountryService();
-            List<CountryDTO> countryList = countryService.GetAll();
+            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryModel> countryList = new List<CountryModel>();
+            foreach (CountryDTO ctr in ctrList)
+            {
+                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
+                countryList.Add(ctrItem);
+            }
 
             return View("List",countryList);
         }
@@ -24,7 +31,7 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             countryService.Remove(id);
-            //return List();
+
             return RedirectToAction("List");
         }
 
@@ -34,11 +41,12 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Add(CountryDTO country)
+        public ActionResult Add(CountryModel country)
         {
             ICountryService countryService = new CountryService();
-            countryService.Add(country);
-            //return List();
+            CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+            countryService.Add(ctr);
+
             return RedirectToAction("List");
         }
 
@@ -46,16 +54,19 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICountryService countryService = new CountryService();
-            CountryDTO countryItem = countryService.GetAll().FirstOrDefault(c => c.ID == id);
+            CountryDTO ctrItem = countryService.GetAll().FirstOrDefault(c => c.ID == id);
+            CountryModel countryItem = new CountryModel { ID = ctrItem.ID, Name = ctrItem.Name };
+
             return View("Edit", countryItem);
         }
 
         [HttpPost]
-        public ActionResult Edit(CountryDTO country)
+        public ActionResult Edit(CountryModel country)
         {
             ICountryService countryService = new CountryService();
-            countryService.Edit(country);
-            //return List();
+            CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+            countryService.Edit(ctr);
+
             return RedirectToAction("List");
         }
     }

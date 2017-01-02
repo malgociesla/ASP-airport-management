@@ -3,15 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
-using AirportService;
-using AirportService.DTO;
 
-namespace AirplaneASP.Models.Companies
+namespace AirplaneASP.Models.Cities
 {
-    public class CompaniesModel
+    public class CityModel
     {
-        [Display(Name = "Company ID")]
+        [Display(Name = "City ID")]
         public Guid ID { get; set; }
+
+        [Display(Name = "Country ID")]
+        public Guid CountryID { get; set; }
 
         [Display(Name = "Name")]
         public string Name { get; set; }
