@@ -21,7 +21,8 @@ namespace AirplaneASP.Controllers
             if (page == null || page < 1) page = 1;
 
             //pagination
-            int pageSize = 6;
+            int pageSize;
+            if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(),out pageSize)){ }
             int pageNumber = (page ?? 1);
 
             return View("List", scheduleList.ToPagedList(pageNumber,pageSize));
