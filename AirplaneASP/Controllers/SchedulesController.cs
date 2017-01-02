@@ -15,17 +15,15 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult List(int? page)
         {
-            IScheduleService scheduleService = new ScheduleService();
-            List<ScheduleDTO> scheduleList = scheduleService.GetAll();
-
-            if (page == null || page < 1) page = 1;
-
             //pagination
-            int pageSize;
-            if (int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(),out pageSize)){ }
+            if (page == null || page < 1) page = 1;
             int pageNumber = (page ?? 1);
+            int pageSize;
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);              
+            IScheduleService scheduleService = new ScheduleService();
+            IPagedList<ScheduleDTO> schedulePage = scheduleService.GetPage(pageNumber,pageSize);
 
-            return View("List", scheduleList.ToPagedList(pageNumber,pageSize));
+            return View("List", schedulePage);
         }
 
         [HttpGet]

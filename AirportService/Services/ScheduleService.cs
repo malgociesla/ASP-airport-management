@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AirportService.DTO;
 using AirplaneEF;
+using PagedList;
 
 namespace AirportService
 {
@@ -63,6 +64,21 @@ namespace AirportService
             });
 
             return schedules.ToList();
+        }
+
+        public IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize)
+        {
+            var schedules = _airplaneContext.Schedules.ToList().Select(s => new ScheduleDTO
+            {
+                ID = s.idSchedule,
+                FlightStateID = s.idFlightState,
+                FlightID = s.idFlight,
+                DepartureDT = s.departureDT,
+                ArrivalDT = s.arrivalDT,
+                Comment = s.comment
+            });
+
+            return schedules.ToPagedList(pageNumber, pageSize);
         }
 
         public void Remove(Guid id)
