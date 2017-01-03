@@ -22,16 +22,21 @@ namespace AirplaneASP.Controllers
             int pageSize;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);              
             IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schedulePage = scheduleService.GetPage(pageNumber,pageSize);
-
-            //PagedList<ScheduleModel> schedulePage = new PagedList<ScheduleModel>(pageNumber, pageSize);
-
-            //IPagedList<ScheduleModel> schedulePage = schdPage.All();
-            //foreach (ScheduleDTO schdItem in schdPage)
-            //{
-            //    ScheduleModel schd = new ScheduleModel { ID = schdItem.ID, FlightID = schdItem.FlightID, FlightStateID = schdItem.FlightStateID, DepartureDT = schdItem.DepartureDT, ArrivalDT = schdItem.ArrivalDT, Comment = schdItem.Comment };
-            //    schedulePage.Add(schd);
-            //}
+            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber,pageSize);
+            //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
+            var subset = schdPage
+               .AsEnumerable()
+               .Select(s => new ScheduleModel
+               {
+                   ID = s.ID,
+                   FlightStateID = s.FlightStateID,
+                   FlightID = s.FlightID,
+                   DepartureDT = s.DepartureDT,
+                   ArrivalDT = s.ArrivalDT,
+                   Comment = s.Comment
+               });
+            // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
+             IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset,schdPage.GetMetaData()) as IPagedList;
 
             return View("List", schedulePage);
         }
