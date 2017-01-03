@@ -7,7 +7,7 @@ using PagedList;
 
 namespace AirportService
 {
-    public class ScheduleService:IScheduleService
+    public class ScheduleService : IScheduleService
     {
         private readonly AirportContext _airplaneContext;
         public ScheduleService()
@@ -23,7 +23,7 @@ namespace AirportService
                 idFlightState = scheduleDTO.FlightStateID,
                 departureDT = scheduleDTO.DepartureDT,
                 arrivalDT = scheduleDTO.ArrivalDT,
-                comment= scheduleDTO.Comment
+                comment = scheduleDTO.Comment
             };
             _airplaneContext.Schedules.Add(schedule);
             _airplaneContext.SaveChanges();
@@ -47,7 +47,7 @@ namespace AirportService
 
         public void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId)
         {
-            _airplaneContext.GenerateSchedule(startDate, endDate,flightId);
+            _airplaneContext.GenerateSchedule(startDate, endDate, flightId);
             _airplaneContext.SaveChanges();
         }
 
@@ -56,32 +56,45 @@ namespace AirportService
             var schedules = _airplaneContext.Schedules.ToList().Select(s => new ScheduleDTO
             {
                 ID = s.idSchedule,
-                FlightStateID=s.idFlightState,
-                FlightID=s.idFlight,
-                DepartureDT=s.departureDT,
-                ArrivalDT=s.arrivalDT,
-                Comment=s.comment
+                FlightStateID = s.idFlightState,
+                FlightID = s.idFlight,
+                DepartureDT = s.departureDT,
+                ArrivalDT = s.arrivalDT,
+                Comment = s.comment
             });
 
             return schedules.ToList();
         }
 
-        public IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize)
+        public IQueryable<ScheduleDTO> GetFilteredByDate(DateTime from, DateTime to)
         {
-            PagedList<ScheduleDTO> schedulePage = new PagedList<ScheduleDTO>(
-                _airplaneContext.Schedules
+            var schedules = GetAllDefault().Where(s => ((s.ArrivalDT >= from && s.ArrivalDT <= to) && (s.DepartureDT >= from && s.DepartureDT <= to)));
+            return schedules;
+        }
+
+        private IQueryable<ScheduleDTO> GetAllDefault()
+        {
+            var scheduleQ = _airplaneContext.Schedules
                     .OrderBy(s => s.idSchedule)
                     .Select(s => new ScheduleDTO
-                            {
-                                ID = s.idSchedule,
-                                FlightStateID = s.idFlightState,
-                                FlightID = s.idFlight,
-                                DepartureDT = s.departureDT,
-                                ArrivalDT = s.arrivalDT,
-                                Comment = s.comment
-                            }),
-                            pageNumber, pageSize);
+                    {
+                        ID = s.idSchedule,
+                        FlightStateID = s.idFlightState,
+                        FlightID = s.idFlight,
+                        DepartureDT = s.departureDT,
+                        ArrivalDT = s.arrivalDT,
+                        Comment = s.comment
+                    });
+            return scheduleQ;
+        }
 
+        public IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize, IQueryable<ScheduleDTO> filter=null)
+        {
+            PagedList<ScheduleDTO> schedulePage;
+            if (filter==null)
+                schedulePage = new PagedList<ScheduleDTO>(GetAllDefault(),pageNumber,pageSize);
+            else
+                schedulePage = new PagedList<ScheduleDTO>(filter, pageNumber, pageSize);
             return schedulePage;
         }
 
@@ -94,6 +107,6 @@ namespace AirportService
                 _airplaneContext.SaveChanges();
             }
         }
-    
+
     }
 }

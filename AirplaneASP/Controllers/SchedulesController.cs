@@ -112,14 +112,17 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult Filter(DateTime? startDate, DateTime? endDate, int? page)
+        public ActionResult Filter(DateTime from, DateTime to, int? page)
         {
+            if(from==null || to==null) return RedirectToAction("List", page);
+
+            //pagination
             if (page == null || page < 1) page = 1;
             int pageNumber = (page ?? 1);
             int pageSize;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
             IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize);
+            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, scheduleService.GetFilteredByDate(from,to));
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                .AsEnumerable()
