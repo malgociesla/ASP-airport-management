@@ -10,7 +10,7 @@
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>ScheduleDTO</h4>
         <hr />
@@ -64,5 +64,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List","Schedules", new { page = ViewBag.Page }, null)
+    @Html.ActionLink("Back to List", "List", "Schedules", new { page = ViewBag.Page }, null)
 </div>

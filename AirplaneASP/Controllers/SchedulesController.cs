@@ -20,9 +20,9 @@ namespace AirplaneASP.Controllers
             if (page == null || page < 1) page = 1;
             int pageNumber = (page ?? 1);
             int pageSize;
-            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);              
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
             IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber,pageSize);
+            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                .AsEnumerable()
@@ -36,7 +36,7 @@ namespace AirplaneASP.Controllers
                    Comment = s.Comment
                });
             // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
-             IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset,schdPage.GetMetaData()) as IPagedList;
+            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
 
             return View("List", schedulePage);
         }
@@ -47,7 +47,7 @@ namespace AirplaneASP.Controllers
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Remove(id);
 
-            return RedirectToAction("List",page);
+            return RedirectToAction("List", page);
         }
 
         public ActionResult GenerateSchedule()
@@ -57,7 +57,17 @@ namespace AirplaneASP.Controllers
             List<FlightModel> flightList = new List<FlightModel>();
             foreach (FlightDTO fli in fliList)
             {
-                FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                FlightModel fliItem = new FlightModel
+                {
+                    ID = fli.ID,
+                    CompanyID = fli.CompanyID,
+                    Name = fli.Name,
+                    DayOfWeek = fli.DayOfWeek,
+                    CityDepartureID = fli.CityDepartureID,
+                    CityArrivalID = fli.CityArrivalID,
+                    DepartureTime = fli.DepartureTime,
+                    ArrivalTime = fli.ArrivalTime
+                };
                 flightList.Add(fliItem);
             }
             ViewBag.FlightList = flightList;
@@ -82,7 +92,17 @@ namespace AirplaneASP.Controllers
                 List<FlightModel> flightList = new List<FlightModel>();
                 foreach (FlightDTO fli in fliList)
                 {
-                    FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                    FlightModel fliItem = new FlightModel
+                    {
+                        ID = fli.ID,
+                        CompanyID = fli.CompanyID,
+                        Name = fli.Name,
+                        DayOfWeek = fli.DayOfWeek,
+                        CityDepartureID = fli.CityDepartureID,
+                        CityArrivalID = fli.CityArrivalID,
+                        DepartureTime = fli.DepartureTime,
+                        ArrivalTime = fli.ArrivalTime
+                    };
                     flightList.Add(fliItem);
                 }
                 ViewBag.FlightList = flightList;
@@ -97,14 +117,32 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             ScheduleDTO schdItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
-            ScheduleModel scheduleItem = new ScheduleModel { ID = schdItem.ID, FlightID = schdItem.FlightID, FlightStateID = schdItem.FlightStateID, DepartureDT = schdItem.DepartureDT, ArrivalDT = schdItem.ArrivalDT, Comment = schdItem.Comment };
+            ScheduleModel scheduleItem = new ScheduleModel
+            {
+                ID = schdItem.ID,
+                FlightID = schdItem.FlightID,
+                FlightStateID = schdItem.FlightStateID,
+                DepartureDT = schdItem.DepartureDT,
+                ArrivalDT = schdItem.ArrivalDT,
+                Comment = schdItem.Comment
+            };
 
             IFlightService flightService = new FlightService();
             List<FlightDTO> fliList = flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
             foreach (FlightDTO fli in fliList)
             {
-                FlightModel fliItem = new FlightModel { ID = fli.ID, CompanyID = fli.CompanyID, Name = fli.Name, DayOfWeek = fli.DayOfWeek, CityDepartureID = fli.CityDepartureID, CityArrivalID = fli.CityArrivalID, DepartureTime = fli.DepartureTime, ArrivalTime = fli.ArrivalTime };
+                FlightModel fliItem = new FlightModel
+                {
+                    ID = fli.ID,
+                    CompanyID = fli.CompanyID,
+                    Name = fli.Name,
+                    DayOfWeek = fli.DayOfWeek,
+                    CityDepartureID = fli.CityDepartureID,
+                    CityArrivalID = fli.CityArrivalID,
+                    DepartureTime = fli.DepartureTime,
+                    ArrivalTime = fli.ArrivalTime
+                };
                 flightList.Add(fliItem);
             }
             ViewBag.FlightList = flightList;
@@ -124,7 +162,15 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 IScheduleService scheduleService = new ScheduleService();
-                ScheduleDTO schd = new ScheduleDTO { ID = schedule.ID, FlightID = schedule.FlightID, FlightStateID = schedule.FlightStateID, DepartureDT = schedule.DepartureDT, ArrivalDT = schedule.ArrivalDT, Comment = schedule.Comment };
+                ScheduleDTO schd = new ScheduleDTO
+                {
+                    ID = schedule.ID,
+                    FlightID = schedule.FlightID,
+                    FlightStateID = schedule.FlightStateID,
+                    DepartureDT = schedule.DepartureDT,
+                    ArrivalDT = schedule.ArrivalDT,
+                    Comment = schedule.Comment
+                };
                 scheduleService.Edit(schd);
 
                 return RedirectToAction("List", page);

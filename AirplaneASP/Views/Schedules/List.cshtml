@@ -12,7 +12,7 @@
 <h2>Schedules</h2>
 
 <p>
-    @Html.ActionLink("Generate schedule", "GenerateSchedule","Schedules")
+    @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
 </p>
 <table class="table">
     <tr>
@@ -34,33 +34,34 @@
         <th></th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FlightID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FlightStateID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DepartureDT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivalDT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comment)
-        </td>
-        <td>
-      
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID, page = Model.PageNumber }) |
-       <!--
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-        -->
-            @Html.ActionLink("Remove", "Remove", new { id = item.ID, page=Model.PageNumber})
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightStateID)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+
+                @Html.ActionLink("Edit", "Edit", new { id = item.ID, page = Model.PageNumber }) |
+                <!--
+                     @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+                 -->
+                @Html.ActionLink("Remove", "Remove", new { id = item.ID, page = Model.PageNumber })
+            </td>
+        </tr>
+    }
 
 </table>
 <br />

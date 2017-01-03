@@ -23,7 +23,7 @@ namespace AirplaneASP.Models.Flights
 
         [Display(Name = "Day of week")]
         [Required(ErrorMessage = "Please enter a day of week")]
-        [Range(1,7,ErrorMessage ="Value must be integer between 1 and 7")]
+        [Range(1, 7, ErrorMessage = "Value must be integer between 1 and 7")]
         public int? DayOfWeek { get; set; }
 
         [Display(Name = "City departure ID")]

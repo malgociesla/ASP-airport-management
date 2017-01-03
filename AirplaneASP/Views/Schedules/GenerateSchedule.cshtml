@@ -7,10 +7,10 @@
 
 <h2>GenerateSchedule</h2>
 
-@using (Html.BeginForm()) 
+@using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
-    
+
     <div class="form-horizontal">
         <h4>GenerateScheduleModel</h4>
         <hr />
@@ -48,5 +48,5 @@
 }
 
 <div>
-    @Html.ActionLink("Back to List", "List","Schedules", new { page = ViewBag.Page }, null)
+    @Html.ActionLink("Back to List", "List", "Schedules", new { page = ViewBag.Page }, null)
 </div>

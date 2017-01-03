@@ -22,7 +22,7 @@ namespace AirplaneASP.Controllers
                 Name = ctr.Name
             }).ToList();
 
-            return View("List",countryList);
+            return View("List", countryList);
         }
 
         [HttpGet]
@@ -45,7 +45,11 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICountryService countryService = new CountryService();
-                CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+                CountryDTO ctr = new CountryDTO
+                {
+                    ID = country.ID,
+                    Name = country.Name
+                };
                 countryService.Add(ctr);
 
                 return RedirectToAction("List");
@@ -58,7 +62,11 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             CountryDTO ctrItem = countryService.GetAll().FirstOrDefault(c => c.ID == id);
-            CountryModel countryItem = new CountryModel { ID = ctrItem.ID, Name = ctrItem.Name };
+            CountryModel countryItem = new CountryModel
+            {
+                ID = ctrItem.ID,
+                Name = ctrItem.Name
+            };
 
             return View("Edit", countryItem);
         }
@@ -69,7 +77,11 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICountryService countryService = new CountryService();
-                CountryDTO ctr = new CountryDTO { ID = country.ID, Name = country.Name };
+                CountryDTO ctr = new CountryDTO
+                {
+                    ID = country.ID,
+                    Name = country.Name
+                };
                 countryService.Edit(ctr);
 
                 return RedirectToAction("List");

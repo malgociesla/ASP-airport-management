@@ -24,7 +24,7 @@ namespace AirplaneASP.Controllers
                 Name = ci.Name
             }).ToList();
 
-            return View("List",cityList);
+            return View("List", cityList);
         }
 
         [HttpGet]
@@ -55,7 +55,12 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICityService cityService = new CityService();
-                CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+                CityDTO ci = new CityDTO
+                {
+                    ID = city.ID,
+                    CountryID = city.CountryID,
+                    Name = city.Name
+                };
                 cityService.Add(ci);
 
                 return RedirectToAction("List");
@@ -80,7 +85,12 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             CityDTO ciItem = cityService.GetAll().FirstOrDefault(c => c.ID == id);
-            CityModel cityItem = new CityModel { ID = ciItem.ID, CountryID = ciItem.CountryID, Name = ciItem.Name };
+            CityModel cityItem = new CityModel
+            {
+                ID = ciItem.ID,
+                CountryID = ciItem.CountryID,
+                Name = ciItem.Name
+            };
 
             ICountryService countryService = new CountryService();
             List<CountryDTO> ctrList = countryService.GetAll();
@@ -100,7 +110,12 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICityService cityService = new CityService();
-                CityDTO ci = new CityDTO { ID = city.ID, CountryID = city.CountryID, Name = city.Name };
+                CityDTO ci = new CityDTO
+                {
+                    ID = city.ID,
+                    CountryID = city.CountryID,
+                    Name = city.Name
+                };
                 cityService.Edit(ci);
 
                 return RedirectToAction("List");

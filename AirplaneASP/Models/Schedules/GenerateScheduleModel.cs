@@ -17,7 +17,7 @@ namespace AirplaneASP.Models.Schedules
         public DateTime StartDate { get; set; }
 
         [Display(Name = "End date")]
-        [DataType(DataType.Date, ErrorMessage ="Please enter date format")]
+        [DataType(DataType.Date, ErrorMessage = "Please enter date format")]
         [Required(ErrorMessage = "Please enter an end date")]
         public DateTime EndDate { get; set; }
     }

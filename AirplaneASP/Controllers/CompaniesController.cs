@@ -45,7 +45,11 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICompanyService companyService = new CompanyService();
-                CompanyDTO cmp = new CompanyDTO { ID = company.ID, Name = company.Name };
+                CompanyDTO cmp = new CompanyDTO
+                {
+                    ID = company.ID,
+                    Name = company.Name
+                };
                 companyService.Add(cmp);
 
                 return RedirectToAction("List");
@@ -57,10 +61,14 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c=>c.ID==id);
-            CompanyModel companyItem = new CompanyModel { ID=cmpItem.ID, Name=cmpItem.Name };
+            CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
+            CompanyModel companyItem = new CompanyModel
+            {
+                ID = cmpItem.ID,
+                Name = cmpItem.Name
+            };
 
-            return View("Edit",companyItem);
+            return View("Edit", companyItem);
         }
 
         [HttpPost]
@@ -69,12 +77,16 @@ namespace AirplaneASP.Controllers
             if (ModelState.IsValid)
             {
                 ICompanyService companyService = new CompanyService();
-                CompanyDTO cmp = new CompanyDTO { ID= company.ID, Name=company.Name};
+                CompanyDTO cmp = new CompanyDTO
+                {
+                    ID = company.ID,
+                    Name = company.Name
+                };
                 companyService.Edit(cmp);
 
                 return RedirectToAction("List");
-        }
+            }
             else return View();
-    }
+        }
     }
 }
