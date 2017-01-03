@@ -14,6 +14,32 @@
 <p>
     @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
 </p>
+@using (Html.BeginForm("Filter", "Schedules",new { page = Model.PageNumber }))
+{
+    <div class="form-inline">
+        <div class="form-group form-group-sm">
+            <div class="col-md-6">
+                @Html.Label("Filter", null, new { @class = "control-label col-md-6" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <div class="col-md-12">
+                @Html.TextBox("from", null, new { @class = "form-control datepicker" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <div class="col-md-12">
+                @Html.TextBox("to", null, new { @class = "form-control datepicker" })
+            </div>
+        </div>
+        <div class="form-group form-group-sm">
+            <div class="col-md-offset-2 col-md-1">
+                <input type="submit" value="Filter" class="btn btn-default" /> <span> </span>
+            </div>
+        </div>
+    </div>
+}
+<br />
 <table class="table">
     <tr>
         <th>

@@ -111,6 +111,32 @@ namespace AirplaneASP.Controllers
             }
         }
 
+        [HttpPost]
+        public ActionResult Filter(DateTime? startDate, DateTime? endDate, int? page)
+        {
+            if (page == null || page < 1) page = 1;
+            int pageNumber = (page ?? 1);
+            int pageSize;
+            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+            IScheduleService scheduleService = new ScheduleService();
+            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize);
+            //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
+            var subset = schdPage
+               .AsEnumerable()
+               .Select(s => new ScheduleModel
+               {
+                   ID = s.ID,
+                   FlightStateID = s.FlightStateID,
+                   FlightID = s.FlightID,
+                   DepartureDT = s.DepartureDT,
+                   ArrivalDT = s.ArrivalDT,
+                   Comment = s.Comment
+               });
+            // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
+            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
+
+            return View("List", schedulePage);
+        }
 
         [HttpGet]
         public ActionResult Edit(Guid id, int? page)
