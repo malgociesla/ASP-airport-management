@@ -17,12 +17,12 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             List<CityDTO> ciList = cityService.GetAll();
-            List<CityModel> cityList = new List<CityModel>();
-            foreach (CityDTO ci in ciList)
-            {
-                CityModel ciItem = new CityModel { ID = ci.ID, CountryID = ci.CountryID, Name = ci.Name };
-                cityList.Add(ciItem);
-            }
+            List<CityModel> cityList = new List<CityModel>(ciList.Select(ci => new CityModel
+                                                                {
+                                                                    ID = ci.ID,
+                                                                    CountryID = ci.CountryID,
+                                                                    Name = ci.Name
+                                                                }).ToList());
 
             return View("List",cityList);
         }

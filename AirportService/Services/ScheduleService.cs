@@ -68,17 +68,21 @@ namespace AirportService
 
         public IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize)
         {
-            var schedules = _airplaneContext.Schedules.ToList().Select(s => new ScheduleDTO
-            {
-                ID = s.idSchedule,
-                FlightStateID = s.idFlightState,
-                FlightID = s.idFlight,
-                DepartureDT = s.departureDT,
-                ArrivalDT = s.arrivalDT,
-                Comment = s.comment
-            });
+            PagedList<ScheduleDTO> schedulePage = new PagedList<ScheduleDTO>(
+                _airplaneContext.Schedules
+                    .OrderBy(s => s.idSchedule)
+                    .Select(s => new ScheduleDTO
+                            {
+                                ID = s.idSchedule,
+                                FlightStateID = s.idFlightState,
+                                FlightID = s.idFlight,
+                                DepartureDT = s.departureDT,
+                                ArrivalDT = s.arrivalDT,
+                                Comment = s.comment
+                            }),
+                            pageNumber, pageSize);
 
-            return schedules.ToPagedList(pageNumber, pageSize);
+            return schedulePage;
         }
 
         public void Remove(Guid id)

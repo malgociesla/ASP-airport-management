@@ -23,11 +23,8 @@ namespace AirplaneASP.Controllers
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);              
             IScheduleService scheduleService = new ScheduleService();
             IPagedList<ScheduleDTO> schedulePage = scheduleService.GetPage(pageNumber,pageSize);
-   
 
-            
-
-      
+            //PagedList<ScheduleModel> schedulePage = new PagedList<ScheduleModel>(pageNumber, pageSize);
 
             //IPagedList<ScheduleModel> schedulePage = schdPage.All();
             //foreach (ScheduleDTO schdItem in schdPage)
