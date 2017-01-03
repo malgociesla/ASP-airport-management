@@ -16,12 +16,11 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             List<CompanyDTO> cmpList = companyService.GetAll();
-            List<CompanyModel> companyList = new List<CompanyModel>();
-            foreach (CompanyDTO cmp in cmpList)
+            List<CompanyModel> companyList = cmpList.Select(cmp => new CompanyModel
             {
-                CompanyModel companyItem = new CompanyModel { ID = cmp.ID, Name = cmp.Name };
-                companyList.Add(companyItem);
-            }
+                ID = cmp.ID,
+                Name = cmp.Name
+            }).ToList();
 
             return View("List", companyList);
         }

@@ -17,12 +17,12 @@ namespace AirplaneASP.Controllers
         {
             ICityService cityService = new CityService();
             List<CityDTO> ciList = cityService.GetAll();
-            List<CityModel> cityList = new List<CityModel>(ciList.Select(ci => new CityModel
-                                                                {
-                                                                    ID = ci.ID,
-                                                                    CountryID = ci.CountryID,
-                                                                    Name = ci.Name
-                                                                }).ToList());
+            List<CityModel> cityList = ciList.Select(ci => new CityModel
+            {
+                ID = ci.ID,
+                CountryID = ci.CountryID,
+                Name = ci.Name
+            }).ToList();
 
             return View("List",cityList);
         }
@@ -40,12 +40,11 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             List<CountryDTO> ctrList = countryService.GetAll();
-            List<CountryModel> countryList = new List<CountryModel>();
-            foreach (CountryDTO ctr in ctrList)
+            List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
-                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
-                countryList.Add(ctrItem);
-            }
+                ID = ctr.ID,
+                Name = ctr.Name
+            }).ToList();
             ViewBag.CountryList = countryList;
             return View();
         }
@@ -65,12 +64,11 @@ namespace AirplaneASP.Controllers
             {
                 ICountryService countryService = new CountryService();
                 List<CountryDTO> ctrList = countryService.GetAll();
-                List<CountryModel> countryList = new List<CountryModel>();
-                foreach (CountryDTO ctr in ctrList)
+                List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
                 {
-                    CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
-                    countryList.Add(ctrItem);
-                }
+                    ID = ctr.ID,
+                    Name = ctr.Name
+                }).ToList();
                 ViewBag.CountryList = countryList;
 
                 return View();
@@ -86,12 +84,11 @@ namespace AirplaneASP.Controllers
 
             ICountryService countryService = new CountryService();
             List<CountryDTO> ctrList = countryService.GetAll();
-            List<CountryModel> countryList = new List<CountryModel>();
-            foreach (CountryDTO ctr in ctrList)
+            List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
-                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
-                countryList.Add(ctrItem);
-            }
+                ID = ctr.ID,
+                Name = ctr.Name
+            }).ToList();
             ViewBag.CountryList = countryList;
 
             return View("Edit", cityItem);
@@ -112,12 +109,11 @@ namespace AirplaneASP.Controllers
             {
                 ICountryService countryService = new CountryService();
                 List<CountryDTO> ctrList = countryService.GetAll();
-                List<CountryModel> countryList = new List<CountryModel>();
-                foreach (CountryDTO ctr in ctrList)
+                List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
                 {
-                    CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
-                    countryList.Add(ctrItem);
-                }
+                    ID = ctr.ID,
+                    Name = ctr.Name
+                }).ToList();
                 ViewBag.CountryList = countryList;
 
                 return View();

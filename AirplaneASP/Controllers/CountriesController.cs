@@ -16,12 +16,11 @@ namespace AirplaneASP.Controllers
         {
             ICountryService countryService = new CountryService();
             List<CountryDTO> ctrList = countryService.GetAll();
-            List<CountryModel> countryList = new List<CountryModel>();
-            foreach (CountryDTO ctr in ctrList)
+            List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
-                CountryModel ctrItem = new CountryModel { ID = ctr.ID, Name = ctr.Name };
-                countryList.Add(ctrItem);
-            }
+                ID = ctr.ID,
+                Name = ctr.Name
+            }).ToList();
 
             return View("List",countryList);
         }
