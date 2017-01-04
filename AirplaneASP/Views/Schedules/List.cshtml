@@ -14,7 +14,7 @@
 <p>
     @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
 </p>
-@using (Html.BeginForm("Filter", "Schedules",new { page = Model.PageNumber }))
+@using (Html.BeginForm(FormMethod.Get))
 {
     <div class="form-inline">
         <div class="form-group form-group-sm">
@@ -24,12 +24,12 @@
         </div>
         <div class="form-group form-group-sm">
             <div class="col-md-12">
-                @Html.TextBox("from", null, new { @class = "form-control datepicker" })
+                @Html.TextBox("from", ViewBag.FilterDateFrom as DateTime?, new { @class = "form-control datepicker" })
             </div>
         </div>
         <div class="form-group form-group-sm">
             <div class="col-md-12">
-                @Html.TextBox("to", null, new { @class = "form-control datepicker" })
+                @Html.TextBox("to", ViewBag.FilterDateTo as DateTime?, new { @class = "form-control datepicker" })
             </div>
         </div>
         <div class="form-group form-group-sm">
@@ -94,4 +94,4 @@
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("List",
-    new { page }))
+    new { page, from = ViewBag.FilterDateFrom, to = ViewBag.FilterDateTo }))

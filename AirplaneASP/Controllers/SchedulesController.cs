@@ -13,16 +13,25 @@ namespace AirplaneASP.Controllers
 {
     public class SchedulesController : Controller
     {
-        [HttpGet]
-        public ActionResult List(int? page)
+        //[HttpGet]
+        public ActionResult List(int? page, DateTime? from, DateTime? to)
         {
             //pagination
             if (page == null || page < 1) page = 1;
             int pageNumber = (page ?? 1);
             int pageSize;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+
             IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize);
+            //filter
+            IQueryable<ScheduleDTO> filter = null;
+            if (from != null && to != null)
+            {
+                filter = scheduleService.GetFilteredByDate((DateTime)from, (DateTime)to);
+                ViewBag.FilterDateFrom = from;
+                ViewBag.FilterDateTo = to;
+            }
+            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, filter);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                .AsEnumerable()
@@ -109,36 +118,6 @@ namespace AirplaneASP.Controllers
 
                 return View();
             }
-        }
-
-        [HttpPost]
-        public ActionResult Filter(DateTime from, DateTime to, int? page)
-        {
-            if(from==null || to==null) return RedirectToAction("List", page);
-
-            //pagination
-            if (page == null || page < 1) page = 1;
-            int pageNumber = (page ?? 1);
-            int pageSize;
-            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
-            IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, scheduleService.GetFilteredByDate(from,to));
-            //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
-            var subset = schdPage
-               .AsEnumerable()
-               .Select(s => new ScheduleModel
-               {
-                   ID = s.ID,
-                   FlightStateID = s.FlightStateID,
-                   FlightID = s.FlightID,
-                   DepartureDT = s.DepartureDT,
-                   ArrivalDT = s.ArrivalDT,
-                   Comment = s.Comment
-               });
-            // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
-            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
-
-            return View("List", schedulePage);
         }
 
         [HttpGet]
