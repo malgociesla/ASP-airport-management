@@ -14,32 +14,7 @@
 <p>
     @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
 </p>
-@using (Html.BeginForm(FormMethod.Get))
-{
-    <div class="form-inline">
-        <div class="form-group form-group-sm">
-            <div class="col-md-6">
-                @Html.Label("Filter", null, new { @class = "control-label col-md-6" })
-            </div>
-        </div>
-        <div class="form-group form-group-sm">
-            <div class="col-md-12">
-                @Html.TextBox("from", ViewBag.FilterDateFrom as DateTime?, new { @class = "form-control datepicker" })
-            </div>
-        </div>
-        <div class="form-group form-group-sm">
-            <div class="col-md-12">
-                @Html.TextBox("to", ViewBag.FilterDateTo as DateTime?, new { @class = "form-control datepicker" })
-            </div>
-        </div>
-        <div class="form-group form-group-sm">
-            <div class="col-md-offset-2 col-md-1">
-                <input type="submit" value="Filter" class="btn btn-default" /> <span> </span>
-            </div>
-        </div>
-    </div>
-}
-<br />
+@Html.Partial("FilterSchedule",(FilterViewModel)ViewBag.FilterModel)
 <table class="table">
     <tr>
         <th>
@@ -94,4 +69,4 @@
 Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
 
 @Html.PagedListPager(Model, page => Url.Action("List",
-    new { page, from = ViewBag.FilterDateFrom, to = ViewBag.FilterDateTo }))
+    new { page, from = ViewBag.FilterModel.FromDate, to = ViewBag.FilterModel.ToDate }))

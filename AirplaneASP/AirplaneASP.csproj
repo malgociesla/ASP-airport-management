@@ -221,6 +221,7 @@
     <Compile Include="Models\Flights\FlightModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Schedules\FilterViewModel.cs" />
     <Compile Include="Models\Schedules\GenerateScheduleModel.cs" />
     <Compile Include="Models\Schedules\ScheduleModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -300,6 +301,7 @@
     <Content Include="Views\Flights\Edit.cshtml" />
     <Content Include="Views\Schedules\Edit.cshtml" />
     <Content Include="Views\Shared\NavigationBar.cshtml" />
+    <Content Include="Views\Schedules\FilterSchedule.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

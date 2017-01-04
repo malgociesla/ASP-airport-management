@@ -27,9 +27,14 @@ namespace AirplaneASP.Controllers
             IQueryable<ScheduleDTO> filter = null;
             if (from != null && to != null)
             {
-                filter = scheduleService.GetFilteredByDate((DateTime)from, (DateTime)to);
-                ViewBag.FilterDateFrom = from;
-                ViewBag.FilterDateTo = to;
+                DateTime thisFrom = (DateTime)from;
+                DateTime thisTo = (DateTime)to;
+                filter = scheduleService.GetFilteredByDate(thisFrom, thisTo);
+                ViewBag.FilterModel = new FilterViewModel() { FromDate = thisFrom, ToDate = thisTo };
+            }
+            else
+            {
+                ViewBag.FilterModel = new FilterViewModel();
             }
             IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, filter);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
@@ -47,7 +52,13 @@ namespace AirplaneASP.Controllers
             // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
             IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
 
-            return View("List", schedulePage);
+            return View(schedulePage);
+        }
+
+        [HttpPost]
+        public ActionResult List(int? page, FilterViewModel filterModel)
+        {
+            return RedirectToAction("List", new {page, from=filterModel.FromDate, to = filterModel.ToDate });
         }
 
         [HttpGet]
