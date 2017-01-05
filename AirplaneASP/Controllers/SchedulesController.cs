@@ -22,8 +22,8 @@ namespace AirplaneASP.Controllers
             int pageSize;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
-            IScheduleService scheduleService = new ScheduleService();
             //filter
+            IScheduleService scheduleService = new ScheduleService();
             IQueryable<ScheduleDTO> filter = null;
             if (from != null && to != null)
             {
@@ -36,6 +36,16 @@ namespace AirplaneASP.Controllers
             {
                 ViewBag.FilterModel = new FilterViewModel();
             }
+
+            //get Page
+            IPagedList schedulePage = GetPage(pageNumber,pageSize,filter);
+
+            return View(schedulePage);
+        }
+
+        private IPagedList GetPage(int pageNumber, int pageSize, IQueryable<ScheduleDTO> filter = null)
+        {
+            IScheduleService scheduleService = new ScheduleService();
             IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, filter);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
@@ -51,14 +61,27 @@ namespace AirplaneASP.Controllers
                });
             // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
             IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
-
-            return View(schedulePage);
+            return schedulePage;
         }
 
         [HttpPost]
         public ActionResult List(int? page, FilterViewModel filterModel)
         {
-            return RedirectToAction("List", new {page, from=filterModel.FromDate, to = filterModel.ToDate });
+            if (ModelState.IsValid)
+            {
+                return RedirectToAction("List", new { page, from = filterModel.FromDate, to = filterModel.ToDate });
+            }
+            else
+            {
+                //pagination
+                if (page == null || page < 1) page = 1;
+                int pageNumber = (page ?? 1);
+                int pageSize;
+                int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+
+                ViewBag.FilterModel = filterModel;
+                return View(GetPage(pageNumber,pageSize));
+            }
         }
 
         [HttpGet]

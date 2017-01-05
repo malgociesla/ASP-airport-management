@@ -224,6 +224,7 @@
     <Compile Include="Models\Schedules\FilterViewModel.cs" />
     <Compile Include="Models\Schedules\GenerateScheduleModel.cs" />
     <Compile Include="Models\Schedules\ScheduleModel.cs" />
+    <Compile Include="ModelValidation\FromToDateAttribute.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
