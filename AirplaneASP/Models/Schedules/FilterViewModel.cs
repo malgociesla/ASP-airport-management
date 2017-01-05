@@ -11,11 +11,13 @@ namespace AirplaneASP.Models.Schedules
         [Display(Name = "From date")]
         [DataType(DataType.Date, ErrorMessage = "Please enter date format")]
         [Required(ErrorMessage = "Please enter a from date")]
-        public DateTime FromDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? FromDate { get; set; }
 
         [Display(Name = "To date")]
         [DataType(DataType.Date, ErrorMessage = "Please enter date format")]
         [Required(ErrorMessage = "Please enter a to date")]
-        public DateTime ToDate { get; set; }
+        [DisplayFormat(DataFormatString = "{0:yyyy-MM-dd}", ApplyFormatInEditMode = true)]
+        public DateTime? ToDate { get; set; }
     }
 }
