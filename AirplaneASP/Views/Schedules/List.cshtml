@@ -32,6 +32,9 @@
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
         </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
+        </th>
         <th></th>
     </tr>
 
@@ -49,6 +52,9 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ArrivalDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.FlightID)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Comment)

@@ -24,29 +24,28 @@ namespace AirplaneASP.Controllers
 
             //filter
             IScheduleService scheduleService = new ScheduleService();
-            IQueryable<ScheduleDTO> filter = null;
             if (from != null && to != null)
             {
                 DateTime thisFrom = (DateTime)from;
                 DateTime thisTo = (DateTime)to;
-                filter = scheduleService.GetFilteredByDate(thisFrom, thisTo);
                 ViewBag.FilterModel = new FilterViewModel() { FromDate = thisFrom, ToDate = thisTo };
             }
             else
             {
                 ViewBag.FilterModel = new FilterViewModel();
             }
-
+            
             //get Page
-            IPagedList schedulePage = GetPage(pageNumber,pageSize,filter);
+            IPagedList schedulePage = GetPage(pageNumber,pageSize,from,to);
 
             return View(schedulePage);
         }
 
-        private IPagedList GetPage(int pageNumber, int pageSize, IQueryable<ScheduleDTO> filter = null)
+        private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from=null, DateTime? to=null)
         {
             IScheduleService scheduleService = new ScheduleService();
-            IPagedList<ScheduleDTO> schdPage = scheduleService.GetPage(pageNumber, pageSize, filter);
+            int? totalItemsCount = null;
+            List<ScheduleDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount , from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                .AsEnumerable()
@@ -60,7 +59,10 @@ namespace AirplaneASP.Controllers
                    Comment = s.Comment
                });
             // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
-            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, schdPage.GetMetaData()) as IPagedList;
+            if (totalItemsCount == null)
+            { //error
+            }
+            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset,pageNumber,pageSize, (int)totalItemsCount) as IPagedList;
             return schedulePage;
         }
 
@@ -80,7 +82,7 @@ namespace AirplaneASP.Controllers
                 int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
                 ViewBag.FilterModel = filterModel;
-                return View(GetPage(pageNumber,pageSize));
+                return View(GetPage(pageNumber,pageSize)); //returns page without filter
             }
         }
 

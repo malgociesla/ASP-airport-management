@@ -10,5 +10,6 @@ namespace AirportService.DTO
         public DateTime? DepartureDT { get; set; }
         public DateTime? ArrivalDT { get; set; }
         public string Comment { get; set; }
+        public string ArrivalCityName { get; set; }
     }
 }

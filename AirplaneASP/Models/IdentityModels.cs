@@ -29,5 +29,7 @@ namespace AirplaneASP.Models
         {
             return new ApplicationDbContext();
         }
+
+        public System.Data.Entity.DbSet<AirplaneASP.Models.Schedules.ScheduleModel> ScheduleModels { get; set; }
     }
 }

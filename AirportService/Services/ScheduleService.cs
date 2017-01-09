@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using AirportService.DTO;
 using AirplaneEF;
-using PagedList;
 
 namespace AirportService
 {
@@ -66,7 +65,7 @@ namespace AirportService
             return schedules.ToList();
         }
 
-        public IQueryable<ScheduleDTO> GetFilteredByDate(DateTime from, DateTime to)
+        private IQueryable<ScheduleDTO> GetFilteredByDate(DateTime from, DateTime to)
         {
             var schedules = GetAllDefault().Where(s => ((s.ArrivalDT >= from && s.ArrivalDT <= to) && (s.DepartureDT >= from && s.DepartureDT <= to)));
             return schedules;
@@ -75,7 +74,7 @@ namespace AirportService
         private IQueryable<ScheduleDTO> GetAllDefault()
         {
             var scheduleQ = _airplaneContext.Schedules
-                    .OrderBy(s => s.idSchedule)
+                    .OrderBy(s => s.departureDT)
                     .Select(s => new ScheduleDTO
                     {
                         ID = s.idSchedule,
@@ -88,14 +87,21 @@ namespace AirportService
             return scheduleQ;
         }
 
-        public IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize, IQueryable<ScheduleDTO> filter=null)
+        public List<ScheduleDTO> GetList(int pageNumber, int pageSize, out int? totalItemsCount, DateTime? from = null, DateTime? to = null)
         {
-            PagedList<ScheduleDTO> schedulePage;
-            if (filter==null)
-                schedulePage = new PagedList<ScheduleDTO>(GetAllDefault(),pageNumber,pageSize);
+            IQueryable<ScheduleDTO> scheduleQ = null;
+            List<ScheduleDTO> schedules = new List<ScheduleDTO>();
+
+            if (from==null || to==null)
+                scheduleQ = GetAllDefault();
             else
-                schedulePage = new PagedList<ScheduleDTO>(filter, pageNumber, pageSize);
-            return schedulePage;
+                scheduleQ = GetFilteredByDate((DateTime)from, (DateTime)to);
+
+            schedules = scheduleQ.Skip(pageSize * (pageNumber - 1))
+                    .Take(pageSize)
+                    .ToList();
+            totalItemsCount = scheduleQ.ToList().Count;
+            return schedules;
         }
 
         public void Remove(Guid id)

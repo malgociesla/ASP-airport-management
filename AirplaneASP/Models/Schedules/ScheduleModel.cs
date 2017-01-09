@@ -17,12 +17,12 @@ namespace AirplaneASP.Models.Schedules
         [Display(Name = "Flight state ID")]
         public Guid FlightStateID { get; set; }
 
-        [Display(Name = "Departure date and time")]
+        [Display(Name = "Departure")]
         [Required(ErrorMessage = "Please enter a departure date and time")]
         [DataType(DataType.DateTime, ErrorMessage = "Please enter datetime format")]
         public DateTime? DepartureDT { get; set; }
 
-        [Display(Name = "Arrival date and time")]
+        [Display(Name = "Arrival")]
         [Required(ErrorMessage = "Please enter a arrival date and time")]
         [DataType(DataType.DateTime, ErrorMessage = "Please enter datetime format")]
         public DateTime? ArrivalDT { get; set; }

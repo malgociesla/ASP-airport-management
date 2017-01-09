@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using AirportService.DTO;
-using PagedList;
 using System.Linq;
 
 namespace AirportService
@@ -12,8 +11,7 @@ namespace AirportService
         void Remove(Guid id);
         void Edit(ScheduleDTO scheduleDTO);
         List<ScheduleDTO> GetAll();
-        IPagedList<ScheduleDTO> GetPage(int pageNumber, int pageSize, IQueryable<ScheduleDTO> filter=null);
-        IQueryable<ScheduleDTO> GetFilteredByDate(DateTime from, DateTime to);
+        List<ScheduleDTO> GetList(int pageNumber, int pageSize, out int? totalItemsCount, DateTime? from = null, DateTime? to = null);
         void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId);
     }
 }

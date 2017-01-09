@@ -221,8 +221,8 @@
           <Property Name="idCityArrival" Type="Guid" Nullable="false" />
           <Property Name="departureTime" Type="Time" Precision="7" />
           <Property Name="arrivalTime" Type="Time" Precision="7" />
-          <NavigationProperty Name="City" Relationship="Self.FK__Flight__idCityAr__70DDC3D8" FromRole="Flight" ToRole="City" />
-          <NavigationProperty Name="City1" Relationship="Self.FK__Flight__idCityDe__71D1E811" FromRole="Flight" ToRole="City" />
+          <NavigationProperty Name="CityArrival" Relationship="Self.FK__Flight__idCityAr__70DDC3D8" FromRole="Flight" ToRole="City" />
+          <NavigationProperty Name="CityDeparture" Relationship="Self.FK__Flight__idCityDe__71D1E811" FromRole="Flight" ToRole="City" />
           <NavigationProperty Name="Company" Relationship="Self.FK__Flight__idCompan__5EBF139D" FromRole="Flight" ToRole="Company" />
           <NavigationProperty Name="Schedules" Relationship="Self.FK__Schedule__idFlig__66603565" FromRole="Flight" ToRole="Schedule" />
         </EntityType>
