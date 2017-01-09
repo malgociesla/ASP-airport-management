@@ -17,8 +17,12 @@ namespace AirplaneASP.Controllers
         public ActionResult List(int? page, DateTime? from, DateTime? to)
         {
             //pagination
-            if (page == null || page < 1) page = 1;
-            int pageNumber = (page ?? 1);
+            if (page == null ||
+                page < 1)
+            {
+                page = 1;
+            }
+            int pageNumber = page.Value;
             int pageSize;
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
@@ -34,21 +38,21 @@ namespace AirplaneASP.Controllers
             {
                 ViewBag.FilterModel = new FilterViewModel();
             }
-            
+
             //get Page
-            IPagedList schedulePage = GetPage(pageNumber,pageSize,from,to);
+            IPagedList schedulePage = GetPage(pageNumber, pageSize, from, to);
 
             return View(schedulePage);
         }
 
-        private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from=null, DateTime? to=null)
+        private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
         {
             IScheduleService scheduleService = new ScheduleService();
-            int? totalItemsCount = null;
-            List<ScheduleDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount , from, to);
+            int totalItemsCount=0;
+            List<ScheduleDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
-               .AsEnumerable()
+               //.AsEnumerable()
                .Select(s => new ScheduleModel
                {
                    ID = s.ID,
@@ -58,11 +62,7 @@ namespace AirplaneASP.Controllers
                    ArrivalDT = s.ArrivalDT,
                    Comment = s.Comment
                });
-            // create new PagedList<ScheduleModel> from PagedList<ScheduleDTO>
-            if (totalItemsCount == null)
-            { //error
-            }
-            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset,pageNumber,pageSize, (int)totalItemsCount) as IPagedList;
+            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
             return schedulePage;
         }
 
@@ -76,13 +76,17 @@ namespace AirplaneASP.Controllers
             else
             {
                 //pagination
-                if (page == null || page < 1) page = 1;
-                int pageNumber = (page ?? 1);
+                if (page == null || 
+                    page < 1)
+                {
+                    page = 1;
+                }
+                int pageNumber = page.Value;
                 int pageSize;
                 int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
                 ViewBag.FilterModel = filterModel;
-                return View(GetPage(pageNumber,pageSize)); //returns page without filter
+                return View(GetPage(pageNumber, pageSize)); //returns page without filter
             }
         }
 

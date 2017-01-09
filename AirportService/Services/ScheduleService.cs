@@ -31,17 +31,24 @@ namespace AirportService
 
         public void Edit(ScheduleDTO scheduleDTO)
         {
-            var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.idSchedule == scheduleDTO.ID);
-            if (schedule != null)
+            if (scheduleDTO != null)
             {
-                schedule.idFlight = scheduleDTO.FlightID;
-                schedule.idFlightState = scheduleDTO.FlightStateID;
-                schedule.departureDT = scheduleDTO.DepartureDT;
-                schedule.arrivalDT = scheduleDTO.ArrivalDT;
-                schedule.comment = scheduleDTO.Comment;
+                var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.idSchedule == scheduleDTO.ID);
+                if (schedule != null)
+                {
+                    schedule.idFlight = scheduleDTO.FlightID;
+                    schedule.idFlightState = scheduleDTO.FlightStateID;
+                    schedule.departureDT = scheduleDTO.DepartureDT;
+                    schedule.arrivalDT = scheduleDTO.ArrivalDT;
+                    schedule.comment = scheduleDTO.Comment;
 
-                _airplaneContext.SaveChanges();
-            }//else schedule doesn't exist
+                    _airplaneContext.SaveChanges();
+                }//else schedule doesn't exist
+            }
+            else
+            {
+                //throw ex
+            }
         }
 
         public void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId)
@@ -67,7 +74,10 @@ namespace AirportService
 
         private IQueryable<ScheduleDTO> GetFilteredByDate(DateTime from, DateTime to)
         {
-            var schedules = GetAllDefault().Where(s => ((s.ArrivalDT >= from && s.ArrivalDT <= to) && (s.DepartureDT >= from && s.DepartureDT <= to)));
+            var schedules = GetAllDefault()
+                .Where(s =>
+                        ((s.ArrivalDT >= from && s.ArrivalDT <= to)
+                     && (s.DepartureDT >= from && s.DepartureDT <= to)));
             return schedules;
         }
 
@@ -87,12 +97,16 @@ namespace AirportService
             return scheduleQ;
         }
 
-        public List<ScheduleDTO> GetList(int pageNumber, int pageSize, out int? totalItemsCount, DateTime? from = null, DateTime? to = null)
+        public List<ScheduleDTO> GetList(int pageNumber,
+            int pageSize,
+            out int totalItemsCount,
+            DateTime? from = null,
+            DateTime? to = null)
         {
             IQueryable<ScheduleDTO> scheduleQ = null;
             List<ScheduleDTO> schedules = new List<ScheduleDTO>();
 
-            if (from==null || to==null)
+            if (from == null || to == null)
                 scheduleQ = GetAllDefault();
             else
                 scheduleQ = GetFilteredByDate((DateTime)from, (DateTime)to);
