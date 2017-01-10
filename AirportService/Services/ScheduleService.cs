@@ -111,6 +111,7 @@ namespace AirportService
                         FlightID = s.IdFlight,
                         DepartureDT = s.DepartureDT,
                         ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment,
                         CityDeparture = s.Flight.CityDeparture.Name,
                         CountryDeparture = s.Flight.CityDeparture.Country.Name,
                         CityArrival = s.Flight.CityArrival.Name,
