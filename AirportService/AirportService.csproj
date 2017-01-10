@@ -57,6 +57,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DTO\ScheduleDetailsDTO.cs" />
     <Compile Include="Services\CityService.cs" />
     <Compile Include="Services\CompanyService.cs" />
     <Compile Include="Services\CountryService.cs" />

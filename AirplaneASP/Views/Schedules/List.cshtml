@@ -1,7 +1,7 @@
 ﻿@using PagedList
 @using PagedList.Mvc
 @using AirplaneASP.Models.Schedules
-@model IPagedList<ScheduleModel>
+@model IPagedList<ScheduleDetailsModel>
 
 <link href="~/Content/PagedList.css" rel="stylesheet" type="text/css" />
 @{
@@ -18,10 +18,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().FlightID)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CityDeparture)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().FlightStateID)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CityArrival)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().DepartureDT)
@@ -30,22 +30,21 @@
             @Html.DisplayNameFor(model => model.FirstOrDefault().ArrivalDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Company)
         </th>
         <th>
             @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
         </th>
-        <th></th>
     </tr>
 
     @foreach (var item in Model)
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.FlightID)
+                @Html.DisplayFor(modelItem => item.CityDeparture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FlightStateID)
+                @Html.DisplayFor(modelItem => item.CityArrival)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.DepartureDT)
@@ -54,7 +53,7 @@
                 @Html.DisplayFor(modelItem => item.ArrivalDT)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.FlightID)
+                @Html.DisplayFor(modelItem => item.Company)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Comment)

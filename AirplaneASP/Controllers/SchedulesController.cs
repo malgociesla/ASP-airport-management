@@ -49,20 +49,25 @@ namespace AirplaneASP.Controllers
         {
             IScheduleService scheduleService = new ScheduleService();
             int totalItemsCount=0;
-            List<ScheduleDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
+            List<ScheduleDetailsDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                //.AsEnumerable()
-               .Select(s => new ScheduleModel
+               .Select(s => new ScheduleDetailsModel
                {
                    ID = s.ID,
                    FlightStateID = s.FlightStateID,
                    FlightID = s.FlightID,
                    DepartureDT = s.DepartureDT,
                    ArrivalDT = s.ArrivalDT,
-                   Comment = s.Comment
+                   Comment = s.Comment,
+                   CityDeparture = s.CityDeparture,
+                   CountryDeparture = s.CountryDeparture,
+                   CityArrival = s.CityArrival,
+                   CountryArrival = s.CountryArrival,
+                   Company = s.Company
                });
-            IPagedList schedulePage = new StaticPagedList<ScheduleModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
+            IPagedList schedulePage = new StaticPagedList<ScheduleDetailsModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
             return schedulePage;
         }
 
