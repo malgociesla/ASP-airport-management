@@ -76,7 +76,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                return RedirectToAction("List", new { page, from = filterModel.FromDate, to = filterModel.ToDate });
+                return RedirectToAction("List", new { page = page, from = filterModel.FromDate, to = filterModel.ToDate });
             }
             else
             {
@@ -101,7 +101,7 @@ namespace AirplaneASP.Controllers
             IScheduleService scheduleService = new ScheduleService();
             scheduleService.Remove(id);
 
-            return RedirectToAction("List", page);
+            return RedirectToAction("List", new { page = page });
         }
 
         public ActionResult GenerateSchedule()
@@ -137,7 +137,7 @@ namespace AirplaneASP.Controllers
                 IScheduleService scheduleService = new ScheduleService();
                 scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
 
-                return RedirectToAction("List", 0);
+                return RedirectToAction("List");
             }
             else
             {
@@ -226,7 +226,7 @@ namespace AirplaneASP.Controllers
                 };
                 scheduleService.Edit(schd);
 
-                return RedirectToAction("List", page);
+                return RedirectToAction("List", new { page = page });
             }
             else return View();
         }
