@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Company] (
-    [idCompany] UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
-    [name]      VARCHAR (100)    NULL,
-    PRIMARY KEY CLUSTERED ([idCompany] ASC)
+    [Id] UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
+    [Name]      VARCHAR (100)    NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

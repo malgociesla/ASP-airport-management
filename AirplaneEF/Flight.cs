@@ -20,14 +20,14 @@ namespace AirplaneEF
             this.Schedules = new HashSet<Schedule>();
         }
     
-        public System.Guid idFlight { get; set; }
-        public System.Guid idCompany { get; set; }
-        public string name { get; set; }
-        public Nullable<int> fDayofWeek { get; set; }
-        public System.Guid idCityDeparture { get; set; }
-        public System.Guid idCityArrival { get; set; }
-        public Nullable<System.TimeSpan> departureTime { get; set; }
-        public Nullable<System.TimeSpan> arrivalTime { get; set; }
+        public System.Guid Id { get; set; }
+        public System.Guid IdCompany { get; set; }
+        public string Name { get; set; }
+        public Nullable<int> FDayofWeek { get; set; }
+        public System.Guid IdCityDeparture { get; set; }
+        public System.Guid IdCityArrival { get; set; }
+        public Nullable<System.TimeSpan> DepartureTime { get; set; }
+        public Nullable<System.TimeSpan> ArrivalTime { get; set; }
     
         public virtual City CityArrival { get; set; }
         public virtual City CityDeparture { get; set; }

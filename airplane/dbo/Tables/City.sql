@@ -1,8 +1,8 @@
 ﻿CREATE TABLE [dbo].[City] (
-    [idCity]    UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
-    [idCountry] UNIQUEIDENTIFIER NOT NULL,
-    [name]      VARCHAR (50)     NULL,
-    PRIMARY KEY CLUSTERED ([idCity] ASC),
-    FOREIGN KEY ([idCountry]) REFERENCES [dbo].[Country] ([idCountry]) ON DELETE CASCADE
+    [Id]    UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
+    [IdCountry] UNIQUEIDENTIFIER NOT NULL,
+    [Name]      VARCHAR (50)     NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([IdCountry]) REFERENCES [dbo].[Country] ([Id]) ON DELETE CASCADE
 );
 

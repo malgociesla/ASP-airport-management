@@ -15,18 +15,18 @@ namespace AirportService
         }
         public Guid Add(CountryDTO countryDTO)
         {
-            Country country = new Country { name = countryDTO.Name };
+            Country country = new Country { Name = countryDTO.Name };
             _airplaneContext.Countries.Add(country);
             _airplaneContext.SaveChanges();
-            return country.idCountry;
+            return country.Id;
         }
 
         public void Edit(CountryDTO countryDTO)
         {
-            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == countryDTO.ID);
+            var country = _airplaneContext.Countries.FirstOrDefault(c => c.Id == countryDTO.ID);
             if (country != null)
             {
-                country.name = countryDTO.Name;
+                country.Name = countryDTO.Name;
                 _airplaneContext.SaveChanges();
             }
         }
@@ -35,8 +35,8 @@ namespace AirportService
         {
             var countries = _airplaneContext.Countries.ToList().Select(c => new CountryDTO
             {
-                ID = c.idCountry,
-                Name = c.name
+                ID = c.Id,
+                Name = c.Name
             });
 
             return countries.ToList();
@@ -44,14 +44,14 @@ namespace AirportService
 
         public void Remove(Guid id)
         {
-            var country = _airplaneContext.Countries.FirstOrDefault(c => c.idCountry == id);
+            var country = _airplaneContext.Countries.FirstOrDefault(c => c.Id == id);
             if (country != null)
             {
-                var city = _airplaneContext.Cities.Where(c => c.idCountry == country.idCountry);
+                var city = _airplaneContext.Cities.Where(c => c.IdCountry == country.Id);
                 ICityService cityService = new CityService();
                 if (city.Any())
                     foreach (var c in city)                   
-                        cityService.Remove(c.idCity);
+                        cityService.Remove(c.Id);
                 _airplaneContext.Countries.Remove(country);
                 _airplaneContext.SaveChanges();
             }

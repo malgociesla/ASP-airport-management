@@ -28,19 +28,19 @@ AS
 		IF(@flightId) IS NOT NULL
 		BEGIN
 			SET @flightCursor = CURSOR FOR
-								SELECT idFlight
+								SELECT Id
 								FROM [dbo].[Flight] f
-								WHERE fDayofWeek=@startDateDoW
-								AND f.idFlight=@flightId;
+								WHERE FDayofWeek=@startDateDoW
+								AND f.Id=@flightId;
 		END
 		ELSE
 		--schedule for all flights
 		BEGIN
 			--BEGIN TRY
 			SET @flightCursor = CURSOR FOR
-								SELECT idFlight
+								SELECT Id
 								FROM [dbo].[Flight]
-								WHERE fDayofWeek=@startDateDoW
+								WHERE FDayofWeek=@startDateDoW
 			END
 		OPEN @flightCursor
 		FETCH NEXT FROM @flightCursor 
@@ -52,16 +52,16 @@ AS
 		WHILE @@FETCH_STATUS = 0
 		BEGIN
 			--get flight data
-			SELECT @thisDepartureTime = (SELECT departureTime
+			SELECT @thisDepartureTime = (SELECT DepartureTime
 											FROM [dbo].[Flight] f 
-											WHERE f.idFlight=@thisIdFlight)
+											WHERE f.Id=@thisIdFlight)
 			SET @thisDepartureDT= CAST(@fromDate AS DATETIME) + CAST(@thisDepartureTime AS DATETIME);
-			SELECT @thisArrivalTime = (SELECT arrivalTime
+			SELECT @thisArrivalTime = (SELECT ArrivalTime
 										FROM [dbo].[Flight] f
-										WHERE f.idFlight=@thisIdFlight)
+										WHERE f.Id=@thisIdFlight)
 			SET @thisArrivalDT= CAST(@fromDate AS DATETIME) + CAST(@thisArrivalTime AS DATETIME);
 			--generate schedule
-			INSERT INTO [dbo].[Schedule] (idSchedule,idFlight,idFlightState,departureDT,arrivalDT,comment)
+			INSERT INTO [dbo].[Schedule] (Id,IdFlight,IdFlightState,DepartureDT,ArrivalDT,Comment)
 			VALUES (NEWID(),@thisIdFlight,@thisIdFlightState,@thisDepartureDT,@thisArrivalDT,'')
 			--cursor
 			FETCH NEXT FROM @flightCursor

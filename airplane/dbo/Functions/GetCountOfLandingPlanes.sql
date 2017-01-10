@@ -16,15 +16,15 @@ BEGIN
 	DECLARE @timeTo DATETIME= DATEADD(MINUTE,4,@landingDT)
 	SET @timeTo = DATEADD(SECOND,59,@timeTo)
 
-SELECT @result = (SELECT COUNT(arrivalDT)
+SELECT @result = (SELECT COUNT(ArrivalDT)
 				FROM Schedule s
 					INNER JOIN Flight f
-					ON s.idFlight=f.idFlight
-				WHERE arrivalDT
+					ON s.IdFlight=f.Id
+				WHERE ArrivalDT
 					BETWEEN @timeFrom
 					AND @timeTo
 				--city hardcoded
-				AND idCityArrival='ecf5b8ed-f0c1-e611-b353-d017c293d790')
+				AND IdCityArrival='ecf5b8ed-f0c1-e611-b353-d017c293d790')
 
 	RETURN @result;
 END

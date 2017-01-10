@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using AirportService.DTO;
 using AirplaneEF;
+using System.Data.Entity;
 
 namespace AirportService
 {
@@ -18,29 +19,29 @@ namespace AirportService
         {
             Schedule schedule = new Schedule
             {
-                idFlight = scheduleDTO.FlightID,
-                idFlightState = scheduleDTO.FlightStateID,
-                departureDT = scheduleDTO.DepartureDT,
-                arrivalDT = scheduleDTO.ArrivalDT,
-                comment = scheduleDTO.Comment
+                IdFlight = scheduleDTO.FlightID,
+                IdFlightState = scheduleDTO.FlightStateID,
+                DepartureDT = scheduleDTO.DepartureDT,
+                ArrivalDT = scheduleDTO.ArrivalDT,
+                Comment = scheduleDTO.Comment
             };
             _airplaneContext.Schedules.Add(schedule);
             _airplaneContext.SaveChanges();
-            return schedule.idSchedule;
+            return schedule.Id;
         }
 
         public void Edit(ScheduleDTO scheduleDTO)
         {
             if (scheduleDTO != null)
             {
-                var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.idSchedule == scheduleDTO.ID);
+                var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.Id == scheduleDTO.ID);
                 if (schedule != null)
                 {
-                    schedule.idFlight = scheduleDTO.FlightID;
-                    schedule.idFlightState = scheduleDTO.FlightStateID;
-                    schedule.departureDT = scheduleDTO.DepartureDT;
-                    schedule.arrivalDT = scheduleDTO.ArrivalDT;
-                    schedule.comment = scheduleDTO.Comment;
+                    schedule.IdFlight = scheduleDTO.FlightID;
+                    schedule.IdFlightState = scheduleDTO.FlightStateID;
+                    schedule.DepartureDT = scheduleDTO.DepartureDT;
+                    schedule.ArrivalDT = scheduleDTO.ArrivalDT;
+                    schedule.Comment = scheduleDTO.Comment;
 
                     _airplaneContext.SaveChanges();
                 }//else schedule doesn't exist
@@ -59,15 +60,18 @@ namespace AirportService
 
         public List<ScheduleDTO> GetAll()
         {
-            var schedules = _airplaneContext.Schedules.ToList().Select(s => new ScheduleDTO
-            {
-                ID = s.idSchedule,
-                FlightStateID = s.idFlightState,
-                FlightID = s.idFlight,
-                DepartureDT = s.departureDT,
-                ArrivalDT = s.arrivalDT,
-                Comment = s.comment
-            });
+            var schedules = _airplaneContext
+                .Schedules
+                .ToList()
+                .Select(s => new ScheduleDTO
+                {
+                    ID = s.Id,
+                    FlightStateID = s.IdFlightState,
+                    FlightID = s.IdFlight,
+                    DepartureDT = s.DepartureDT,
+                    ArrivalDT = s.ArrivalDT,
+                    Comment = s.Comment
+                });
 
             return schedules.ToList();
         }
@@ -84,15 +88,16 @@ namespace AirportService
         private IQueryable<ScheduleDTO> GetAllDefault()
         {
             var scheduleQ = _airplaneContext.Schedules
-                    .OrderBy(s => s.departureDT)
+                    .Include(a => a.FlightState)
+                    .OrderBy(s => s.DepartureDT)
                     .Select(s => new ScheduleDTO
                     {
-                        ID = s.idSchedule,
-                        FlightStateID = s.idFlightState,
-                        FlightID = s.idFlight,
-                        DepartureDT = s.departureDT,
-                        ArrivalDT = s.arrivalDT,
-                        Comment = s.comment
+                        ID = s.Id,
+                        FlightStateID = s.IdFlightState,
+                        FlightID = s.IdFlight,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        //ArrCityName = s.Flight.CityArrival.Name
                     });
             return scheduleQ;
         }
@@ -111,7 +116,8 @@ namespace AirportService
             else
                 scheduleQ = GetFilteredByDate((DateTime)from, (DateTime)to);
 
-            schedules = scheduleQ.Skip(pageSize * (pageNumber - 1))
+            schedules = scheduleQ
+                    .Skip(pageSize * (pageNumber - 1))
                     .Take(pageSize)
                     .ToList();
             totalItemsCount = scheduleQ.ToList().Count;
@@ -120,7 +126,7 @@ namespace AirportService
 
         public void Remove(Guid id)
         {
-            var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.idSchedule == id);
+            var schedule = _airplaneContext.Schedules.FirstOrDefault(s => s.Id == id);
             if (schedule != null)
             {
                 _airplaneContext.Schedules.Remove(schedule);

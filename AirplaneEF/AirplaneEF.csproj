@@ -51,68 +51,68 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="AirplaneEF.Context.cs">
+    <Compile Include="AirportEF.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AirplaneEF.Context.tt</DependentUpon>
+      <DependentUpon>AirportEF.Context.tt</DependentUpon>
     </Compile>
-    <Compile Include="AirplaneEF.cs">
+    <Compile Include="AirportEF.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
-    <Compile Include="AirplaneEF.Designer.cs">
+    <Compile Include="AirportEF.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
-      <DependentUpon>AirplaneEF.edmx</DependentUpon>
+      <DependentUpon>AirportEF.edmx</DependentUpon>
     </Compile>
     <Compile Include="City.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Company.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Country.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Flight.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
     <Compile Include="FlightState.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Schedule.cs">
-      <DependentUpon>AirplaneEF.tt</DependentUpon>
+      <DependentUpon>AirportEF.tt</DependentUpon>
     </Compile>
   </ItemGroup>
   <ItemGroup>
-    <EntityDeploy Include="AirplaneEF.edmx">
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <EntityDeploy Include="AirportEF.edmx">
       <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>AirplaneEF.Designer.cs</LastGenOutput>
+      <LastGenOutput>AirportEF.Designer.cs</LastGenOutput>
     </EntityDeploy>
   </ItemGroup>
   <ItemGroup>
-    <None Include="AirplaneEF.edmx.diagram">
-      <DependentUpon>AirplaneEF.edmx</DependentUpon>
+    <None Include="AirportEF.edmx.diagram">
+      <DependentUpon>AirportEF.edmx</DependentUpon>
     </None>
     <None Include="App.Config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="AirplaneEF.Context.tt">
+    <Content Include="AirportEF.Context.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AirplaneEF.edmx</DependentUpon>
-      <LastGenOutput>AirplaneEF.Context.cs</LastGenOutput>
+      <DependentUpon>AirportEF.edmx</DependentUpon>
+      <LastGenOutput>AirportEF.Context.cs</LastGenOutput>
     </Content>
-    <Content Include="AirplaneEF.tt">
+    <Content Include="AirportEF.tt">
       <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>AirplaneEF.edmx</DependentUpon>
-      <LastGenOutput>AirplaneEF.cs</LastGenOutput>
+      <DependentUpon>AirportEF.edmx</DependentUpon>
+      <LastGenOutput>AirportEF.cs</LastGenOutput>
     </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

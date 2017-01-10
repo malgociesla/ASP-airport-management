@@ -15,18 +15,18 @@ namespace AirportService
         }
         public Guid Add(CompanyDTO companyDTO)
         {
-            Company company = new Company { name = companyDTO.Name };
+            Company company = new Company { Name = companyDTO.Name };
             _airplaneContext.Companies.Add(company);
             _airplaneContext.SaveChanges();
-            return company.idCompany;
+            return company.Id;
         }
 
         public void Edit(CompanyDTO companyDTO)
         {
-            var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == companyDTO.ID);
+            var company = _airplaneContext.Companies.FirstOrDefault(c => c.Id == companyDTO.ID);
             if (company != null)
             {
-                company.name = companyDTO.Name;
+                company.Name = companyDTO.Name;
                 _airplaneContext.SaveChanges();
             }
         }
@@ -35,8 +35,8 @@ namespace AirportService
         {
             var companies = _airplaneContext.Companies.ToList().Select(c => new CompanyDTO
             {
-                ID = c.idCompany,
-                Name = c.name
+                ID = c.Id,
+                Name = c.Name
             });
 
             return companies.ToList();
@@ -44,7 +44,7 @@ namespace AirportService
 
         public void Remove(Guid id)
         {
-            var company = _airplaneContext.Companies.FirstOrDefault(c => c.idCompany == id);
+            var company = _airplaneContext.Companies.FirstOrDefault(c => c.Id == id);
             if (company != null)
             { 
                 _airplaneContext.Companies.Remove(company);

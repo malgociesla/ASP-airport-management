@@ -9,7 +9,7 @@ BEGIN
 	DECLARE @maxLandingCapacity INT = 4
 	DECLARE @arrivalDT DATETIME
 	--get inserted arrival datetime
-	SELECT @arrivalDT= (SELECT arrivalDT
+	SELECT @arrivalDT= (SELECT [ArrivalDT]
 						FROM inserted)
 
 	DECLARE @timeCounter DATETIME = @arrivalDT
@@ -33,20 +33,20 @@ BEGIN
 
 		--if flight wasn't inserted before
 		IF(NOT EXISTS
-		(SELECT s.idSchedule
+		(SELECT s.[Id]
 		FROM Schedule s, inserted
-		WHERE s.idSchedule = inserted.idSchedule))
+		WHERE s.[Id] = inserted.[Id]))
 		
 		BEGIN
-			IF(NOT EXISTS 	(SELECT s.idFlight
+			IF(NOT EXISTS 	(SELECT s.[IdFlight]
 					FROM inserted i
 						INNER JOIN Schedule s
-						ON s.idFlight=i.idFlight
-					WHERE s.idFlight=i.idFlight AND s.arrivalDT=i.arrivalDT))
+						ON s.[IdFlight]=i.[IdFlight]
+					WHERE s.[IdFlight]=i.[IdFlight] AND s.[ArrivalDT]=i.[ArrivalDT]))
 			BEGIN
 				PRINT 'trigger on insert'
 				INSERT INTO [dbo].[Schedule]
-				SELECT i.idSchedule,i.idFlight,i.idFlightState,i.departureDT,@timeCounter,i.comment
+				SELECT i.[Id],i.[IdFlight],i.[IdFlightState],i.[DepartureDT],@timeCounter,i.[Comment]
 				FROM inserted AS i
 			END
 			ELSE PRINT 'schedule for that flight has already been generated'
@@ -56,13 +56,13 @@ BEGIN
 		BEGIN
 			PRINT 'trigger on update'
 			UPDATE Schedule
-			SET idFlight = i.idFlight,
-				idFlightState = i.idFlightState,
-				departureDT = i.departureDT,
-				arrivalDT = @timeCounter,
-				comment = i.comment
+			SET [IdFlight] = i.[IdFlight],
+				[IdFlightState] = i.[IdFlightState],
+				[DepartureDT] = i.[DepartureDT],
+				[ArrivalDT] = @timeCounter,
+				[Comment] = i.[Comment]
 			FROM Schedule s, inserted i
-			WHERE s.idSchedule = i.idSchedule
+			WHERE s.[Id] = i.[Id]
 		END
 	END
 END

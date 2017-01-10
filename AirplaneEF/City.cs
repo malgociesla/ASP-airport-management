@@ -17,18 +17,18 @@ namespace AirplaneEF
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public City()
         {
-            this.Flights = new HashSet<Flight>();
-            this.Flights1 = new HashSet<Flight>();
+            this.FlightsArrival = new HashSet<Flight>();
+            this.FlightsDeparture = new HashSet<Flight>();
         }
     
-        public System.Guid idCity { get; set; }
-        public System.Guid idCountry { get; set; }
-        public string name { get; set; }
+        public System.Guid Id { get; set; }
+        public System.Guid IdCountry { get; set; }
+        public string Name { get; set; }
     
         public virtual Country Country { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights { get; set; }
+        public virtual ICollection<Flight> FlightsArrival { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<Flight> Flights1 { get; set; }
+        public virtual ICollection<Flight> FlightsDeparture { get; set; }
     }
 }

@@ -1,15 +1,15 @@
 ﻿CREATE TABLE [dbo].[Flight] (
-    [idFlight]    UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
-    [idCompany]   UNIQUEIDENTIFIER NOT NULL,
-    [name]        VARCHAR (20)     NULL,
-    [fDayofWeek]  INT              NULL,
-    [idCityDeparture] UNIQUEIDENTIFIER NOT NULL, 
-    [idCityArrival] UNIQUEIDENTIFIER NOT NULL, 
-    [departureTime] TIME NULL, 
-    [arrivalTime] TIME NULL, 
-    PRIMARY KEY CLUSTERED ([idFlight] ASC),
-    FOREIGN KEY ([idCompany]) REFERENCES [dbo].[Company] ([idCompany]) ON DELETE CASCADE,
-    FOREIGN KEY ([idCityDeparture]) REFERENCES [dbo].[City] ([idCity]),
-    FOREIGN KEY ([idCityArrival]) REFERENCES [dbo].[City] ([idCity])
+    [Id]    UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
+    [IdCompany]   UNIQUEIDENTIFIER NOT NULL,
+    [Name]        VARCHAR (20)     NULL,
+    [FDayofWeek]  INT              NULL,
+    [IdCityDeparture] UNIQUEIDENTIFIER NOT NULL, 
+    [IdCityArrival] UNIQUEIDENTIFIER NOT NULL, 
+    [DepartureTime] TIME NULL, 
+    [ArrivalTime] TIME NULL, 
+    PRIMARY KEY CLUSTERED ([Id] ASC),
+    FOREIGN KEY ([IdCompany]) REFERENCES [dbo].[Company] ([Id]) ON DELETE CASCADE,
+    FOREIGN KEY ([IdCityDeparture]) REFERENCES [dbo].[City] ([Id]),
+    FOREIGN KEY ([IdCityArrival]) REFERENCES [dbo].[City] ([Id])
 );
 

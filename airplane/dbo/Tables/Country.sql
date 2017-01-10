@@ -1,6 +1,6 @@
 ﻿CREATE TABLE [dbo].[Country] (
-    [idCountry] UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
-    [name]      VARCHAR (50)     NULL,
-    PRIMARY KEY CLUSTERED ([idCountry] ASC)
+    [Id] UNIQUEIDENTIFIER DEFAULT (newsequentialid()) NOT NULL,
+    [Name]      VARCHAR (50)     NULL,
+    PRIMARY KEY CLUSTERED ([Id] ASC)
 );
 

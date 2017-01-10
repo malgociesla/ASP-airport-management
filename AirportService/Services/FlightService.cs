@@ -18,31 +18,31 @@ namespace AirportService
         {
             Flight flight = new Flight
             {
-                idCompany = flightDTO.CompanyID,
-                name = flightDTO.Name,
-                fDayofWeek = flightDTO.DayOfWeek,
-                idCityDeparture = flightDTO.CityDepartureID,
-                idCityArrival = flightDTO.CityArrivalID,
-                departureTime = flightDTO.DepartureTime,
-                arrivalTime = flightDTO.ArrivalTime
+                IdCompany = flightDTO.CompanyID,
+                Name = flightDTO.Name,
+                FDayofWeek = flightDTO.DayOfWeek,
+                IdCityDeparture = flightDTO.CityDepartureID,
+                IdCityArrival = flightDTO.CityArrivalID,
+                DepartureTime = flightDTO.DepartureTime,
+                ArrivalTime = flightDTO.ArrivalTime
             };
             _airplaneContext.Flights.Add(flight);
             _airplaneContext.SaveChanges();
-            return flight.idFlight;
+            return flight.Id;
         }
 
         public void Edit(FlightDTO flightDTO)
         {
-            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.idFlight == flightDTO.ID);
+            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.Id == flightDTO.ID);
             if (flight != null)
             {
-                flight.idCompany = flightDTO.CompanyID;
-                flight.name = flightDTO.Name;
-                flight.fDayofWeek = flightDTO.DayOfWeek;
-                flight.idCityDeparture = flightDTO.CityDepartureID;
-                flight.idCityArrival = flightDTO.CityArrivalID;
-                flight.departureTime = flightDTO.DepartureTime;
-                flight.arrivalTime = flightDTO.ArrivalTime;
+                flight.IdCompany = flightDTO.CompanyID;
+                flight.Name = flightDTO.Name;
+                flight.FDayofWeek = flightDTO.DayOfWeek;
+                flight.IdCityDeparture = flightDTO.CityDepartureID;
+                flight.IdCityArrival = flightDTO.CityArrivalID;
+                flight.DepartureTime = flightDTO.DepartureTime;
+                flight.ArrivalTime = flightDTO.ArrivalTime;
 
                 _airplaneContext.SaveChanges();
             }//else flight doesn't exist
@@ -52,14 +52,14 @@ namespace AirportService
         {
             var flights = _airplaneContext.Flights.ToList().Select(f => new FlightDTO
             {
-                ID = f.idFlight,
-                CompanyID = f.idCompany,
-                Name = f.name,
-                DayOfWeek = f.fDayofWeek,
-                CityDepartureID = f.idCityDeparture,
-                CityArrivalID = f.idCityArrival,
-                DepartureTime = f.departureTime,
-                ArrivalTime = f.arrivalTime
+                ID = f.Id,
+                CompanyID = f.IdCompany,
+                Name = f.Name,
+                DayOfWeek = f.FDayofWeek,
+                CityDepartureID = f.IdCityDeparture,
+                CityArrivalID = f.IdCityArrival,
+                DepartureTime = f.DepartureTime,
+                ArrivalTime = f.ArrivalTime
             });
 
             return flights.ToList();
@@ -67,7 +67,7 @@ namespace AirportService
 
         public void Remove(Guid id)
         {
-            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.idFlight == id);
+            var flight = _airplaneContext.Flights.FirstOrDefault(f => f.Id == id);
             if (flight != null)
             {
                 _airplaneContext.Flights.Remove(flight);

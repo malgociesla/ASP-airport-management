@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace AirportService.DTO
 {
@@ -12,5 +13,9 @@ namespace AirportService.DTO
         public Guid CityArrivalID { get; set; }
         public TimeSpan? DepartureTime { get; set; }
         public TimeSpan? ArrivalTime { get; set; }
+        public virtual CityDTO CityArrival { get; set; }
+        public virtual CityDTO CityDeparture { get; set; }
+        public virtual CompanyDTO Company { get; set; }
+        public virtual ICollection<ScheduleDTO> Schedules { get; set; }
     }
 }

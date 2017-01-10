@@ -14,12 +14,12 @@ namespace AirplaneEF
     
     public partial class Schedule
     {
-        public System.Guid idSchedule { get; set; }
-        public System.Guid idFlight { get; set; }
-        public Nullable<System.DateTime> departureDT { get; set; }
-        public Nullable<System.DateTime> arrivalDT { get; set; }
-        public string comment { get; set; }
-        public System.Guid idFlightState { get; set; }
+        public System.Guid Id { get; set; }
+        public System.Guid IdFlight { get; set; }
+        public System.Guid IdFlightState { get; set; }
+        public Nullable<System.DateTime> DepartureDT { get; set; }
+        public Nullable<System.DateTime> ArrivalDT { get; set; }
+        public string Comment { get; set; }
     
         public virtual Flight Flight { get; set; }
         public virtual FlightState FlightState { get; set; }
