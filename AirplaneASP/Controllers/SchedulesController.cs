@@ -228,7 +228,36 @@ namespace AirplaneASP.Controllers
 
                 return RedirectToAction("List", new { page = page });
             }
-            else return View();
+            else
+            {
+                ViewBag.Page = page;
+
+                IFlightService flightService = new FlightService();
+                List<FlightDTO> fliList = flightService.GetAll();
+                List<FlightModel> flightList = new List<FlightModel>();
+                foreach (FlightDTO fli in fliList)
+                {
+                    FlightModel fliItem = new FlightModel
+                    {
+                        ID = fli.ID,
+                        CompanyID = fli.CompanyID,
+                        Name = fli.Name,
+                        DayOfWeek = fli.DayOfWeek,
+                        CityDepartureID = fli.CityDepartureID,
+                        CityArrivalID = fli.CityArrivalID,
+                        DepartureTime = fli.DepartureTime,
+                        ArrivalTime = fli.ArrivalTime
+                    };
+                    flightList.Add(fliItem);
+                }
+                ViewBag.FlightList = flightList;
+
+                IFlightStateService flightStateService = new FlightStateService();
+                List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+                ViewBag.FlightStateList = flightStateList;
+
+                return View();
+            }
         }
 
     }
