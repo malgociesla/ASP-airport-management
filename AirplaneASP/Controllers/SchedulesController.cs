@@ -165,6 +165,14 @@ namespace AirplaneASP.Controllers
             }
         }
 
+        public ActionResult ExportSchedule()
+        {
+            IScheduleService scheduleService = new ScheduleService();
+            scheduleService.ExportSchedule(scheduleService.GetAll());
+            return RedirectToAction("List");
+            //should return file
+        }
+
         [HttpGet]
         public ActionResult Edit(Guid id, int? page)
         {

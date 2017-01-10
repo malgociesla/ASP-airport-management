@@ -153,5 +153,74 @@ namespace AirportService
             }
         }
 
+        public void ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
+        {
+            Microsoft.Office.Interop.Excel.Application oXL;
+            Microsoft.Office.Interop.Excel._Workbook oWB;
+            Microsoft.Office.Interop.Excel._Worksheet oSheet;
+            Microsoft.Office.Interop.Excel.Range oRng;
+            object misvalue = System.Reflection.Missing.Value;
+            try
+            {
+                //Start Excel and get Application object.
+                oXL = new Microsoft.Office.Interop.Excel.Application();
+                oXL.Visible = false;
+
+                //Get a new workbook.
+                oWB = (Microsoft.Office.Interop.Excel._Workbook)(oXL.Workbooks.Add(""));
+                oSheet = (Microsoft.Office.Interop.Excel._Worksheet)oWB.ActiveSheet;
+
+                //Add table headers going cell by cell.
+                oSheet.Cells[1, 1] = "ScheduleID";
+                oSheet.Cells[1, 2] = "FlightID";
+                oSheet.Cells[1, 3] = "FlightStateID";
+                oSheet.Cells[1, 4] = "From";
+                oSheet.Cells[1, 5] = "To";
+                oSheet.Cells[1, 6] = "Departure";
+                oSheet.Cells[1, 7] = "Arrival";
+                oSheet.Cells[1, 8] = "Company";
+                oSheet.Cells[1, 9] = "Comment";
+
+                //insert data
+                int i = 1;
+                foreach (var s in schedulesList)
+                {
+                    oSheet.Cells[i + 1, 1] = string.Format("{0}", s.ID);
+                    oSheet.Cells[i + 1, 2] = string.Format("{0}", s.FlightID);
+                    oSheet.Cells[i + 1, 3] = string.Format("{0}", s.FlightStateID);
+                    oSheet.Cells[i + 1, 4] = string.Format("{0} ({1})", s.CityDeparture, s.CountryDeparture);
+                    oSheet.Cells[i + 1, 5] = string.Format("{0} ({1})", s.CityArrival, s.CountryArrival);
+                    oSheet.Cells[i + 1, 6] = string.Format("{0}", s.DepartureDT.Value);
+                    oSheet.Cells[i + 1, 7] = string.Format("{0}", s.ArrivalDT.Value);
+                    oSheet.Cells[i + 1, 8] = string.Format("{0}", s.Company);
+                    oSheet.Cells[i + 1, 9] = string.Format("{0}", s.Comment);
+                    i++;
+                }
+
+                //Format A1:F1 as bold, vertical alignment = center.
+                oSheet.get_Range("A1", "I1").Font.Bold = true;
+                oSheet.get_Range("A1", "I1").VerticalAlignment =
+                Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
+
+                //AutoFit columns A:F.
+                oRng = oSheet.get_Range("D1", "I1");
+                oRng.EntireColumn.AutoFit();
+
+                oXL.Visible = false;
+                oXL.UserControl = false;
+                oWB.SaveAs("C:\\Users\\mciesla\\Documents\\visual studio 2015\\Projects\\airplaneProj\\myrep\\export\\test.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
+                    false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
+                    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
+
+                oWB.Close();
+            }
+            catch (Exception ex)
+            { }
+            finally
+            { } //clean up
+            
+            // should return file
+        }
+
     }
 }

@@ -10,9 +10,9 @@
 }
 
 <h2>Schedules</h2>
-
 <p>
     @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
+    @Html.ActionLink("Export schedule", "ExportSchedule", "Schedules")
 </p>
 @Html.Partial("FilterSchedule",(FilterViewModel)ViewBag.FilterModel)
 <table class="table">

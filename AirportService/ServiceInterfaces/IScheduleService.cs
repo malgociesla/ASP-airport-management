@@ -13,5 +13,6 @@ namespace AirportService
         List<ScheduleDetailsDTO> GetAll();
         List<ScheduleDetailsDTO> GetList(int pageNumber, int pageSize, out int totalItemsCount, DateTime? from = null, DateTime? to = null);
         void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId);
+        void ExportSchedule(List<ScheduleDetailsDTO> schedulesList);
     }
 }
