@@ -12,9 +12,26 @@
 <h2>Schedules</h2>
 <p>
     @Html.ActionLink("Generate schedule", "GenerateSchedule", "Schedules")
-    @Html.ActionLink("Export schedule", "ExportSchedule", "Schedules")
 </p>
 @Html.Partial("FilterSchedule",(FilterViewModel)ViewBag.FilterModel)
+<h5>Export to XSLX file</h5>
+@using (Html.BeginForm("ExportSchedule", "Schedules"))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-inline">
+        <div class="form-group">
+            @Html.Label("all", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-2">
+                @Html.CheckBox("all", new { @checked = true, htmlAttributes = new { @class = "form-control" } })
+            </div>
+            </div>
+            <div class="form-group">
+                <div class="col-md-offset-2 col-md-2">
+                    <input name="Export" type="submit" value="Export" class="btn btn-default" />
+                </div>
+            </div> 
+    </div>
+}
 <table class="table">
     <tr>
         <th>

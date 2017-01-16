@@ -52,7 +52,6 @@ namespace AirplaneASP.Controllers
             List<ScheduleDetailsDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
-               //.AsEnumerable()
                .Select(s => new ScheduleDetailsModel
                {
                    ID = s.ID,
@@ -165,7 +164,7 @@ namespace AirplaneASP.Controllers
             }
         }
 
-        public ActionResult ExportSchedule()
+        public ActionResult ExportSchedule(bool all)
         {
             IScheduleService scheduleService = new ScheduleService();
             var excelBytes = scheduleService.ExportSchedule(scheduleService.GetAll());
