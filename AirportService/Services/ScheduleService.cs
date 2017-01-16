@@ -4,6 +4,10 @@ using System.Linq;
 using AirportService.DTO;
 using AirplaneEF;
 using System.Data.Entity;
+using DocumentFormat.OpenXml;
+using DocumentFormat.OpenXml.Packaging;
+using DocumentFormat.OpenXml.Spreadsheet;
+using System.IO;
 
 namespace AirportService
 {
@@ -153,73 +157,127 @@ namespace AirportService
             }
         }
 
-        public void ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
+        public byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
         {
-            Microsoft.Office.Interop.Excel.Application oXL;
-            Microsoft.Office.Interop.Excel._Workbook oWB;
-            Microsoft.Office.Interop.Excel._Worksheet oSheet;
-            Microsoft.Office.Interop.Excel.Range oRng;
-            object misvalue = System.Reflection.Missing.Value;
-            try
+            using (var templateStream = new MemoryStream())
             {
-                //Start Excel and get Application object.
-                oXL = new Microsoft.Office.Interop.Excel.Application();
-                oXL.Visible = false;
-
-                //Get a new workbook.
-                oWB = (Microsoft.Office.Interop.Excel._Workbook)(oXL.Workbooks.Add(""));
-                oSheet = (Microsoft.Office.Interop.Excel._Worksheet)oWB.ActiveSheet;
-
-                //Add table headers going cell by cell.
-                oSheet.Cells[1, 1] = "ScheduleID";
-                oSheet.Cells[1, 2] = "FlightID";
-                oSheet.Cells[1, 3] = "FlightStateID";
-                oSheet.Cells[1, 4] = "From";
-                oSheet.Cells[1, 5] = "To";
-                oSheet.Cells[1, 6] = "Departure";
-                oSheet.Cells[1, 7] = "Arrival";
-                oSheet.Cells[1, 8] = "Company";
-                oSheet.Cells[1, 9] = "Comment";
-
-                //insert data
-                int i = 1;
-                foreach (var s in schedulesList)
+                using (var excelDoc = SpreadsheetDocument.Create(templateStream, SpreadsheetDocumentType.Workbook, true))
                 {
-                    oSheet.Cells[i + 1, 1] = string.Format("{0}", s.ID);
-                    oSheet.Cells[i + 1, 2] = string.Format("{0}", s.FlightID);
-                    oSheet.Cells[i + 1, 3] = string.Format("{0}", s.FlightStateID);
-                    oSheet.Cells[i + 1, 4] = string.Format("{0} ({1})", s.CityDeparture, s.CountryDeparture);
-                    oSheet.Cells[i + 1, 5] = string.Format("{0} ({1})", s.CityArrival, s.CountryArrival);
-                    oSheet.Cells[i + 1, 6] = string.Format("{0}", s.DepartureDT.Value);
-                    oSheet.Cells[i + 1, 7] = string.Format("{0}", s.ArrivalDT.Value);
-                    oSheet.Cells[i + 1, 8] = string.Format("{0}", s.Company);
-                    oSheet.Cells[i + 1, 9] = string.Format("{0}", s.Comment);
-                    i++;
+                    // Add a WorkbookPart to the document.
+                    WorkbookPart workbookpart = excelDoc.AddWorkbookPart();
+                    workbookpart.Workbook = new Workbook();
+
+                    // Add a WorksheetPart to the WorkbookPart.
+                    WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+                    SheetData sheetData = new SheetData();
+
+                    //Insert headings for each info
+                    Row headingRow = new Row() { RowIndex = 1 };
+                    List<string> headingList = new List<string>()
+                    {
+                        "ScheduleID",
+                        "FlightID",
+                        "FlightStateID",
+                        "From",
+                        "To",
+                        "Departure",
+                        "Arrival",
+                        "Company",
+                        "Comment"
+                    };
+                    foreach (string heading in headingList)
+                    {
+                        Cell cell = new Cell { CellValue = new CellValue(heading), DataType = new EnumValue<CellValues>(CellValues.String) };
+                        headingRow.AppendChild<Cell>(cell);
+                    }
+                    sheetData.Append(headingRow);
+
+                    //
+                    uint rowId = 2;
+                    foreach (var item in schedulesList)
+                    {
+                        Row row = new Row() { RowIndex = rowId++ };
+                        //"ScheduleID"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.ID.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"FlightID"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.FlightID.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"FlightStateID"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.FlightStateID.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"From"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.CityDeparture.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"To"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.CityArrival.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"Departure"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.DepartureDT.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"Arrival"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.ArrivalDT.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"Company"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.Company.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+                        //"Comment"
+                        row.AppendChild<Cell>(new Cell
+                        {
+                            CellValue = new CellValue(item.Comment.ToString()),
+                            DataType = new EnumValue<CellValues>(CellValues.String)
+                        });
+
+                        sheetData.Append(row);
+                    }
+
+                    worksheetPart.Worksheet = new Worksheet(sheetData);
+
+                    // Add Sheets to the Workbook.
+                    Sheets sheets = excelDoc.WorkbookPart.Workbook.
+                        AppendChild<Sheets>(new Sheets());
+
+                    // Append a new worksheet and associate it with the workbook.
+                    Sheet sheet = new Sheet()
+                    {
+                        Id = excelDoc.WorkbookPart.
+                        GetIdOfPart(worksheetPart),
+                        SheetId = 1,
+                        Name = "Schedules"
+                    };
+                    sheets.Append(sheet);
+
                 }
+                templateStream.Position = 0;
+                var result = templateStream.ToArray();
+                templateStream.Flush();
 
-                //Format A1:F1 as bold, vertical alignment = center.
-                oSheet.get_Range("A1", "I1").Font.Bold = true;
-                oSheet.get_Range("A1", "I1").VerticalAlignment =
-                Microsoft.Office.Interop.Excel.XlVAlign.xlVAlignCenter;
-
-                //AutoFit columns A:F.
-                oRng = oSheet.get_Range("D1", "I1");
-                oRng.EntireColumn.AutoFit();
-
-                oXL.Visible = false;
-                oXL.UserControl = false;
-                oWB.SaveAs("C:\\Users\\mciesla\\Documents\\visual studio 2015\\Projects\\airplaneProj\\myrep\\export\\test.xlsx", Microsoft.Office.Interop.Excel.XlFileFormat.xlWorkbookDefault, Type.Missing, Type.Missing,
-                    false, false, Microsoft.Office.Interop.Excel.XlSaveAsAccessMode.xlNoChange,
-                    Type.Missing, Type.Missing, Type.Missing, Type.Missing, Type.Missing);
-
-                oWB.Close();
+                return result;
             }
-            catch (Exception ex)
-            { }
-            finally
-            { } //clean up
-            
-            // should return file
         }
 
     }

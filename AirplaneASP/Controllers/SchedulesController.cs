@@ -168,9 +168,13 @@ namespace AirplaneASP.Controllers
         public ActionResult ExportSchedule()
         {
             IScheduleService scheduleService = new ScheduleService();
-            scheduleService.ExportSchedule(scheduleService.GetAll());
-            return RedirectToAction("List");
-            //should return file
+            var excelBytes = scheduleService.ExportSchedule(scheduleService.GetAll());
+            FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
+            {
+                FileDownloadName = string.Format("Export_{0}_{1}.xlsx", DateTime.Now.ToString("yyMMdd"), "Schedules")
+            };
+
+            return fr;
         }
 
         [HttpGet]
