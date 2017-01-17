@@ -164,6 +164,23 @@ namespace AirplaneASP.Controllers
             }
         }
 
+        public ActionResult ImportSchedule(FormCollection formCollection)
+        {
+            if (Request != null)
+            {
+                HttpPostedFileBase file = Request.Files["ImportedFile"];
+
+                if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+                {
+                    string fileName = file.FileName;
+                    string fileContentType = file.ContentType;
+                    byte[] fileBytes = new byte[file.ContentLength];
+                    var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+                }
+            }
+            return View(); //return List View - model from imported file
+        }
+
         public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)
         {
             byte[] excelBytes;

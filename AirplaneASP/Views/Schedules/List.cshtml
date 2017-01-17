@@ -35,6 +35,24 @@
             </div> 
     </div>
 }
+<h5>Import data from XSLX file</h5>
+@using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-inline">
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="file" name="ImportedFile" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-2">
+                <input name="Import" type="submit" value="Import" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
+
 <table class="table">
     <tr>
         <th>
