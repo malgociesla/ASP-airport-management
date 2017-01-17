@@ -8,6 +8,7 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.IO;
+using System.Text.RegularExpressions;
 
 namespace AirportService
 {
@@ -179,11 +180,37 @@ namespace AirportService
         {
             //read from stream and transform to list<schedule>
             //excelStream
-            using (var excelDoc = SpreadsheetDocument.Open(excelStream, true))
+            //updtade: check for nulls try/catch!!!!!!!!!!
+            List<ScheduleDetailsDTO> list = new List<ScheduleDetailsDTO>();
+
+            using (var excelDoc = SpreadsheetDocument.Open(excelStream, false))
             {
                 //parse schedule items and return ScheduleList?
+                var rows = excelDoc.WorkbookPart.WorksheetParts.First().Worksheet.GetFirstChild<SheetData>().ChildElements.Skip(1);
+
+                foreach (var row in rows)
+                {
+                    var cells = row.ChildElements;
+                    {
+                        ScheduleDetailsDTO item = new ScheduleDetailsDTO()
+                        {
+                            ID = new Guid(cells[0].InnerText),
+                            FlightID = new Guid(cells[1].InnerText),
+                            FlightStateID = new Guid(cells[2].InnerText),
+                            CityDeparture = cells[3].InnerText.Substring(0,cells[3].InnerText.IndexOf(" (") + 1),
+                            CountryDeparture = Regex.Match(cells[3].InnerText, @"\(([^)]*)\)").Groups[1].Value,
+                            CityArrival = cells[4].InnerText.Substring(0, cells[4].InnerText.IndexOf(" (") + 1),
+                            CountryArrival = Regex.Match(cells[4].InnerText, @"\(([^)]*)\)").Groups[1].Value,
+                            DepartureDT = DateTime.Parse(cells[5].InnerText),
+                            ArrivalDT = DateTime.Parse(cells[6].InnerText),
+                            Company = cells[7].InnerText,
+                            Comment = cells[8].InnerText
+                        };
+                        list.Add(item);
+                    }
+                }
             }
-            return new List<ScheduleDetailsDTO>();//CHANGE!
+            return list;//CHANGE!
         }
 
         public byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
@@ -249,13 +276,13 @@ namespace AirportService
                             //"From"
                             row.AppendChild<Cell>(new Cell
                             {
-                                CellValue = new CellValue(item.CityDeparture.ToString()),
+                                CellValue = new CellValue(item.CityDeparture.ToString() + " (" + item.CountryDeparture.ToString() + ")"),
                                 DataType = new EnumValue<CellValues>(CellValues.String)
                             });
                             //"To"
                             row.AppendChild<Cell>(new Cell
                             {
-                                CellValue = new CellValue(item.CityArrival.ToString()),
+                                CellValue = new CellValue(item.CityArrival.ToString() + " (" + item.CountryArrival.ToString() + ")"),
                                 DataType = new EnumValue<CellValues>(CellValues.String)
                             });
                             //"Departure"

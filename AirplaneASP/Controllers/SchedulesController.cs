@@ -164,6 +164,13 @@ namespace AirplaneASP.Controllers
             }
         }
 
+        public ActionResult ImportSchedule(int? page)
+        {
+            List<ScheduleDetailsModel> model = new List<ScheduleDetailsModel>();
+            return View(model.ToPagedList(1,6));
+        }
+
+        [HttpPost]
         public ActionResult ImportSchedule(FormCollection formCollection)
         {
             IEnumerable<ScheduleDetailsModel> scheduleList = null;
@@ -178,6 +185,10 @@ namespace AirplaneASP.Controllers
                     string fileContentType = file.ContentType;
                     byte[] fileBytes = new byte[file.ContentLength];
                     var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+                    
+                    //MemoryStream target = new MemoryStream();
+                    //model.File.InputStream.CopyTo(target);
+                    //byte[] data = target.ToArray();
 
                     //Get list of imported schedule items
                     IScheduleService scheduleService = new ScheduleService();

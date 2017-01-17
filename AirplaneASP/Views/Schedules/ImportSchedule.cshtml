@@ -1,51 +1,83 @@
-﻿@model IEnumerable<AirplaneASP.Models.Schedules.ScheduleDetailsModel>
+﻿@using PagedList
+@using PagedList.Mvc
+@using AirplaneASP.Models.Schedules
+@model IPagedList<ScheduleDetailsModel>
 
+<h2>Import Schedules</h2>
 <p>
-    @Html.ActionLink("Create New", "Create")
+     @Html.ActionLink("Back to List", "List", "Schedules", new { page = ViewBag.Page }, null)
 </p>
+@using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    @Html.AntiForgeryToken()
+    <div class="form-inline">
+        <div class="form-group">
+            <div class="col-md-2">
+                <input type="file" name="ImportedFile" />
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-2">
+                <input name="Import" type="submit" value="Import" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FlightID)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CityDeparture)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FlightStateID)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().CityArrival)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.DepartureDT)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().DepartureDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ArrivalDT)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().ArrivalDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.Comment)
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Company)
         </th>
-        <th></th>
+        <th>
+            @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
+        </th>
+        <th>
+            @Html.Label("Import")
+        </th>
     </tr>
 
-@foreach (var item in Model) {
-    <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.FlightID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.FlightStateID)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.DepartureDT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.ArrivalDT)
-        </td>
-        <td>
-            @Html.DisplayFor(modelItem => item.Comment)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
-            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
-            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
-        </td>
-    </tr>
-}
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityDeparture)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CityArrival)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.DepartureDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ArrivalDT)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Company)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Comment)
+            </td>
+            <td>
+                @Html.CheckBox("import", new { @checked = true, htmlAttributes = new { @class = "form-control" } })
+            </td>
+        </tr>
+    }
 
 </table>
+<br />
+Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+
+@Html.PagedListPager(Model, page => Url.Action("List",
+    new { page, from = ViewBag.FilterModel.FromDate, to = ViewBag.FilterModel.ToDate }))
