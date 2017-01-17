@@ -159,21 +159,23 @@ namespace AirportService
 
         public byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
         {
-            using (var templateStream = new MemoryStream())
+            if (schedulesList != null)
             {
-                using (var excelDoc = SpreadsheetDocument.Create(templateStream, SpreadsheetDocumentType.Workbook, true))
+                using (var templateStream = new MemoryStream())
                 {
-                    // Add a WorkbookPart to the document.
-                    WorkbookPart workbookpart = excelDoc.AddWorkbookPart();
-                    workbookpart.Workbook = new Workbook();
+                    using (var excelDoc = SpreadsheetDocument.Create(templateStream, SpreadsheetDocumentType.Workbook, true))
+                    {
+                        // Add a WorkbookPart to the document.
+                        WorkbookPart workbookpart = excelDoc.AddWorkbookPart();
+                        workbookpart.Workbook = new Workbook();
 
-                    // Add a WorksheetPart to the WorkbookPart.
-                    WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
-                    SheetData sheetData = new SheetData();
+                        // Add a WorksheetPart to the WorkbookPart.
+                        WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
+                        SheetData sheetData = new SheetData();
 
-                    //Insert headings for each info
-                    Row headingRow = new Row() { RowIndex = 1 };
-                    List<string> headingList = new List<string>()
+                        //Insert headings for each info
+                        Row headingRow = new Row() { RowIndex = 1 };
+                        List<string> headingList = new List<string>()
                     {
                         "ScheduleID",
                         "FlightID",
@@ -185,100 +187,102 @@ namespace AirportService
                         "Company",
                         "Comment"
                     };
-                    foreach (string heading in headingList)
-                    {
-                        Cell cell = new Cell { CellValue = new CellValue(heading), DataType = new EnumValue<CellValues>(CellValues.String) };
-                        headingRow.AppendChild<Cell>(cell);
+                        foreach (string heading in headingList)
+                        {
+                            Cell cell = new Cell { CellValue = new CellValue(heading), DataType = new EnumValue<CellValues>(CellValues.String) };
+                            headingRow.AppendChild<Cell>(cell);
+                        }
+                        sheetData.Append(headingRow);
+
+                        //
+                        uint rowId = 2;
+                        foreach (var item in schedulesList)
+                        {
+                            Row row = new Row() { RowIndex = rowId++ };
+                            //"ScheduleID"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.ID.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"FlightID"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.FlightID.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"FlightStateID"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.FlightStateID.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"From"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.CityDeparture.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"To"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.CityArrival.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"Departure"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.DepartureDT.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"Arrival"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.ArrivalDT.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"Company"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.Company.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+                            //"Comment"
+                            row.AppendChild<Cell>(new Cell
+                            {
+                                CellValue = new CellValue(item.Comment.ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.String)
+                            });
+
+                            sheetData.Append(row);
+                        }
+
+                        worksheetPart.Worksheet = new Worksheet(sheetData);
+
+                        // Add Sheets to the Workbook.
+                        Sheets sheets = excelDoc.WorkbookPart.Workbook.
+                            AppendChild<Sheets>(new Sheets());
+
+                        // Append a new worksheet and associate it with the workbook.
+                        Sheet sheet = new Sheet()
+                        {
+                            Id = excelDoc.WorkbookPart.
+                            GetIdOfPart(worksheetPart),
+                            SheetId = 1,
+                            Name = "Schedules"
+                        };
+                        sheets.Append(sheet);
+
                     }
-                    sheetData.Append(headingRow);
+                    templateStream.Position = 0;
+                    var result = templateStream.ToArray();
+                    templateStream.Flush();
 
-                    //
-                    uint rowId = 2;
-                    foreach (var item in schedulesList)
-                    {
-                        Row row = new Row() { RowIndex = rowId++ };
-                        //"ScheduleID"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.ID.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"FlightID"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.FlightID.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"FlightStateID"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.FlightStateID.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"From"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.CityDeparture.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"To"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.CityArrival.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"Departure"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.DepartureDT.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"Arrival"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.ArrivalDT.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"Company"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.Company.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-                        //"Comment"
-                        row.AppendChild<Cell>(new Cell
-                        {
-                            CellValue = new CellValue(item.Comment.ToString()),
-                            DataType = new EnumValue<CellValues>(CellValues.String)
-                        });
-
-                        sheetData.Append(row);
-                    }
-
-                    worksheetPart.Worksheet = new Worksheet(sheetData);
-
-                    // Add Sheets to the Workbook.
-                    Sheets sheets = excelDoc.WorkbookPart.Workbook.
-                        AppendChild<Sheets>(new Sheets());
-
-                    // Append a new worksheet and associate it with the workbook.
-                    Sheet sheet = new Sheet()
-                    {
-                        Id = excelDoc.WorkbookPart.
-                        GetIdOfPart(worksheetPart),
-                        SheetId = 1,
-                        Name = "Schedules"
-                    };
-                    sheets.Append(sheet);
-
+                    return result;
                 }
-                templateStream.Position = 0;
-                var result = templateStream.ToArray();
-                templateStream.Flush();
-
-                return result;
             }
+            //error - empty parameter scheduleList
+            return null;
         }
-
     }
 }

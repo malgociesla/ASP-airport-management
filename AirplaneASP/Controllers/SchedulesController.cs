@@ -164,10 +164,28 @@ namespace AirplaneASP.Controllers
             }
         }
 
-        public ActionResult ExportSchedule(bool all)
+        public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)
         {
+            byte[] excelBytes;
             IScheduleService scheduleService = new ScheduleService();
-            var excelBytes = scheduleService.ExportSchedule(scheduleService.GetAll());
+            if (all)
+            {
+                excelBytes = scheduleService.ExportSchedule(scheduleService.GetAll());
+            }
+            else
+            {
+                //pagination
+                if (page == null ||
+                    page < 1)
+                {
+                    page = 1;
+                }
+                int pageNumber = page.Value;
+                int pageSize;
+                int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+                int totalItemsCount = 0;
+                excelBytes = scheduleService.ExportSchedule(scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
+            }
             FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
             {
                 FileDownloadName = string.Format("Export_{0}_{1}.xlsx", DateTime.Now.ToString("yyMMdd"), "Schedules")

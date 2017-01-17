@@ -18,6 +18,9 @@
 @using (Html.BeginForm("ExportSchedule", "Schedules"))
 {
     @Html.AntiForgeryToken()
+    @Html.Hidden("page", Model.PageNumber)
+    @Html.Hidden("from", (DateTime?)ViewBag.FilterModel.FromDate)
+    @Html.Hidden("to", (DateTime?)ViewBag.FilterModel.ToDate)
     <div class="form-inline">
         <div class="form-group">
             @Html.Label("all", htmlAttributes: new { @class = "control-label col-md-5" })
