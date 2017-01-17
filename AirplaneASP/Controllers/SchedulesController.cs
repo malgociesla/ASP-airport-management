@@ -166,6 +166,8 @@ namespace AirplaneASP.Controllers
 
         public ActionResult ImportSchedule(FormCollection formCollection)
         {
+            IEnumerable<ScheduleDetailsModel> scheduleList = null;
+            //CHECK IF INPUT FILELD ISN'T NULL! - validate
             if (Request != null)
             {
                 HttpPostedFileBase file = Request.Files["ImportedFile"];
@@ -176,9 +178,27 @@ namespace AirplaneASP.Controllers
                     string fileContentType = file.ContentType;
                     byte[] fileBytes = new byte[file.ContentLength];
                     var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+                    //Get list of imported schedule items
+                    IScheduleService scheduleService = new ScheduleService();
+                    List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.GetImportedList(file.InputStream);
+                    scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsModel
+                    {
+                        ID = s.ID,
+                        FlightStateID = s.FlightStateID,
+                        FlightID = s.FlightID,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment,
+                        CityDeparture = s.CityDeparture,
+                        CountryDeparture = s.CountryDeparture,
+                        CityArrival = s.CityArrival,
+                        CountryArrival = s.CountryArrival,
+                        Company = s.Company
+                    });
                 }
             }
-            return View(); //return List View - model from imported file
+            return View(scheduleList);
         }
 
         public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)

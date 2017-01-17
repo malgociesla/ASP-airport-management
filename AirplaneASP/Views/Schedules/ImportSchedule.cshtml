@@ -1,0 +1,51 @@
+﻿@model IEnumerable<AirplaneASP.Models.Schedules.ScheduleDetailsModel>
+
+<p>
+    @Html.ActionLink("Create New", "Create")
+</p>
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.FlightID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.FlightStateID)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.DepartureDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.ArrivalDT)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Comment)
+        </th>
+        <th></th>
+    </tr>
+
+@foreach (var item in Model) {
+    <tr>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlightID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.FlightStateID)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.DepartureDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.ArrivalDT)
+        </td>
+        <td>
+            @Html.DisplayFor(modelItem => item.Comment)
+        </td>
+        <td>
+            @Html.ActionLink("Edit", "Edit", new { id=item.ID }) |
+            @Html.ActionLink("Details", "Details", new { id=item.ID }) |
+            @Html.ActionLink("Delete", "Delete", new { id=item.ID })
+        </td>
+    </tr>
+}
+
+</table>

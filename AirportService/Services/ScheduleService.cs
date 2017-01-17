@@ -157,6 +157,35 @@ namespace AirportService
             }
         }
 
+        public void Import(List<ScheduleDTO> schedulesList)
+        {
+            //update database
+            //create new items in database, update old ones
+            if (schedulesList != null)
+            {
+                foreach (ScheduleDTO newSchedule in schedulesList)
+                {
+                    Schedule oldSchedule = _airplaneContext.Schedules.FirstOrDefault(s => s.Id == newSchedule.ID);
+                    if (oldSchedule == null)
+                        Add(newSchedule);
+                    else if (oldSchedule.Id == newSchedule.ID)
+                        Edit(newSchedule);
+                }
+            }
+            else { } //error - list is empty
+        }
+
+        public List<ScheduleDetailsDTO> GetImportedList(Stream excelStream)
+        {
+            //read from stream and transform to list<schedule>
+            //excelStream
+            using (var excelDoc = SpreadsheetDocument.Open(excelStream, true))
+            {
+                //parse schedule items and return ScheduleList?
+            }
+            return new List<ScheduleDetailsDTO>();//CHANGE!
+        }
+
         public byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
         {
             if (schedulesList != null)
