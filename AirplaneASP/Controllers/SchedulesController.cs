@@ -172,14 +172,16 @@ namespace AirplaneASP.Controllers
         }
 
         [HttpPost]
-        public ActionResult ImportSchedule(FormCollection formCollection, ImportViewModel model)
+        public ActionResult ImportSchedule(ImportViewModel model)
         {
-            //if import
-            if (model.ScheduleList.Count == 0)
-                model = new ImportViewModel();
-            else
+            //if upload
+            if (model.UploadedFile != null)
             {
-
+                model.ScheduleList = GetUploadedList(model.UploadedFile);
+            }
+            //if import
+            if (model.ScheduleList.Count != 0)
+            {
                 IScheduleService scheduleService = new ScheduleService();
                 //import paraeter -> list of checked items
                 scheduleService.Import(model.ScheduleList.Where(s => s.Check==true).Select(s => new ScheduleDTO()
@@ -192,13 +194,6 @@ namespace AirplaneASP.Controllers
                     Comment = s.Comment
                 }
                 ).ToList());
-            }
-            //if upload
-            //CHECK IF INPUT FILELD ISN'T NULL! - validate
-            if (Request != null && Request.Form["Upload"]!=null)
-            {
-                HttpPostedFileBase file = Request.Files["UploadedFile"];
-                model.ScheduleList = GetUploadedList(file);
             }
             return View(model);
         }

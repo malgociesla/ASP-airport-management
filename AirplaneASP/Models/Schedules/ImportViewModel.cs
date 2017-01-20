@@ -11,7 +11,7 @@ namespace AirplaneASP.Models.Schedules
         {
             ScheduleList = new List<ScheduleDetailsImportModel>();
         }
-
         public List<ScheduleDetailsImportModel> ScheduleList { get; set; }
+        public HttpPostedFileBase UploadedFile { get; set; }
     }
 }
