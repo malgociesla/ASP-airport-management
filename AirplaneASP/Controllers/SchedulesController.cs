@@ -167,19 +167,13 @@ namespace AirplaneASP.Controllers
         public ActionResult ImportSchedule()
         {
             ImportViewModel model = new ImportViewModel();
-
             return View(model);
         }
 
         [HttpPost]
         public ActionResult ImportSchedule(ImportViewModel model)
         {
-            //if upload
-            if (model.UploadedFile != null)
-            {
-                model.ScheduleList = GetUploadedList(model.UploadedFile);
-            }
-            //if import
+            //import based on model.ScheduleList
             if (model.ScheduleList.Count != 0)
             {
                 IScheduleService scheduleService = new ScheduleService();
@@ -194,6 +188,11 @@ namespace AirplaneASP.Controllers
                     Comment = s.Comment
                 }
                 ).ToList());
+            }
+            //upload items from file to view
+            if (model.UploadedFile != null)
+            {
+                model.ScheduleList = GetUploadedList(model.UploadedFile);
             }
             return View(model);
         }

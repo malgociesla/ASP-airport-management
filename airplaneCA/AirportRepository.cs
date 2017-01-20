@@ -22,6 +22,8 @@ namespace airplaneCA
             }
             catch(SqlException sqlEx)
             {
+                Console.WriteLine("Error message: {0}",sqlEx.Message);
+                Console.WriteLine("Error stack trace: {0}", sqlEx.StackTrace);
             }
             return sqlConn;
         }

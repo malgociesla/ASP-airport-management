@@ -53,9 +53,9 @@
         </th>
     </tr>
 
-    @for(int i =0; i<Model.ScheduleList.Count; i++)
+    @for (int i = 0; i < Model.ScheduleList.Count; i++)
     {
-        
+
         @Html.HiddenFor(Model => Model.ScheduleList[i].ID)
         @Html.HiddenFor(Model => Model.ScheduleList[i].FlightStateID)
         @Html.HiddenFor(Model => Model.ScheduleList[i].FlightID)
@@ -90,7 +90,7 @@
                 @Html.DisplayFor(Model => Model.ScheduleList[i].Comment)
             </td>
             <td>
-                @Html.CheckBoxFor(Model => Model.ScheduleList[i].Check)
+                @Html.EditorFor(Model => Model.ScheduleList[i].Check)
             </td>
         </tr>
     }
@@ -100,4 +100,3 @@
     @*@Html.EditorFor(model => model.CheckedItemList[item.ID])*@
 </table>
 }
-<br />

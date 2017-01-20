@@ -8,9 +8,6 @@ namespace AirplaneASP.Models.Schedules
 {
     public class ScheduleDetailsModel : ScheduleModel
     {
-        private string _cityDeparture;
-        private string _cityArrival;
-
         [Display(Name = "City")]
         public string CityDeparture { get; set; }
         [Display(Name = "Country")]

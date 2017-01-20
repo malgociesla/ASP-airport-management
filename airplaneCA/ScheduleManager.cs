@@ -14,12 +14,12 @@ namespace airplaneCA
             List<Schedule> scheduleList = new List<Schedule>();
                 while (dataReader.Read())
                 {
-                    scheduleList.Add(new Schedule()
+                scheduleList.Add(new Schedule()
                     {
                         Id = dataReader.GetGuid(0),
                         IdFlight = dataReader.GetGuid(1),
-                        DepartureDT = dataReader.GetDateTime(2),
-                        ArrivalDT = dataReader.GetDateTime(3)
+                        DepartureDT = dataReader.GetDateTime(3),
+                        ArrivalDT = dataReader.GetDateTime(4)
                     });
                 }
             return scheduleList;
