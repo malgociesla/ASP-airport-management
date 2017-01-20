@@ -30,10 +30,10 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().CityDeparture)
+            @Html.DisplayName("From")
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().CityArrival)
+            @Html.DisplayName("To")
         </th>
         <th>
             @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().DepartureDT)
@@ -70,9 +70,11 @@
         <tr>
             <td>
                 @Html.DisplayFor(Model => Model.ScheduleList[i].CityDeparture)
+                (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryDeparture))
             </td>
             <td>
                 @Html.DisplayFor(Model => Model.ScheduleList[i].CityArrival)
+                (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryArrival)) 
             </td>
             <td>
                 @Html.DisplayFor(Model => Model.ScheduleList[i].DepartureDT)

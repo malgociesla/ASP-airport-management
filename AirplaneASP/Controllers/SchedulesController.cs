@@ -175,7 +175,7 @@ namespace AirplaneASP.Controllers
         public ActionResult ImportSchedule(FormCollection formCollection, ImportViewModel model)
         {
             //if import
-            if (model == null)
+            if (model.ScheduleList.Count == 0)
                 model = new ImportViewModel();
             else
             {
@@ -198,7 +198,27 @@ namespace AirplaneASP.Controllers
             if (Request != null && Request.Form["Upload"]!=null)
             {
                 HttpPostedFileBase file = Request.Files["UploadedFile"];
-                model.ScheduleList = GetUploadedList(file).Select(s => new ScheduleDetailsImportModel() {
+                model.ScheduleList = GetUploadedList(file);
+            }
+            return View(model);
+        }
+
+        private List<ScheduleDetailsImportModel> GetUploadedList(HttpPostedFileBase file)
+        {
+            List<ScheduleDetailsImportModel> scheduleList = null;
+
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                string fileName = file.FileName;
+                string fileContentType = file.ContentType;
+                byte[] fileBytes = new byte[file.ContentLength];
+                var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
+
+                //Get list of imported schedule items
+                IScheduleService scheduleService = new ScheduleService();
+                List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.GetImportedList(file.InputStream);
+                scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
+                {
                     ID = s.ID,
                     FlightStateID = s.FlightStateID,
                     FlightID = s.FlightID,
@@ -211,38 +231,6 @@ namespace AirplaneASP.Controllers
                     CountryArrival = s.CountryArrival,
                     Company = s.Company,
                     Check = false
-                }).ToList();
-            }
-            return View(model);
-        }
-
-        private List<ScheduleDetailsModel> GetUploadedList(HttpPostedFileBase file)
-        {
-            List<ScheduleDetailsModel> scheduleList = null;
-
-            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
-            {
-                string fileName = file.FileName;
-                string fileContentType = file.ContentType;
-                byte[] fileBytes = new byte[file.ContentLength];
-                var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
-
-                //Get list of imported schedule items
-                IScheduleService scheduleService = new ScheduleService();
-                List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.GetImportedList(file.InputStream);
-                scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsModel
-                {
-                    ID = s.ID,
-                    FlightStateID = s.FlightStateID,
-                    FlightID = s.FlightID,
-                    DepartureDT = s.DepartureDT,
-                    ArrivalDT = s.ArrivalDT,
-                    Comment = s.Comment,
-                    CityDeparture = s.CityDeparture,
-                    CountryDeparture = s.CountryDeparture,
-                    CityArrival = s.CityArrival,
-                    CountryArrival = s.CountryArrival,
-                    Company = s.Company
                 }).ToList();
             }
             return scheduleList;
