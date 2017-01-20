@@ -34,7 +34,7 @@ namespace AirplaneASP.Models.Schedules
             {   
                 if(this._cityArrival != null && this.CountryArrival !=null)
                     return string.Format("{0} ({1})", this._cityArrival, this.CountryArrival);
-                return this.CityArrival;
+                return this._cityArrival;
             }
             set
             {

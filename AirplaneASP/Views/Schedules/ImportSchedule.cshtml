@@ -1,11 +1,11 @@
 ﻿@using PagedList
 @using PagedList.Mvc
 @using AirplaneASP.Models.Schedules
-@model IPagedList<ScheduleDetailsModel>
+@model ImportViewModel
 
 <h2>Import Schedules</h2>
 <p>
-     @Html.ActionLink("Back to List", "List", "Schedules", new { page = ViewBag.Page }, null)
+    <!-- @Html.ActionLink("Back to List", "List", "Schedules", new { page = ViewBag.Page }, null) -->
 </p>
 @using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post, new { enctype = "multipart/form-data" }))
 {
@@ -13,71 +13,88 @@
     <div class="form-inline">
         <div class="form-group">
             <div class="col-md-2">
-                <input type="file" name="ImportedFile" />
+                <input type="file" name="UploadedFile" />
             </div>
         </div>
         <div class="form-group">
             <div class="col-md-offset-2 col-md-2">
-                <input name="Import" type="submit" value="Import" class="btn btn-default" />
+                <input name="Upload" type="submit" value="Upload" class="btn btn-default" />
             </div>
         </div>
     </div>
 }
+</hr>
+@using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post))
+{
+<input name="Import" type="submit" value="Import" class="btn btn-default" />
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CityDeparture)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().CityDeparture)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().CityArrival)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().CityArrival)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().DepartureDT)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().DepartureDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().ArrivalDT)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().ArrivalDT)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Company)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Company)
         </th>
         <th>
-            @Html.DisplayNameFor(model => model.FirstOrDefault().Comment)
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Comment)
         </th>
         <th>
-            @Html.Label("Import")
+            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Check)
         </th>
     </tr>
 
-    @foreach (var item in Model)
+    @for(int i =0; i<Model.ScheduleList.Count; i++)
     {
+        
+        @Html.HiddenFor(Model => Model.ScheduleList[i].ID)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].FlightStateID)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].FlightID)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].DepartureDT)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].ArrivalDT)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].Comment)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].CityDeparture)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].CountryDeparture)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].CityArrival)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].CountryArrival)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].Company)
+        @Html.HiddenFor(Model => Model.ScheduleList[i].Check)
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.CityDeparture)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].CityDeparture)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.CityArrival)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].CityArrival)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.DepartureDT)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].DepartureDT)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ArrivalDT)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].ArrivalDT)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Company)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].Company)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Comment)
+                @Html.DisplayFor(Model => Model.ScheduleList[i].Comment)
             </td>
             <td>
-                @Html.CheckBox("import", new { @checked = true, htmlAttributes = new { @class = "form-control" } })
+                @Html.CheckBoxFor(Model => Model.ScheduleList[i].Check)
             </td>
         </tr>
     }
-
+    @*@Html.HiddenFor(model=>model.CheckedItemList[item.ID])*@
+    @*@Html.CheckBox("CheckedItemList[" + item.ID + "]", new { value = @Model.CheckedItemList[item.ID] })
+    @Html.CheckBoxFor(model=>model.CheckedItemList[item.ID])*@
+    @*@Html.EditorFor(model => model.CheckedItemList[item.ID])*@
 </table>
+}
 <br />
-Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
-
-@Html.PagedListPager(Model, page => Url.Action("List",
-    new { page, from = ViewBag.FilterModel.FromDate, to = ViewBag.FilterModel.ToDate }))
