@@ -2,74 +2,74 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.SqlClient;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Configuration;
 
 namespace airplaneCA
 {
     class AirportRepository
     {
-        
         private SqlConnection GetSqlConnection()
         {
             SqlConnection sqlConn = null;
             try
             {
+                //get connstr from config file
                 string connStr = ConfigurationManager.ConnectionStrings["airport"].ConnectionString;
-                sqlConn = new SqlConnection(connStr);//conStr returned configured with connstr config file
+                sqlConn = new SqlConnection(connStr);
             }
-            catch(SqlException sqlEx)
+            catch (SqlException sqlEx)
             {
-                Console.WriteLine("Error message: {0}",sqlEx.Message);
+                Console.WriteLine("Error message: {0}", sqlEx.Message);
                 Console.WriteLine("Error stack trace: {0}", sqlEx.StackTrace);
             }
             return sqlConn;
         }
 
-        public void ExecuteStoredProcedure(string storedProcedureName, Dictionary<string,string> parameters)
+        public void ExecuteStoredProcedure(string storedProcedureName, Dictionary<string, string> parameters)
         {
-            using (var Connection = GetSqlConnection())
+            using (var connection = GetSqlConnection())
             {
-                    Connection.Open();
-                    try
+                connection.Open();
+                try
+                {
+                    SqlCommand cmd = new SqlCommand(storedProcedureName, connection);
+                    cmd.CommandType = CommandType.StoredProcedure;
+                    foreach (var item in parameters.Keys)
                     {
-                        SqlCommand cmd = new SqlCommand(storedProcedureName,Connection);
-                        cmd.CommandType = CommandType.StoredProcedure;
-                        foreach(var item in parameters.Keys)
-                        {
-                            cmd.Parameters.Add(new SqlParameter(item,parameters[item]));
-                        }
-                        cmd.ExecuteNonQuery();
-                }
-                    catch (Exception ex)
-                    { }
-                    finally
-                    {
-                        Connection.Close();
+                        cmd.Parameters.Add(new SqlParameter(item, parameters[item]));
                     }
-                
+                    cmd.ExecuteNonQuery();
+                }
+                catch (SqlException sqlEx)
+                {
+                    Console.WriteLine("Error message: {0}", sqlEx.Message);
+                    Console.WriteLine("Error stack trace: {0}", sqlEx.StackTrace);
+                }
+                finally
+                {
+                    connection.Close();
+                }
             }
-
-            
         }
 
-        public object ExecuteReader(string query, Func<SqlDataReader,object> processReader)
+        public object ExecuteReader(string query, Func<SqlDataReader, object> processReader)
         {
-            object objResult=null;
+            object objResult = null;
             SqlDataReader dataReader = null;
             using (var connection = GetSqlConnection())
             {
-                connection.Open();         
+                connection.Open();
                 try
                 {
-                    SqlCommand cmd = new SqlCommand(query,connection);
+                    SqlCommand cmd = new SqlCommand(query, connection);
                     dataReader = cmd.ExecuteReader();
-                    objResult= processReader(dataReader);
+                    objResult = processReader(dataReader);
                 }
-                catch(Exception ex)
-                { }
+                catch (SqlException sqlEx)
+                {
+                    Console.WriteLine("Error message: {0}", sqlEx.Message);
+                    Console.WriteLine("Error stack trace: {0}", sqlEx.StackTrace);
+                }
                 finally
                 {
                     if (dataReader != null)
@@ -79,6 +79,5 @@ namespace airplaneCA
             }
             return objResult;
         }
-
     }
 }
