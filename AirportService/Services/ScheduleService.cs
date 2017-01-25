@@ -222,42 +222,49 @@ namespace AirportService
                         //iterate through each row to get cell values
                         foreach (var row in rows)
                         {
+                            //get cell range A2:I2
+
                             var cells = row.Elements<Cell>().ToList();
                             int rowLength = 9;
                             List<string> rowValues = new List<string>();
                             for (int i = 0; i < rowLength; i++)
                             {
+                                var cellValue = ""; //if cell in given range == null, treat it like an empty string
                                 //get value for each cell
-                                if (cells[i] != null)
+                                try
                                 {
-                                    var cellValue = cells[i].InnerText;
-                                    double cellValueDouble = 0;
-                                    if (cells[i].DataType != null)
+                                    if (cells[i] != null)
                                     {
-                                        //if cell value is an index and not an accual value
-                                        if (cells[i].DataType.Value == CellValues.SharedString)
+                                        cellValue = cells[i].InnerText;
+                                        double cellValueDouble = 0;
+                                        if (cells[i].DataType != null)
                                         {
-                                            if (stringTable != null)
+                                            //if cell value is an index and not an accual value
+                                            if (cells[i].DataType.Value == CellValues.SharedString)
                                             {
-                                                //get an accual cell's value
-                                                cellValue = stringTable.SharedStringTable
-                                                                   .ElementAt(int.Parse(cellValue))
-                                                                   .InnerText;
+                                                if (stringTable != null)
+                                                {
+                                                    //get an accual cell's value
+                                                    cellValue = stringTable.SharedStringTable
+                                                                       .ElementAt(int.Parse(cellValue))
+                                                                       .InnerText;
+                                                }
                                             }
                                         }
-                                    }
-                                    //DateType is null for numerics and date values
-                                    else if (double.TryParse(cellValue, out cellValueDouble))
-                                    {
-                                        //try to parse value as date
-                                        try
+                                        //DateType is null for numerics and date values
+                                        else if (double.TryParse(cellValue, out cellValueDouble))
                                         {
-                                            cellValue = DateTime.FromOADate(cellValueDouble).ToString();
+                                            //try to parse value as date
+                                            try
+                                            {
+                                                cellValue = DateTime.FromOADate(cellValueDouble).ToString();
+                                            }
+                                            catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
                                         }
-                                        catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
                                     }
-                                    rowValues.Add(cellValue);
                                 }
+                                catch (ArgumentOutOfRangeException ex) { } //empty cell in parsed range
+                                rowValues.Add(cellValue);
                             }
                             ScheduleDetailsDTO item = new ScheduleDetailsDTO()
                             {

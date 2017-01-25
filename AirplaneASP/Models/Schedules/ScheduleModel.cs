@@ -31,6 +31,7 @@ namespace AirplaneASP.Models.Schedules
         [DataType(DataType.Text, ErrorMessage = "Please enter text")]
         [RegularExpression("([a-zA-Z0-9 .&'-]+)", ErrorMessage = "Invalid character")]
         [StringLength(50, ErrorMessage = "Comment length must be less than 50")]
+        [DisplayFormat(ConvertEmptyStringToNull = false)]
         public string Comment { get; set; }
     }
 }
