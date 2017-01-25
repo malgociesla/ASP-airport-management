@@ -223,7 +223,7 @@ namespace AirportService
                         foreach (var row in rows)
                         {
                             //get cell range A2:I2
-
+                            //row.Elements<Cell>().Where(c=>c.CellReference)
                             var cells = row.Elements<Cell>().ToList();
                             int rowLength = 9;
                             List<string> rowValues = new List<string>();
