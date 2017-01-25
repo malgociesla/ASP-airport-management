@@ -177,9 +177,11 @@ namespace AirplaneASP.Controllers
             if (model.ScheduleList.Count != 0)
             {
                 IScheduleService scheduleService = new ScheduleService();
-                //import paraeter -> list of checked items
-                scheduleService.Import(model.ScheduleList.Where(s => s.Check==true).Select(s => new ScheduleDTO()
-                {
+                //import parameter -> list of checked items
+                //UNCOMMENT FIRST LINE!!! -> item checked/not checked
+               // scheduleService.Import(model.ScheduleList.Where(s => s.Check==true).Select(s => new ScheduleDTO()
+                scheduleService.Import(model.ScheduleList.Select(s => new ScheduleDTO()
+                 {
                     ID = s.ID,
                     FlightStateID = s.FlightStateID,
                     FlightID = s. FlightID,

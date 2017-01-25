@@ -41,7 +41,6 @@ namespace AirportService
                 //throw error!!!
                 return new Guid();
             }
-
         }
 
         public void Edit(ScheduleDTO scheduleDTO)
@@ -158,24 +157,48 @@ namespace AirportService
             }
         }
 
+        //TODO: https://msdn.microsoft.com/en-us/data/jj592904
         public void Import(List<ScheduleDTO> schedulesList)
         {
             //update database
             //create new items in database, update old ones
             if (schedulesList != null)
             {
-                foreach (ScheduleDTO newSchedule in schedulesList)
+                foreach (ScheduleDTO newScheduleDTO in schedulesList)
                 {
-                    Schedule oldSchedule = _airplaneContext.Schedules.FirstOrDefault(s => s.Id == newSchedule.ID);
+                    Schedule oldSchedule = _airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once
+                    Schedule newSchedule = null;
                     if (oldSchedule == null)
-                        Add(newSchedule);
-                    else if (oldSchedule.Id == newSchedule.ID)
-                        Edit(newSchedule);
+                    //add new scheduleItem
+                    //work directly on airplanecontext add few items and save later
+                    {
+                        newSchedule = new Schedule
+                        {
+                            IdFlight = newScheduleDTO.FlightID,
+                            IdFlightState = newScheduleDTO.FlightStateID,
+                            DepartureDT = newScheduleDTO.DepartureDT,
+                            ArrivalDT = newScheduleDTO.ArrivalDT,
+                            Comment = newScheduleDTO.Comment
+                        };
+                        _airplaneContext.Schedules.Add(newSchedule);
+                    }
+                    else if (oldSchedule.Id == newScheduleDTO.ID)
+                    //edit oldSchedule from db
+                    //work directly on airplanecontext add few items and save later
+                    {
+                        oldSchedule.IdFlight = newScheduleDTO.FlightID;
+                        oldSchedule.IdFlightState = newScheduleDTO.FlightStateID;
+                        oldSchedule.DepartureDT = newScheduleDTO.DepartureDT;
+                        oldSchedule.ArrivalDT = newScheduleDTO.ArrivalDT;
+                        oldSchedule.Comment = newScheduleDTO.Comment;
+                    }
                 }
+                if (schedulesList.Count > 0) _airplaneContext.SaveChanges();
             }
             else { } //error - list is empty
         }
 
+        //TODO: fix import for modified Excel file - reading indexes of SharedStringTable inseted of proper data
         public List<ScheduleDetailsDTO> GetImportedList(Stream excelStream)
         {
             List<ScheduleDetailsDTO> list = new List<ScheduleDetailsDTO>();
@@ -190,27 +213,67 @@ namespace AirportService
                         var rows = excelDoc.WorkbookPart.WorksheetParts.First()
                                                         .Worksheet.GetFirstChild<SheetData>()
                                                         .ChildElements.Skip(1);
+                        //get string table in case the cell value is not an accual value,
+                        //but an index of sharedstringtable, where the value is stored by excel
+                        var stringTable = excelDoc.WorkbookPart
+                                                  .GetPartsOfType<SharedStringTablePart>()
+                                                  .FirstOrDefault();
 
+                        //iterate through each row to get cell values
                         foreach (var row in rows)
                         {
-                            var cells = row.ChildElements;
+                            var cells = row.Elements<Cell>().ToList();
+                            int rowLength = 9;
+                            List<string> rowValues = new List<string>();
+                            for (int i = 0; i < rowLength; i++)
                             {
-                                ScheduleDetailsDTO item = new ScheduleDetailsDTO()
+                                //get value for each cell
+                                if (cells[i] != null)
                                 {
-                                    ID = new Guid(cells[0].InnerText),
-                                    FlightID = new Guid(cells[1].InnerText),
-                                    FlightStateID = new Guid(cells[2].InnerText),
-                                    CityDeparture = cells[3].InnerText.Substring(0, cells[3].InnerText.IndexOf(" (") + 1),
-                                    CountryDeparture = Regex.Match(cells[3].InnerText, @"\(([^)]*)\)").Groups[1].Value,
-                                    CityArrival = cells[4].InnerText.Substring(0, cells[4].InnerText.IndexOf(" (") + 1),
-                                    CountryArrival = Regex.Match(cells[4].InnerText, @"\(([^)]*)\)").Groups[1].Value,
-                                    DepartureDT = DateTime.Parse(cells[5].InnerText),
-                                    ArrivalDT = DateTime.Parse(cells[6].InnerText),
-                                    Company = cells[7].InnerText,
-                                    Comment = cells[8].InnerText
-                                };
-                                list.Add(item);
+                                    var cellValue = cells[i].InnerText;
+                                    double cellValueDouble = 0;
+                                    if (cells[i].DataType != null)
+                                    {
+                                        //if cell value is an index and not an accual value
+                                        if (cells[i].DataType.Value == CellValues.SharedString)
+                                        {
+                                            if (stringTable != null)
+                                            {
+                                                //get an accual cell's value
+                                                cellValue = stringTable.SharedStringTable
+                                                                   .ElementAt(int.Parse(cellValue))
+                                                                   .InnerText;
+                                            }
+                                        }
+                                    }
+                                    //DateType is null for numerics and date values
+                                    else if (double.TryParse(cellValue, out cellValueDouble))
+                                    {
+                                        //try to parse value as date
+                                        try
+                                        {
+                                            cellValue = DateTime.FromOADate(cellValueDouble).ToString();
+                                        }
+                                        catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
+                                    }
+                                    rowValues.Add(cellValue);
+                                }
                             }
+                            ScheduleDetailsDTO item = new ScheduleDetailsDTO()
+                            {
+                                ID = new Guid(rowValues[0]),
+                                FlightID = new Guid(rowValues[1]),
+                                FlightStateID = new Guid(rowValues[2]),
+                                CityDeparture = rowValues[3].Substring(0, rowValues[3].IndexOf(" (") + 1),
+                                CountryDeparture = Regex.Match(rowValues[3], @"\(([^)]*)\)").Groups[1].Value,
+                                CityArrival = rowValues[4].Substring(0, rowValues[4].IndexOf(" (") + 1),
+                                CountryArrival = Regex.Match(rowValues[4], @"\(([^)]*)\)").Groups[1].Value,
+                                DepartureDT = DateTime.Parse(rowValues[5]),
+                                ArrivalDT = DateTime.Parse(rowValues[6]),
+                                Company = rowValues[7],
+                                Comment = rowValues[8]
+                            };
+                            list.Add(item);
                         }
                     }
                 }
@@ -250,6 +313,24 @@ namespace AirportService
                         "Company",
                         "Comment"
                     };
+                        // Add minimal Stylesheet to format DateTime cells
+                        var stylesPart = excelDoc.WorkbookPart.AddNewPart<WorkbookStylesPart>();
+                        stylesPart.Stylesheet = new Stylesheet
+                        {
+                            Fonts = new Fonts(new Font()),
+                            Fills = new Fills(new Fill()),
+                            Borders = new Borders(new Border()),
+                            CellStyleFormats = new CellStyleFormats(new CellFormat()),
+                            CellFormats =
+                                new CellFormats(
+                                    new CellFormat(), //StyleIndex=0
+                                    new CellFormat    //StyleIndex=1 (for DateTime)
+                                    {
+                                        NumberFormatId = 22,
+                                        ApplyNumberFormat = true
+                                    })
+                        };
+
                         foreach (string heading in headingList)
                         {
                             Cell cell = new Cell { CellValue = new CellValue(heading), DataType = new EnumValue<CellValues>(CellValues.String) };
@@ -295,14 +376,16 @@ namespace AirportService
                             //"Departure"
                             row.AppendChild<Cell>(new Cell
                             {
-                                CellValue = new CellValue(item.DepartureDT.ToString()),
-                                DataType = new EnumValue<CellValues>(CellValues.String)
+                                CellValue = new CellValue(item.DepartureDT.Value.ToOADate().ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.Number),
+                                StyleIndex = 1
                             });
                             //"Arrival"
                             row.AppendChild<Cell>(new Cell
                             {
-                                CellValue = new CellValue(item.ArrivalDT.ToString()),
-                                DataType = new EnumValue<CellValues>(CellValues.String)
+                                CellValue = new CellValue(item.ArrivalDT.Value.ToOADate().ToString()),
+                                DataType = new EnumValue<CellValues>(CellValues.Number),
+                                StyleIndex = 1
                             });
                             //"Company"
                             row.AppendChild<Cell>(new Cell
