@@ -17,6 +17,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirplaneASP", "AirplaneASP\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AirplaneEF", "AirplaneEF\AirplaneEF.csproj", "{FB1AF0A1-03EB-425D-8661-990C206E8A3E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Utils", "Utils\Utils.csproj", "{4AE96010-5E91-44E9-8E25-8DBC7FC5FC29}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -49,6 +51,10 @@ Global
 		{FB1AF0A1-03EB-425D-8661-990C206E8A3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FB1AF0A1-03EB-425D-8661-990C206E8A3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FB1AF0A1-03EB-425D-8661-990C206E8A3E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4AE96010-5E91-44E9-8E25-8DBC7FC5FC29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4AE96010-5E91-44E9-8E25-8DBC7FC5FC29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4AE96010-5E91-44E9-8E25-8DBC7FC5FC29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4AE96010-5E91-44E9-8E25-8DBC7FC5FC29}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
