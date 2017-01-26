@@ -158,7 +158,7 @@ namespace AirportService
         }
 
         //TODO: https://msdn.microsoft.com/en-us/data/jj592904
-        public void Import(List<ScheduleDTO> schedulesList)
+        public void UpdateSchedule(List<ScheduleDTO> schedulesList)
         {
             //update database
             //create new items in database, update old ones
@@ -198,6 +198,52 @@ namespace AirportService
             else { } //error - list is empty
         }
 
+        private string GetCellValue(SpreadsheetDocument excelDoc, string cellAddress)
+        {
+            //get string table in case the cell value is not an accual value,
+            //but an index of sharedstringtable, where the value is stored by excel
+            var stringTable = excelDoc.WorkbookPart
+                                      .GetPartsOfType<SharedStringTablePart>()
+                                      .FirstOrDefault();
+            Cell thisCell = excelDoc.WorkbookPart
+                                   .WorksheetParts.First()
+                                   .Worksheet.Descendants<Cell>()
+                                   .Where(c => c.CellReference == cellAddress).FirstOrDefault();
+
+            var cellValue = ""; //if cell in given range == null, treat it like an empty string
+                                //get value for each cell
+            if (thisCell != null)
+            {
+                cellValue = thisCell.InnerText;
+                double cellValueDouble = 0;
+                if (thisCell.DataType != null)
+                {
+                    //if cell value is an index and not an accual value
+                    if (thisCell.DataType.Value == CellValues.SharedString)
+                    {
+                        if (stringTable != null)
+                        {
+                            //get an accual cell's value
+                            cellValue = stringTable.SharedStringTable
+                                               .ElementAt(int.Parse(cellValue))
+                                               .InnerText;
+                        }
+                    }
+                }
+                //DateType is null for numerics and date values
+                else if (double.TryParse(cellValue, out cellValueDouble))
+                {
+                    //try to parse value as date
+                    try
+                    {
+                        cellValue = DateTime.FromOADate(cellValueDouble).ToString();
+                    }
+                    catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
+                }
+            }
+            return cellValue;
+        }
+
         //TODO: fix import for modified Excel file - reading indexes of SharedStringTable inseted of proper data
         public List<ScheduleDetailsDTO> GetImportedList(Stream excelStream)
         {
@@ -208,77 +254,31 @@ namespace AirportService
                 {
                     using (var excelDoc = SpreadsheetDocument.Open(excelStream, false))
                     {
-                        //get rows of data
+                        //get count rows
                         //skip heading row
-                        var rows = excelDoc.WorkbookPart.WorksheetParts.First()
+                        int rowsCount = excelDoc.WorkbookPart.WorksheetParts.First()
                                                         .Worksheet.GetFirstChild<SheetData>()
-                                                        .ChildElements.Skip(1);
-                        //get string table in case the cell value is not an accual value,
-                        //but an index of sharedstringtable, where the value is stored by excel
-                        var stringTable = excelDoc.WorkbookPart
-                                                  .GetPartsOfType<SharedStringTablePart>()
-                                                  .FirstOrDefault();
+                                                        .ChildElements.Skip(1).Count();
 
                         //iterate through each row to get cell values
-                        foreach (var row in rows)
+                        //get cell range [Ai,Ii], i[2,rowsCount]
+                        int fromRange = 2;
+                        int toRange = fromRange + rowsCount;
+                        for (int i=fromRange; i<toRange; i++)
                         {
-                            //get cell range A2:I2
-                            //row.Elements<Cell>().Where(c=>c.CellReference)
-                            var cells = row.Elements<Cell>().ToList();
-                            int rowLength = 9;
-                            List<string> rowValues = new List<string>();
-                            for (int i = 0; i < rowLength; i++)
-                            {
-                                var cellValue = ""; //if cell in given range == null, treat it like an empty string
-                                //get value for each cell
-                                try
-                                {
-                                    if (cells[i] != null)
-                                    {
-                                        cellValue = cells[i].InnerText;
-                                        double cellValueDouble = 0;
-                                        if (cells[i].DataType != null)
-                                        {
-                                            //if cell value is an index and not an accual value
-                                            if (cells[i].DataType.Value == CellValues.SharedString)
-                                            {
-                                                if (stringTable != null)
-                                                {
-                                                    //get an accual cell's value
-                                                    cellValue = stringTable.SharedStringTable
-                                                                       .ElementAt(int.Parse(cellValue))
-                                                                       .InnerText;
-                                                }
-                                            }
-                                        }
-                                        //DateType is null for numerics and date values
-                                        else if (double.TryParse(cellValue, out cellValueDouble))
-                                        {
-                                            //try to parse value as date
-                                            try
-                                            {
-                                                cellValue = DateTime.FromOADate(cellValueDouble).ToString();
-                                            }
-                                            catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
-                                        }
-                                    }
-                                }
-                                catch (ArgumentOutOfRangeException ex) { } //empty cell in parsed range
-                                rowValues.Add(cellValue);
-                            }
                             ScheduleDetailsDTO item = new ScheduleDetailsDTO()
                             {
-                                ID = new Guid(rowValues[0]),
-                                FlightID = new Guid(rowValues[1]),
-                                FlightStateID = new Guid(rowValues[2]),
-                                CityDeparture = rowValues[3].Substring(0, rowValues[3].IndexOf(" (") + 1),
-                                CountryDeparture = Regex.Match(rowValues[3], @"\(([^)]*)\)").Groups[1].Value,
-                                CityArrival = rowValues[4].Substring(0, rowValues[4].IndexOf(" (") + 1),
-                                CountryArrival = Regex.Match(rowValues[4], @"\(([^)]*)\)").Groups[1].Value,
-                                DepartureDT = DateTime.Parse(rowValues[5]),
-                                ArrivalDT = DateTime.Parse(rowValues[6]),
-                                Company = rowValues[7],
-                                Comment = rowValues[8]
+                                ID = new Guid(GetCellValue(excelDoc, "A" + i)),
+                                FlightID = new Guid(GetCellValue(excelDoc, "B" + i)),
+                                FlightStateID = new Guid(GetCellValue(excelDoc, "C" + i)),
+                                CityDeparture = GetCellValue(excelDoc, "D" + i).Substring(0, GetCellValue(excelDoc, "D" + i).IndexOf(" (") + 1),
+                                CountryDeparture = Regex.Match(GetCellValue(excelDoc, "D" + i), @"\(([^)]*)\)").Groups[1].Value,
+                                CityArrival = GetCellValue(excelDoc, "E" + i).Substring(0, GetCellValue(excelDoc, "E" + i).IndexOf(" (") + 1),
+                                CountryArrival = Regex.Match(GetCellValue(excelDoc, "E" + i), @"\(([^)]*)\)").Groups[1].Value,
+                                DepartureDT = DateTime.Parse(GetCellValue(excelDoc, "F" + i)),
+                                ArrivalDT = DateTime.Parse(GetCellValue(excelDoc, "G" + i)),
+                                Company = GetCellValue(excelDoc, "H" + i),
+                                Comment = GetCellValue(excelDoc, "I" + i)
                             };
                             list.Add(item);
                         }
@@ -290,7 +290,7 @@ namespace AirportService
             return list;
         }
 
-        public byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList)
+        public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
         {
             if (schedulesList != null)
             {

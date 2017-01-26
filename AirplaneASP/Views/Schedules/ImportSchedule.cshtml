@@ -22,80 +22,86 @@
                 <input name="UploadedFile" type="submit" value="Upload" class="btn btn-default" />
             </div>
         </div>
+        <div class="form-group">
+            <div class="col-md-10">
+                @Html.ValidationMessageFor(model => model.UploadedFile, "", new { @class = "text-danger" })
+            </div>
+        </div>
     </div>
 }
-</hr>
+        </hr>
 @using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post))
 {
-<input name="Import" type="submit" value="Import" class="btn btn-default" />
-<table class="table">
-    <tr>
-        <th>
-            @Html.DisplayName("From")
-        </th>
-        <th>
-            @Html.DisplayName("To")
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().DepartureDT)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().ArrivalDT)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Company)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Comment)
-        </th>
-        <th>
-            @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Check)
-        </th>
-    </tr>
-
-    @for (int i = 0; i < Model.ScheduleList.Count; i++)
-    {
-
-        @Html.HiddenFor(Model => Model.ScheduleList[i].ID)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].FlightStateID)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].FlightID)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].DepartureDT)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].ArrivalDT)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].Comment)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].CityDeparture)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].CountryDeparture)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].CityArrival)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].CountryArrival)
-        @Html.HiddenFor(Model => Model.ScheduleList[i].Company)
+    <input name="Import" type="submit" value="Import" class="btn btn-default" />
+    @Html.ValidationMessageFor(model => model.ScheduleList, "", new { @class = "text-danger" })
+    <table class="table">
         <tr>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].CityDeparture)
-                (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryDeparture))
-            </td>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].CityArrival)
-                (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryArrival)) 
-            </td>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].DepartureDT)
-            </td>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].ArrivalDT)
-            </td>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].Company)
-            </td>
-            <td>
-                @Html.DisplayFor(Model => Model.ScheduleList[i].Comment)
-            </td>
-            <td>
-                @Html.EditorFor(Model => Model.ScheduleList[i].Check)
-            </td>
+            <th>
+                @Html.DisplayName("From")
+            </th>
+            <th>
+                @Html.DisplayName("To")
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().DepartureDT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().ArrivalDT)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Company)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Comment)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ScheduleList.FirstOrDefault().Check)
+            </th>
         </tr>
-    }
-    @*@Html.HiddenFor(model=>model.CheckedItemList[item.ID])*@
-    @*@Html.CheckBox("CheckedItemList[" + item.ID + "]", new { value = @Model.CheckedItemList[item.ID] })
-    @Html.CheckBoxFor(model=>model.CheckedItemList[item.ID])*@
-    @*@Html.EditorFor(model => model.CheckedItemList[item.ID])*@
-</table>
+
+        @for (int i = 0; i < Model.ScheduleList.Count; i++)
+                {
+
+            @Html.HiddenFor(Model => Model.ScheduleList[i].ID)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].FlightStateID)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].FlightID)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].DepartureDT)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].ArrivalDT)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].Comment)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].CityDeparture)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].CountryDeparture)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].CityArrival)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].CountryArrival)
+            @Html.HiddenFor(Model => Model.ScheduleList[i].Company)
+            <tr>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].CityDeparture)
+                    (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryDeparture))
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].CityArrival)
+                    (@Html.DisplayFor(Model => Model.ScheduleList[i].CountryArrival))
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].DepartureDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].ArrivalDT)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].Company)
+                </td>
+                <td>
+                    @Html.DisplayFor(Model => Model.ScheduleList[i].Comment)
+                </td>
+                <td>
+                    @Html.EditorFor(Model => Model.ScheduleList[i].Check)
+                </td>
+            </tr>
+        }
+        @*@Html.HiddenFor(model=>model.CheckedItemList[item.ID])*@
+        @*@Html.CheckBox("CheckedItemList[" + item.ID + "]", new { value = @Model.CheckedItemList[item.ID] })
+            @Html.CheckBoxFor(model=>model.CheckedItemList[item.ID])*@
+        @*@Html.EditorFor(model => model.CheckedItemList[item.ID])*@
+    </table>
 }

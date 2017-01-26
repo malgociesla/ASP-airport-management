@@ -48,7 +48,7 @@ namespace AirplaneASP.Controllers
         private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
         {
             IScheduleService scheduleService = new ScheduleService();
-            int totalItemsCount=0;
+            int totalItemsCount = 0;
             List<ScheduleDetailsDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
@@ -80,7 +80,7 @@ namespace AirplaneASP.Controllers
             else
             {
                 //pagination
-                if (page == null || 
+                if (page == null ||
                     page < 1)
                 {
                     page = 1;
@@ -173,26 +173,29 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult ImportSchedule(ImportViewModel model)
         {
-            //import based on model.ScheduleList
-            if (model.ScheduleList.Count != 0)
+            if (ModelState.IsValid)
             {
-                IScheduleService scheduleService = new ScheduleService();
-                //import parameter -> list of checked items
-                scheduleService.Import(model.ScheduleList.Where(s => s.Check==true).Select(s => new ScheduleDTO()
-                 {
-                    ID = s.ID,
-                    FlightStateID = s.FlightStateID,
-                    FlightID = s. FlightID,
-                    DepartureDT = s.DepartureDT,
-                    ArrivalDT = s.ArrivalDT,
-                    Comment = s.Comment
+                //import based on model.ScheduleList
+                if (model.ScheduleList.Count != 0)
+                {
+                    IScheduleService scheduleService = new ScheduleService();
+                    //import parameter -> list of checked items
+                    scheduleService.UpdateSchedule(model.ScheduleList.Where(s => s.Check == true).Select(s => new ScheduleDTO()
+                    {
+                        ID = s.ID,
+                        FlightStateID = s.FlightStateID,
+                        FlightID = s.FlightID,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment
+                    }
+                    ).ToList());
                 }
-                ).ToList());
-            }
-            //upload items from file to view
-            if (model.UploadedFile != null)
-            {
-                model.ScheduleList = GetUploadedList(model.UploadedFile);
+                //upload items from file to view
+                if (model.UploadedFile != null)
+                {
+                    model.ScheduleList = GetUploadedList(model.UploadedFile);
+                }
             }
             return View(model);
         }
@@ -236,7 +239,7 @@ namespace AirplaneASP.Controllers
             IScheduleService scheduleService = new ScheduleService();
             if (all)
             {
-                excelBytes = scheduleService.ExportSchedule(scheduleService.GetAll());
+                excelBytes = scheduleService.Export(scheduleService.GetAll());
             }
             else
             {
@@ -250,7 +253,7 @@ namespace AirplaneASP.Controllers
                 int pageSize;
                 int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
                 int totalItemsCount = 0;
-                excelBytes = scheduleService.ExportSchedule(scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
+                excelBytes = scheduleService.Export(scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
             }
             FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
             {

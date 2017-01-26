@@ -13,8 +13,8 @@ namespace AirportService
         List<ScheduleDetailsDTO> GetAll();
         List<ScheduleDetailsDTO> GetList(int pageNumber, int pageSize, out int totalItemsCount, DateTime? from = null, DateTime? to = null);
         void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId);
+        void UpdateSchedule(List<ScheduleDTO> schedulesList);
         List<ScheduleDetailsDTO> GetImportedList(Stream excelStream);
-        void Import(List<ScheduleDTO> schedulesList);
-        byte[] ExportSchedule(List<ScheduleDetailsDTO> schedulesList);
+        byte[] Export(List<ScheduleDetailsDTO> schedulesList);
     }
 }
