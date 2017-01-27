@@ -4,15 +4,19 @@ using System.Linq;
 using AirportService.DTO;
 using AirplaneEF;
 using System.Data.Entity;
+using Utils;
+using System.IO;
 
 namespace AirportService
 {
     public class ScheduleService : IScheduleService
     {
+        private IScheduleUtils _scheduleUtils;
         private readonly AirportContext _airplaneContext;
         public ScheduleService()
         {
             _airplaneContext = new AirportContext();
+            _scheduleUtils = new ScheduleExcelUtils();
         }
 
         public Guid Add(ScheduleDTO scheduleDTO)
@@ -191,6 +195,58 @@ namespace AirportService
                 if (schedulesList.Count > 0) _airplaneContext.SaveChanges();
             }
             else { } //error - list is empty
+        }
+
+        public List<ScheduleDetailsDTO> Import(Stream excelStream)
+        {
+            /*return _scheduleUtils.Read(excelStream);*/ return null;
+        }
+
+        public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
+        {
+            return _scheduleUtils.Write(GetScheduleDictList(schedulesList));
+        }
+
+        private List<List<Dictionary<string, AirportTypes>>> GetScheduleDictList(List<ScheduleDetailsDTO> schedulesList)
+        {
+            List<List<Dictionary<string, AirportTypes>>> schedulesDictList = new List<List<Dictionary<string,AirportTypes>>>();
+            schedulesDictList.Add(new List<Dictionary<string, AirportTypes>>()
+                                                    {
+                                                            new Dictionary<string,AirportTypes>
+                                                            {
+                                                                {Constants.ScheduleID,AirportTypes.String},
+                                                                {Constants.FlightID,AirportTypes.String},
+                                                                {Constants.FlightStateID,AirportTypes.String},
+                                                                {Constants.From,AirportTypes.String},
+                                                                {Constants.To,AirportTypes.String},
+                                                                {Constants.Departure,AirportTypes.String},
+                                                                {Constants.Arrival,AirportTypes.String},
+                                                                {Constants.Company,AirportTypes.String},
+                                                                {Constants.Comment,AirportTypes.String}
+                                                            }
+                                                    }
+                                                );
+            var schedule = schedulesList.Select(s =>
+                                                    new List<Dictionary<string, AirportTypes>>()
+                                                    {
+                                                            new Dictionary<string, AirportTypes>()
+                                                            {
+                                                                {s.ID.ToString(),AirportTypes.String},
+                                                                {s.FlightID.ToString(),AirportTypes.String},
+                                                                {s.FlightStateID.ToString(),AirportTypes.String},
+                                                                {s.CityDeparture.ToString() + " (" + s.CountryDeparture.ToString() + ")",AirportTypes.String},
+                                                                {s.CityArrival.ToString() + " (" + s.CountryArrival.ToString() + ")",AirportTypes.String},
+                                                                {s.DepartureDT.Value.ToOADate().ToString(),AirportTypes.Numeric},
+                                                                {s.ArrivalDT.Value.ToOADate().ToString(),AirportTypes.Numeric},
+                                                                {s.Company.ToString(),AirportTypes.String},
+                                                                {s.Comment.ToString(),AirportTypes.String}
+                                                            }
+                                                    }
+                                                ).ToList();
+
+            schedulesDictList.AddRange(schedule);
+
+            return schedulesDictList;
         }
     }
 }

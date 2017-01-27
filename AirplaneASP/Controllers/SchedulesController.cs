@@ -213,7 +213,7 @@ namespace AirplaneASP.Controllers
 
                 //Get list of imported schedule items
                 IScheduleService scheduleService = new ScheduleService();
-                List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.GetImportedList(file.InputStream);
+                List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.Import(file.InputStream);
                 scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
                 {
                     ID = s.ID,
