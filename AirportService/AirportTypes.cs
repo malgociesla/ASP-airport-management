@@ -8,7 +8,7 @@ namespace AirportService.DTO
 {
     public enum AirportTypes
     {
-        String = 0,
-        Numeric = 1
+        String = 4,
+        Number = 1
     }
 }
