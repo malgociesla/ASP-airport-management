@@ -12,6 +12,7 @@ namespace AirplaneASP.App_Start
     using Ninject.Web.Common;
 
     using AirportService;
+    using Utils;
 
     public static class NinjectWebCommon 
     {
@@ -67,6 +68,7 @@ namespace AirplaneASP.App_Start
             kernel.Bind<ICountryService>().To<CountryService>();
             kernel.Bind<ICompanyService>().To<CompanyService>();
             kernel.Bind<IScheduleService>().To<ScheduleService>();
+            kernel.Bind<IScheduleUtils>().To<ScheduleExcelUtils>();
             kernel.Bind<IFlightStateService>().To<FlightStateService>();
             kernel.Bind<IFlightService>().To<FlightService>();
         }        

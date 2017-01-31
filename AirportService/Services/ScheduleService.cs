@@ -12,12 +12,13 @@ namespace AirportService
 {
     public class ScheduleService : IScheduleService
     {
-        private IScheduleUtils _scheduleUtils;
+        private readonly IScheduleUtils _scheduleUtils;
         private readonly AirportContext _airplaneContext;
-        public ScheduleService()
+
+        public ScheduleService(IScheduleUtils scheduleUtils)
         {
             _airplaneContext = new AirportContext();
-            _scheduleUtils = new ScheduleExcelUtils();
+            _scheduleUtils = scheduleUtils;
         }
 
         public Guid Add(ScheduleDTO scheduleDTO)

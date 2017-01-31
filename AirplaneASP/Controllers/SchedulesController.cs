@@ -38,7 +38,6 @@ namespace AirplaneASP.Controllers
             int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
             //filter
-            IScheduleService scheduleService = new ScheduleService();
             if (from != null && to != null)
             {
                 DateTime thisFrom = (DateTime)from;

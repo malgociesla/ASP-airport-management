@@ -342,6 +342,10 @@
       <Project>{df7941aa-a50f-42d5-9e11-18e5e36c0c22}</Project>
       <Name>AirportService</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Utils\Utils.csproj">
+      <Project>{4ae96010-5e91-44e9-8e25-8dbc7fc5fc29}</Project>
+      <Name>Utils</Name>
+    </ProjectReference>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
