@@ -11,15 +11,23 @@ using AirplaneASP.Models.Cities;
 
 namespace AirplaneASP.Controllers
 {
-    //[RoutePrefix("Flights")]
     public class FlightsController : Controller
     {
-        [HttpGet]
+        private readonly IFlightService _flightService;
+        private readonly ICompanyService _companyService;
+        private readonly ICityService _cityService;
 
+        public FlightsController(IFlightService flightService, ICompanyService companyService, ICityService cityService, ICountryService countryService)
+        {
+            this._flightService = flightService;
+            this._companyService = companyService;
+            this._cityService = cityService;
+        }
+
+        [HttpGet]
         public ActionResult List()
         {
-            IFlightService flightService = new FlightService();
-            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightDTO> fliList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
             foreach (FlightDTO fli in fliList)
             {
@@ -43,16 +51,14 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Remove(Guid id)
         {
-            IFlightService flightService = new FlightService();
-            flightService.Remove(id);
+            _flightService.Remove(id);
 
             return RedirectToAction("List");
         }
 
         public ActionResult Add()
         {
-            ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompanyDTO> cmpList = _companyService.GetAll();
             List<CompanyModel> companyList = new List<CompanyModel>();
             foreach (CompanyDTO cmp in cmpList)
             {
@@ -65,8 +71,7 @@ namespace AirplaneASP.Controllers
             }
             ViewBag.CompanyList = companyList;
 
-            ICityService cityService = new CityService();
-            List<CityDTO> ciList = cityService.GetAll();
+            List<CityDTO> ciList = _cityService.GetAll();
             List<CityModel> cityList = new List<CityModel>();
             foreach (CityDTO ci in ciList)
             {
@@ -88,7 +93,6 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                IFlightService flightService = new FlightService();
                 FlightDTO fli = new FlightDTO
                 {
                     ID = flight.ID,
@@ -100,14 +104,13 @@ namespace AirplaneASP.Controllers
                     DepartureTime = flight.DepartureTime,
                     ArrivalTime = flight.ArrivalTime
                 };
-                flightService.Add(fli);
+                _flightService.Add(fli);
 
                 return RedirectToAction("List");
             }
             else
             {
-                ICompanyService companyService = new CompanyService();
-                List<CompanyDTO> cmpList = companyService.GetAll();
+                List<CompanyDTO> cmpList = _companyService.GetAll();
                 List<CompanyModel> companyList = new List<CompanyModel>();
                 foreach (CompanyDTO cmp in cmpList)
                 {
@@ -120,8 +123,7 @@ namespace AirplaneASP.Controllers
                 }
                 ViewBag.CompanyList = companyList;
 
-                ICityService cityService = new CityService();
-                List<CityDTO> ciList = cityService.GetAll();
+                List<CityDTO> ciList = _cityService.GetAll();
                 List<CityModel> cityList = new List<CityModel>();
                 foreach (CityDTO ci in ciList)
                 {
@@ -144,8 +146,7 @@ namespace AirplaneASP.Controllers
         //[Route("Edit/{flightID}")]
         public ActionResult Edit(Guid id)
         {
-            IFlightService flightService = new FlightService();
-            FlightDTO fliItem = flightService.GetAll().FirstOrDefault(f => f.ID == id);
+            FlightDTO fliItem = _flightService.GetAll().FirstOrDefault(f => f.ID == id);
             FlightModel flightItem = new FlightModel
             {
                 ID = fliItem.ID,
@@ -158,8 +159,7 @@ namespace AirplaneASP.Controllers
                 ArrivalTime = fliItem.ArrivalTime
             };
 
-            ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompanyDTO> cmpList = _companyService.GetAll();
             List<CompanyModel> companyList = new List<CompanyModel>();
             foreach (CompanyDTO cmp in cmpList)
             {
@@ -172,8 +172,7 @@ namespace AirplaneASP.Controllers
             }
             ViewBag.CompanyList = companyList;
 
-            ICityService cityService = new CityService();
-            List<CityDTO> ciList = cityService.GetAll();
+            List<CityDTO> ciList = _cityService.GetAll();
             List<CityModel> cityList = new List<CityModel>();
             foreach (CityDTO ci in ciList)
             {
@@ -195,7 +194,6 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                IFlightService flightService = new FlightService();
                 FlightDTO fli = new FlightDTO
                 {
                     ID = flight.ID,
@@ -207,14 +205,13 @@ namespace AirplaneASP.Controllers
                     DepartureTime = flight.DepartureTime,
                     ArrivalTime = flight.ArrivalTime
                 };
-                flightService.Edit(fli);
+                _flightService.Edit(fli);
 
                 return RedirectToAction("List");
             }
             else
             {
-                ICompanyService companyService = new CompanyService();
-                List<CompanyDTO> cmpList = companyService.GetAll();
+                List<CompanyDTO> cmpList = _companyService.GetAll();
                 List<CompanyModel> companyList = new List<CompanyModel>();
                 foreach (CompanyDTO cmp in cmpList)
                 {
@@ -227,8 +224,7 @@ namespace AirplaneASP.Controllers
                 }
                 ViewBag.CompanyList = companyList;
 
-                ICityService cityService = new CityService();
-                List<CityDTO> ciList = cityService.GetAll();
+                List<CityDTO> ciList = _cityService.GetAll();
                 List<CityModel> cityList = new List<CityModel>();
                 foreach (CityDTO ci in ciList)
                 {

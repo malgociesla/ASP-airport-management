@@ -164,9 +164,13 @@ namespace AirportService
             //create new items in database, update old ones
             if (schedulesList != null)
             {
+                var existingScheduleIds = schedulesList.Select(s => s.ID).ToList();
+
+                var oldSchedules = _airplaneContext.Schedules.Where(s => existingScheduleIds.Contains(s.Id)).ToList();
+
                 foreach (ScheduleDTO newScheduleDTO in schedulesList)
                 {
-                    Schedule oldSchedule = _airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once
+                    Schedule oldSchedule = oldSchedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); /*_airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once*/
                     Schedule newSchedule = null;
                     if (oldSchedule == null)
                     //add new scheduleItem
@@ -200,15 +204,15 @@ namespace AirportService
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)
         {
-            return GetScheduleFromDict(_scheduleUtils.Read(excelStream));
+            return PrepareToImport(_scheduleUtils.Read(excelStream));
         }
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
         {
-            return _scheduleUtils.Write(GetScheduleDictList(schedulesList));
+            return _scheduleUtils.Write(PrepareToExport(schedulesList));
         }
 
-        private List<ScheduleDetailsDTO> GetScheduleFromDict(List<List<Tuple<string, int>>> objList)
+        private List<ScheduleDetailsDTO> PrepareToImport(List<List<Tuple<string, int>>> objList)
         {
             List<ScheduleDetailsDTO> scheduleList = new List<ScheduleDetailsDTO>();
             List<List<Tuple<string, int>>> objList1 = new List<List<Tuple<string, int>>>();
@@ -225,40 +229,50 @@ namespace AirportService
             //                                                    Tuple.Create(Constants.Comment,(int)AirportTypes.String)
             //                                                });
             //skip headings
+
+            try
+            {
                 var schedules = objList.Skip(1).Select(s =>
-                                                   new ScheduleDetailsDTO()
-                                                   {
-                                                       ID = new Guid(s[0].Item1),
-                                                       FlightID = new Guid(s[1].Item1),
-                                                       FlightStateID = new Guid(s[2].Item1),
-                                                       CityDeparture = s[3].Item1.Substring(0, s[3].Item1.IndexOf(" (") + 1),
-                                                       CountryDeparture = Regex.Match(s[3].Item1, @"\(([^)]*)\)").Groups[1].Value,
-                                                       CityArrival = s[4].Item1.Substring(0, s[4].Item1.IndexOf(" (") + 1),
-                                                       CountryArrival = Regex.Match(s[4].Item1, @"\(([^)]*)\)").Groups[1].Value,
-                                                       DepartureDT = DateTime.Parse(s[5].Item1),
-                                                       ArrivalDT = DateTime.Parse(s[6].Item1),
-                                                       Company = s[7].Item1,
-                                                       Comment = s[8].Item1,
-                                                   }
-                                             ).ToList();
+                                                       new ScheduleDetailsDTO()
+                                                       {
+                                                           ID = new Guid(s[0].Item1),
+                                                           FlightID = new Guid(s[1].Item1),
+                                                           FlightStateID = new Guid(s[2].Item1),
+                                                           CityDeparture = s[3].Item1.Substring(0, s[3].Item1.IndexOf(" (") + 1),
+                                                           CountryDeparture = Regex.Match(s[3].Item1, @"\(([^)]*)\)").Groups[1].Value,
+                                                           CityArrival = s[4].Item1.Substring(0, s[4].Item1.IndexOf(" (") + 1),
+                                                           CountryArrival = Regex.Match(s[4].Item1, @"\(([^)]*)\)").Groups[1].Value,
+                                                           DepartureDT = DateTime.Parse(s[5].Item1),
+                                                           ArrivalDT = DateTime.Parse(s[6].Item1),
+                                                           Company = s[7].Item1,
+                                                           Comment = s[8].Item1,
+                                                       }
+                                                 ).ToList();
                 scheduleList.AddRange(schedules);
+            }
+            catch (ArgumentOutOfRangeException ex)
+            {
+                // throw error
+                // error with parsing file - couldn't parse data from file
+            }
 
             return scheduleList;
         }
 
-        private List<List<Tuple<string, int>>> GetScheduleDictList(List<ScheduleDetailsDTO> schedulesList)
+        private List<List<Tuple<string, int>>> PrepareToExport(List<ScheduleDetailsDTO> schedulesList)
         {
             List<List<Tuple<string, int>>> schedulesDictList = new List<List<Tuple<string, int>>>();
             schedulesDictList.Add(new List<Tuple<string, int>>()
                                                     {
                                                                 Tuple.Create(Constants.ScheduleID,(int)AirportTypes.String),
+                                                                Tuple.Create(Constants.FlightID,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.FlightStateID,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.From,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.To,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.Departure,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.Arrival,(int)AirportTypes.String),
                                                                 Tuple.Create(Constants.Company,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.Comment,(int)AirportTypes.String)       
+                                                                Tuple.Create(Constants.Comment,(int)AirportTypes.String)
                                                     }
                                                 );
 

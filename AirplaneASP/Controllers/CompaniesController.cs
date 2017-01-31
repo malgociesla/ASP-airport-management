@@ -11,11 +11,17 @@ namespace AirplaneASP.Controllers
 {
     public class CompaniesController : Controller
     {
+        private readonly ICompanyService _companyService;
+
+        public CompaniesController(ICompanyService companyService)
+        {
+            this._companyService = companyService;
+        }
+
         [HttpGet]
         public ActionResult List()
         {
-            ICompanyService companyService = new CompanyService();
-            List<CompanyDTO> cmpList = companyService.GetAll();
+            List<CompanyDTO> cmpList = _companyService.GetAll();
             List<CompanyModel> companyList = cmpList.Select(cmp => new CompanyModel
             {
                 ID = cmp.ID,
@@ -28,8 +34,7 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Remove(Guid id)
         {
-            ICompanyService companyService = new CompanyService();
-            companyService.Remove(id);
+            _companyService.Remove(id);
 
             return RedirectToAction("List");
         }
@@ -44,13 +49,12 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICompanyService companyService = new CompanyService();
                 CompanyDTO cmp = new CompanyDTO
                 {
                     ID = company.ID,
                     Name = company.Name
                 };
-                companyService.Add(cmp);
+                _companyService.Add(cmp);
 
                 return RedirectToAction("List");
             }
@@ -76,13 +80,12 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICompanyService companyService = new CompanyService();
                 CompanyDTO cmp = new CompanyDTO
                 {
                     ID = company.ID,
                     Name = company.Name
                 };
-                companyService.Edit(cmp);
+                _companyService.Edit(cmp);
 
                 return RedirectToAction("List");
             }

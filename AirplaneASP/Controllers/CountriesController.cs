@@ -11,11 +11,17 @@ namespace AirplaneASP.Controllers
 {
     public class CountriesController : Controller
     {
+        private readonly ICountryService _countryService;
+
+        public CountriesController(ICountryService countryService)
+        {
+            this._countryService = countryService;
+        }
+
         [HttpGet]
         public ActionResult List()
         {
-            ICountryService countryService = new CountryService();
-            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryDTO> ctrList = _countryService.GetAll();
             List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
                 ID = ctr.ID,
@@ -28,8 +34,7 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Remove(Guid id)
         {
-            ICountryService countryService = new CountryService();
-            countryService.Remove(id);
+            _countryService.Remove(id);
 
             return RedirectToAction("List");
         }
@@ -44,13 +49,12 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICountryService countryService = new CountryService();
                 CountryDTO ctr = new CountryDTO
                 {
                     ID = country.ID,
                     Name = country.Name
                 };
-                countryService.Add(ctr);
+                _countryService.Add(ctr);
 
                 return RedirectToAction("List");
             }
@@ -60,8 +64,7 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id)
         {
-            ICountryService countryService = new CountryService();
-            CountryDTO ctrItem = countryService.GetAll().FirstOrDefault(c => c.ID == id);
+            CountryDTO ctrItem = _countryService.GetAll().FirstOrDefault(c => c.ID == id);
             CountryModel countryItem = new CountryModel
             {
                 ID = ctrItem.ID,
@@ -76,13 +79,12 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICountryService countryService = new CountryService();
                 CountryDTO ctr = new CountryDTO
                 {
                     ID = country.ID,
                     Name = country.Name
                 };
-                countryService.Edit(ctr);
+                _countryService.Edit(ctr);
 
                 return RedirectToAction("List");
             }

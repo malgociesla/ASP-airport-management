@@ -12,11 +12,19 @@ namespace AirplaneASP.Controllers
 {
     public class CitiesController : Controller
     {
+        private readonly ICityService _cityService;
+        private readonly ICountryService _countryService;
+
+        public CitiesController(ICityService cityService, ICountryService countryService)
+        {
+            this._cityService = cityService;
+            this._countryService = countryService;
+        }
+
         [HttpGet]
         public ActionResult List()
         {
-            ICityService cityService = new CityService();
-            List<CityDTO> ciList = cityService.GetAll();
+            List<CityDTO> ciList = _cityService.GetAll();
             List<CityModel> cityList = ciList.Select(ci => new CityModel
             {
                 ID = ci.ID,
@@ -30,16 +38,14 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Remove(Guid id)
         {
-            ICityService cityService = new CityService();
-            cityService.Remove(id);
+            _cityService.Remove(id);
 
             return RedirectToAction("List");
         }
 
         public ActionResult Add()
         {
-            ICountryService countryService = new CountryService();
-            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryDTO> ctrList = _countryService.GetAll();
             List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
                 ID = ctr.ID,
@@ -54,21 +60,19 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICityService cityService = new CityService();
                 CityDTO ci = new CityDTO
                 {
                     ID = city.ID,
                     CountryID = city.CountryID,
                     Name = city.Name
                 };
-                cityService.Add(ci);
+                _cityService.Add(ci);
 
                 return RedirectToAction("List");
             }
             else
             {
-                ICountryService countryService = new CountryService();
-                List<CountryDTO> ctrList = countryService.GetAll();
+                List<CountryDTO> ctrList = _countryService.GetAll();
                 List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
                 {
                     ID = ctr.ID,
@@ -83,8 +87,7 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id)
         {
-            ICityService cityService = new CityService();
-            CityDTO ciItem = cityService.GetAll().FirstOrDefault(c => c.ID == id);
+            CityDTO ciItem = _cityService.GetAll().FirstOrDefault(c => c.ID == id);
             CityModel cityItem = new CityModel
             {
                 ID = ciItem.ID,
@@ -92,8 +95,7 @@ namespace AirplaneASP.Controllers
                 Name = ciItem.Name
             };
 
-            ICountryService countryService = new CountryService();
-            List<CountryDTO> ctrList = countryService.GetAll();
+            List<CountryDTO> ctrList = _countryService.GetAll();
             List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
             {
                 ID = ctr.ID,
@@ -109,21 +111,19 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ICityService cityService = new CityService();
                 CityDTO ci = new CityDTO
                 {
                     ID = city.ID,
                     CountryID = city.CountryID,
                     Name = city.Name
                 };
-                cityService.Edit(ci);
+                _cityService.Edit(ci);
 
                 return RedirectToAction("List");
             }
             else
             {
-                ICountryService countryService = new CountryService();
-                List<CountryDTO> ctrList = countryService.GetAll();
+                List<CountryDTO> ctrList = _countryService.GetAll();
                 List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
                 {
                     ID = ctr.ID,

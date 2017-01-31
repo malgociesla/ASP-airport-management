@@ -13,6 +13,17 @@ namespace AirplaneASP.Controllers
 {
     public class SchedulesController : Controller
     {
+        private readonly IScheduleService _scheduleService;
+        private readonly IFlightStateService _flightStateService;
+        private readonly IFlightService _flightService;
+
+        public SchedulesController(IScheduleService scheduleService, IFlightStateService flightStateService, IFlightService flightService)
+        {
+            this._scheduleService = scheduleService;
+            this._flightStateService = flightStateService;
+            this._flightService = flightService;
+        }
+
         //[HttpGet]
         public ActionResult List(int? page, DateTime? from, DateTime? to)
         {
@@ -47,9 +58,8 @@ namespace AirplaneASP.Controllers
 
         private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
         {
-            IScheduleService scheduleService = new ScheduleService();
             int totalItemsCount = 0;
-            List<ScheduleDetailsDTO> schdPage = scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
+            List<ScheduleDetailsDTO> schdPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
             var subset = schdPage
                .Select(s => new ScheduleDetailsModel
@@ -97,16 +107,14 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Remove(Guid id, int? page)
         {
-            IScheduleService scheduleService = new ScheduleService();
-            scheduleService.Remove(id);
+            _scheduleService.Remove(id);
 
             return RedirectToAction("List", new { page = page });
         }
 
         public ActionResult GenerateSchedule()
         {
-            IFlightService flightService = new FlightService();
-            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightDTO> fliList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
             foreach (FlightDTO fli in fliList)
             {
@@ -133,15 +141,13 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                IScheduleService scheduleService = new ScheduleService();
-                scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
+                _scheduleService.GenerateSchedule(generateScheduleModel.StartDate, generateScheduleModel.EndDate, generateScheduleModel.FlightID);
 
                 return RedirectToAction("List");
             }
             else
             {
-                IFlightService flightService = new FlightService();
-                List<FlightDTO> fliList = flightService.GetAll();
+                List<FlightDTO> fliList = _flightService.GetAll();
                 List<FlightModel> flightList = new List<FlightModel>();
                 foreach (FlightDTO fli in fliList)
                 {
@@ -178,9 +184,9 @@ namespace AirplaneASP.Controllers
                 //import based on model.ScheduleList
                 if (model.ScheduleList.Count != 0)
                 {
-                    IScheduleService scheduleService = new ScheduleService();
+                    ;
                     //import parameter -> list of checked items
-                    scheduleService.UpdateSchedule(model.ScheduleList.Where(s => s.Check == true).Select(s => new ScheduleDTO()
+                    _scheduleService.UpdateSchedule(model.ScheduleList.Where(s => s.Check == true).Select(s => new ScheduleDTO()
                     {
                         ID = s.ID,
                         FlightStateID = s.FlightStateID,
@@ -206,14 +212,8 @@ namespace AirplaneASP.Controllers
 
             if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
             {
-                string fileName = file.FileName;
-                string fileContentType = file.ContentType;
-                byte[] fileBytes = new byte[file.ContentLength];
-                var data = file.InputStream.Read(fileBytes, 0, Convert.ToInt32(file.ContentLength));
-
                 //Get list of imported schedule items
-                IScheduleService scheduleService = new ScheduleService();
-                List<ScheduleDetailsDTO> scheduleDTOList = scheduleService.Import(file.InputStream);
+                List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
                 scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
                 {
                     ID = s.ID,
@@ -236,10 +236,9 @@ namespace AirplaneASP.Controllers
         public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)
         {
             byte[] excelBytes;
-            IScheduleService scheduleService = new ScheduleService();
             if (all)
             {
-                excelBytes = scheduleService.Export(scheduleService.GetAll());
+                excelBytes = _scheduleService.Export(_scheduleService.GetAll());
             }
             else
             {
@@ -253,7 +252,7 @@ namespace AirplaneASP.Controllers
                 int pageSize;
                 int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
                 int totalItemsCount = 0;
-                excelBytes = scheduleService.Export(scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
+                excelBytes = _scheduleService.Export(_scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
             }
             FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
             {
@@ -266,8 +265,7 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id, int? page)
         {
-            IScheduleService scheduleService = new ScheduleService();
-            ScheduleDTO schdItem = scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
+            ScheduleDTO schdItem = _scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
             ScheduleModel scheduleItem = new ScheduleModel
             {
                 ID = schdItem.ID,
@@ -278,8 +276,7 @@ namespace AirplaneASP.Controllers
                 Comment = schdItem.Comment
             };
 
-            IFlightService flightService = new FlightService();
-            List<FlightDTO> fliList = flightService.GetAll();
+            List<FlightDTO> fliList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
             foreach (FlightDTO fli in fliList)
             {
@@ -298,8 +295,7 @@ namespace AirplaneASP.Controllers
             }
             ViewBag.FlightList = flightList;
 
-            IFlightStateService flightStateService = new FlightStateService();
-            List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+            List<FlightStateDTO> flightStateList = _flightStateService.GetAll();
             ViewBag.FlightStateList = flightStateList;
 
             ViewBag.Page = page;
@@ -312,7 +308,6 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                IScheduleService scheduleService = new ScheduleService();
                 ScheduleDTO schd = new ScheduleDTO
                 {
                     ID = schedule.ID,
@@ -322,7 +317,7 @@ namespace AirplaneASP.Controllers
                     ArrivalDT = schedule.ArrivalDT,
                     Comment = schedule.Comment
                 };
-                scheduleService.Edit(schd);
+                _scheduleService.Edit(schd);
 
                 return RedirectToAction("List", new { page = page });
             }
@@ -330,8 +325,7 @@ namespace AirplaneASP.Controllers
             {
                 ViewBag.Page = page;
 
-                IFlightService flightService = new FlightService();
-                List<FlightDTO> fliList = flightService.GetAll();
+                List<FlightDTO> fliList = _flightService.GetAll();
                 List<FlightModel> flightList = new List<FlightModel>();
                 foreach (FlightDTO fli in fliList)
                 {

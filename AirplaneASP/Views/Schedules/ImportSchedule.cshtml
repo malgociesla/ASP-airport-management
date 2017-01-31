@@ -32,7 +32,20 @@
         </hr>
 @using (Html.BeginForm("ImportSchedule", "Schedules", FormMethod.Post))
 {
-    <input name="Import" type="submit" value="Import" class="btn btn-default" />
+    <div class="form-inline">
+        <div class="form-group">
+            @Html.Label("all", htmlAttributes: new { @class = "control-label col-md-5" })
+            <div class="col-md-2">
+                @Html.CheckBox("checkAll", htmlAttributes: new { @onclick = "checkAll()" })
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-2">
+                <input name="Import" type="submit" value="Import" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+
     @Html.ValidationMessageFor(model => model.ScheduleList, "", new { @class = "text-danger" })
     <table class="table">
         <tr>
@@ -95,7 +108,7 @@
                     @Html.DisplayFor(Model => Model.ScheduleList[i].Comment)
                 </td>
                 <td>
-                    @Html.EditorFor(Model => Model.ScheduleList[i].Check)
+                    @Html.CheckBoxFor(Model => Model.ScheduleList[i].Check, new { @class = "checkbox", @checked=false })
                 </td>
             </tr>
         }
