@@ -45,6 +45,9 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExcelCellData.cs" />
+    <Compile Include="ExcelData.cs" />
+    <Compile Include="ExcelRowData.cs" />
     <Compile Include="IScheduleUtils.cs" />
     <Compile Include="ScheduleExcelUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

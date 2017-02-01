@@ -1,13 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace AirportUtils
+namespace Utils
 {
-    public class ExcelWrite
+    public class ExcelCellData
     {
+        public string CellValue { get; set; }
+        public Type CellDataType { get; set; }
     }
 }

@@ -7,6 +7,6 @@ namespace Utils
     public interface IScheduleUtils
     {
         List<List<Tuple<string, int>>> Read(Stream excelStream);
-        byte[] Write(List<List<Tuple<string, int>>> schedulesList);
+        byte[] Write(ExcelData excelData);
     }
 }

@@ -11,8 +11,8 @@ namespace Utils
 {
     public class ScheduleExcelUtils : IScheduleUtils
     {
-        private static readonly int _maxRows = 1000;
-        private static readonly int _maxColumns = 26; //A-Z
+        //private static readonly int _maxRows = 1000;
+        //private static readonly int _maxColumns = 26; //A-Z
 
         public List<List<Tuple<string, int>>> Read(Stream excelStream)
         {
@@ -61,9 +61,9 @@ namespace Utils
             return objList;
         }
 
-        public byte[] Write(List<List<Tuple<string, int>>> objList)
+        public byte[] Write(ExcelData excelData)
         {
-            if (objList != null)
+            if (excelData != null)
             {
                 using (var templateStream = new MemoryStream())
                 {
@@ -82,7 +82,7 @@ namespace Utils
                         stylesPart.Stylesheet = SetStyleSheet();
 
                         //insert data	
-                        GenerateCellsFromItems(objList, sheetData);
+                        GenerateCellsFromItems(excelData, sheetData);
 
                         worksheetPart.Worksheet = new Worksheet(sheetData);
 
@@ -132,27 +132,23 @@ namespace Utils
             return styleSheet;
         }
 
-        private List<Cell> GenerateCellsFromItems(List<List<Tuple<string, int>>> objList, SheetData sheetData)
+        private List<Cell> GenerateCellsFromItems(ExcelData excelData, SheetData sheetData)
         {
             List<Cell> cellList = new List<Cell>();
-
-            if (objList.Count > _maxRows) { } //throw error: to many rows
-            if (objList.FirstOrDefault().Count > _maxColumns) { }//throw error: to many columns
+            var allDataRows = excelData.AllRows;
 
             int fromRowID = 1;
             char fromColumnID = 'A';
 
             int rowID = fromRowID;
-            foreach (var obj in objList) //single object
+            foreach (var dataRow in allDataRows) //single object
             {
                 Row row = new Row() { RowIndex = (uint)rowID };
                 char columnID = fromColumnID;
-                foreach (var tuple in obj)
+                foreach (var cellData in dataRow)
                 {
-                        var property = tuple.Item1;
-                        var type = tuple.Item2;
                         string cellAddress = columnID + rowID.ToString();
-                        Cell cell = SetCell(property, (CellValues)type, cellAddress);
+                        Cell cell = SetCell(cellData.CellValue, GetCellType(cellData.CellDataType), cellAddress);
                         row.Append(cell);
                         cellList.Add(cell);
 
@@ -162,6 +158,13 @@ namespace Utils
                 rowID++;
             }
             return cellList;
+        }
+
+        private CellValues GetCellType(Type cellDataType)
+        {
+            if (cellDataType == typeof(DateTime)
+                || cellDataType == typeof(DateTime?)) return CellValues.Number;
+            else return CellValues.String;
         }
 
         private uint GetCellStyleIndex(CellValues cellDataType)

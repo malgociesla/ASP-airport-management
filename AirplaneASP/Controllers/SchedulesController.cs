@@ -343,8 +343,7 @@ namespace AirplaneASP.Controllers
                 }
                 ViewBag.FlightList = flightList;
 
-                IFlightStateService flightStateService = new FlightStateService();
-                List<FlightStateDTO> flightStateList = flightStateService.GetAll();
+                List<FlightStateDTO> flightStateList = _flightStateService.GetAll();
                 ViewBag.FlightStateList = flightStateList;
 
                 return View();

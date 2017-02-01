@@ -210,7 +210,7 @@ namespace AirportService
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
         {
-            return _scheduleUtils.Write(PrepareToExport(schedulesList));
+            return _scheduleUtils.Write(PrepareToExcelExport(schedulesList));
         }
 
         private List<ScheduleDetailsDTO> PrepareToImport(List<List<Tuple<string, int>>> objList)
@@ -295,6 +295,121 @@ namespace AirportService
             schedulesDictList.AddRange(schedule);
 
             return schedulesDictList;
+        }
+
+        private ExcelData PrepareToExcelExport(List<ScheduleDetailsDTO> schedulesList)
+        {
+            ExcelData excelData = new ExcelData();
+            try
+            {
+                excelData.HeadingRow = new ExcelRowData(new List<ExcelCellData>()
+                                                {
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.ScheduleID,
+                                                                    CellDataType = Constants.ScheduleID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.FlightID,
+                                                                    CellDataType = Constants.FlightID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.FlightStateID,
+                                                                    CellDataType = Constants.FlightStateID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.From,
+                                                                    CellDataType = Constants.From.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.To,
+                                                                    CellDataType = Constants.To.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.Departure,
+                                                                    CellDataType = Constants.Departure.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.Arrival,
+                                                                    CellDataType = Constants.Arrival.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.Company,
+                                                                    CellDataType = Constants.Company.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = Constants.Comment,
+                                                                    CellDataType = Constants.Comment.GetType()
+                                                                }
+
+                                                }
+                                        );
+
+                var scheduleData = schedulesList.Select(s =>
+                                                            new ExcelRowData(
+                                                                new List<ExcelCellData>()
+                                                                {
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.ID.ToString(),
+                                                                    CellDataType = s.ID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.FlightID.ToString(),
+                                                                    CellDataType = s.FlightID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.FlightStateID.ToString(),
+                                                                    CellDataType = s.FlightStateID.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.CityDeparture.ToString() + " (" + s.CountryDeparture.ToString() + ")",
+                                                                    CellDataType = s.CityDeparture.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.CityArrival.ToString() + " (" + s.CountryArrival.ToString() + ")",
+                                                                    CellDataType = s.CityArrival.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.DepartureDT.Value.ToOADate().ToString(),
+                                                                    CellDataType = s.DepartureDT.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.ArrivalDT.Value.ToOADate().ToString(),
+                                                                    CellDataType = s.ArrivalDT.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.Company.ToString(),
+                                                                    CellDataType = s.Company.GetType()
+                                                                },
+                                                                new ExcelCellData()
+                                                                {
+                                                                    CellValue = s.Comment.ToString(),
+                                                                    CellDataType = s.Comment.GetType()
+                                                                }
+                                                                }
+                                                             )
+                                                          ).ToList();
+
+                excelData.DataRows = scheduleData;
+            }
+            catch (Exception ex) { } //rethrow exception eg. too many columns or rows
+            return excelData;
         }
     }
 }

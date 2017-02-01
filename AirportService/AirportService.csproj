@@ -81,6 +81,10 @@
       <Project>{fb1af0a1-03eb-425d-8661-990c206e8a3e}</Project>
       <Name>AirplaneEF</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AirportUtils\AirportUtils.csproj">
+      <Project>{3346188e-f1ba-4686-92ce-c83409806830}</Project>
+      <Name>AirportUtils</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Utils\Utils.csproj">
       <Project>{4ae96010-5e91-44e9-8e25-8dbc7fc5fc29}</Project>
       <Name>Utils</Name>
