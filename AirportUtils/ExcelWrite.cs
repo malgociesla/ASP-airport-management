@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AirportUtils
 {
-    public class ExcelUtils
+    public class ExcelWrite
     {
     }
 }
