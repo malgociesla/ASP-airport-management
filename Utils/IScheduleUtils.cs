@@ -6,7 +6,7 @@ namespace Utils
 {
     public interface IScheduleUtils
     {
-        List<List<Tuple<string, int>>> Read(Stream excelStream);
+        ExcelData Read(Stream excelStream);
         byte[] Write(ExcelData excelData);
     }
 }

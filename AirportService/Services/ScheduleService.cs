@@ -13,12 +13,14 @@ namespace AirportService
     public class ScheduleService : IScheduleService
     {
         private readonly IScheduleUtils _scheduleUtils;
+        private readonly IScheduleParser _scheduleParser;
         private readonly AirportContext _airplaneContext;
 
-        public ScheduleService(IScheduleUtils scheduleUtils)
+        public ScheduleService(IScheduleUtils scheduleUtils, IScheduleParser scheduleParser)
         {
             _airplaneContext = new AirportContext();
             _scheduleUtils = scheduleUtils;
+            _scheduleParser = scheduleParser;
         }
 
         public Guid Add(ScheduleDTO scheduleDTO)
@@ -205,7 +207,7 @@ namespace AirportService
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)
         {
-            return PrepareToImport(_scheduleUtils.Read(excelStream));
+            return PrepareToExcelImport(_scheduleUtils.Read(excelStream));
         }
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
@@ -213,88 +215,17 @@ namespace AirportService
             return _scheduleUtils.Write(PrepareToExcelExport(schedulesList));
         }
 
-        private List<ScheduleDetailsDTO> PrepareToImport(List<List<Tuple<string, int>>> objList)
+        private List<ScheduleDetailsDTO> PrepareToExcelImport(ExcelData excelData)
         {
             List<ScheduleDetailsDTO> scheduleList = new List<ScheduleDetailsDTO>();
-            List<List<Tuple<string, int>>> objList1 = new List<List<Tuple<string, int>>>();
 
-            //objList1[0].Contains(new List<Tuple<string, int>>()
-            //                                                {
-            //                                                    Tuple.Create(Constants.ScheduleID,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.FlightStateID,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.From,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.To,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.Departure,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.Arrival,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.Company,(int)AirportTypes.String),
-            //                                                    Tuple.Create(Constants.Comment,(int)AirportTypes.String)
-            //                                                });
-            //skip headings
-
-            try
-            {
-                var schedules = objList.Skip(1).Select(s =>
-                                                       new ScheduleDetailsDTO()
-                                                       {
-                                                           ID = new Guid(s[0].Item1),
-                                                           FlightID = new Guid(s[1].Item1),
-                                                           FlightStateID = new Guid(s[2].Item1),
-                                                           CityDeparture = s[3].Item1.Substring(0, s[3].Item1.IndexOf(" (") + 1),
-                                                           CountryDeparture = Regex.Match(s[3].Item1, @"\(([^)]*)\)").Groups[1].Value,
-                                                           CityArrival = s[4].Item1.Substring(0, s[4].Item1.IndexOf(" (") + 1),
-                                                           CountryArrival = Regex.Match(s[4].Item1, @"\(([^)]*)\)").Groups[1].Value,
-                                                           DepartureDT = DateTime.Parse(s[5].Item1),
-                                                           ArrivalDT = DateTime.Parse(s[6].Item1),
-                                                           Company = s[7].Item1,
-                                                           Comment = s[8].Item1,
-                                                       }
-                                                 ).ToList();
-                scheduleList.AddRange(schedules);
-            }
-            catch (ArgumentOutOfRangeException ex)
-            {
-                // throw error
-                // error with parsing file - couldn't parse data from file
-            }
+            var schedules = excelData.DataRows.Select(s => _scheduleParser
+                                                            .ParseDataRow(s)
+                                                      )
+                                                      .ToList();
+            scheduleList.AddRange(schedules);
 
             return scheduleList;
-        }
-
-        private List<List<Tuple<string, int>>> PrepareToExport(List<ScheduleDetailsDTO> schedulesList)
-        {
-            List<List<Tuple<string, int>>> schedulesDictList = new List<List<Tuple<string, int>>>();
-            schedulesDictList.Add(new List<Tuple<string, int>>()
-                                                    {
-                                                                Tuple.Create(Constants.ScheduleID,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.FlightID,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.FlightStateID,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.From,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.To,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.Departure,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.Arrival,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.Company,(int)AirportTypes.String),
-                                                                Tuple.Create(Constants.Comment,(int)AirportTypes.String)
-                                                    }
-                                                );
-
-            var schedule = schedulesList.Select(s =>
-                                                    new List<Tuple<string, int>>()
-                                                    {
-                                                                Tuple.Create(s.ID.ToString(),(int)AirportTypes.String),
-                                                                Tuple.Create(s.FlightID.ToString(),(int)AirportTypes.String),
-                                                                Tuple.Create(s.FlightStateID.ToString(),(int)AirportTypes.String),
-                                                                Tuple.Create(s.CityDeparture.ToString() + " (" + s.CountryDeparture.ToString() + ")",(int)AirportTypes.String),
-                                                                Tuple.Create(s.CityArrival.ToString() + " (" + s.CountryArrival.ToString() + ")",(int)AirportTypes.String),
-                                                                Tuple.Create(s.DepartureDT.Value.ToOADate().ToString(),(int)AirportTypes.Number),
-                                                                Tuple.Create(s.ArrivalDT.Value.ToOADate().ToString(),(int)AirportTypes.Number),
-                                                                Tuple.Create(s.Company.ToString(),(int)AirportTypes.String),
-                                                                Tuple.Create(s.Comment.ToString(),(int)AirportTypes.String)
-                                                    }
-                                                ).ToList();
-
-            schedulesDictList.AddRange(schedule);
-
-            return schedulesDictList;
         }
 
         private ExcelData PrepareToExcelExport(List<ScheduleDetailsDTO> schedulesList)
@@ -302,109 +233,11 @@ namespace AirportService
             ExcelData excelData = new ExcelData();
             try
             {
-                excelData.HeadingRow = new ExcelRowData(new List<ExcelCellData>()
-                                                {
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.ScheduleID,
-                                                                    CellDataType = Constants.ScheduleID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.FlightID,
-                                                                    CellDataType = Constants.FlightID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.FlightStateID,
-                                                                    CellDataType = Constants.FlightStateID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.From,
-                                                                    CellDataType = Constants.From.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.To,
-                                                                    CellDataType = Constants.To.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.Departure,
-                                                                    CellDataType = Constants.Departure.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.Arrival,
-                                                                    CellDataType = Constants.Arrival.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.Company,
-                                                                    CellDataType = Constants.Company.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = Constants.Comment,
-                                                                    CellDataType = Constants.Comment.GetType()
-                                                                }
+                excelData.HeadingRow = _scheduleParser.GenerateHeadingRow();
 
-                                                }
-                                        );
-
-                var scheduleData = schedulesList.Select(s =>
-                                                            new ExcelRowData(
-                                                                new List<ExcelCellData>()
-                                                                {
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.ID.ToString(),
-                                                                    CellDataType = s.ID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.FlightID.ToString(),
-                                                                    CellDataType = s.FlightID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.FlightStateID.ToString(),
-                                                                    CellDataType = s.FlightStateID.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.CityDeparture.ToString() + " (" + s.CountryDeparture.ToString() + ")",
-                                                                    CellDataType = s.CityDeparture.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.CityArrival.ToString() + " (" + s.CountryArrival.ToString() + ")",
-                                                                    CellDataType = s.CityArrival.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.DepartureDT.Value.ToOADate().ToString(),
-                                                                    CellDataType = s.DepartureDT.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.ArrivalDT.Value.ToOADate().ToString(),
-                                                                    CellDataType = s.ArrivalDT.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.Company.ToString(),
-                                                                    CellDataType = s.Company.GetType()
-                                                                },
-                                                                new ExcelCellData()
-                                                                {
-                                                                    CellValue = s.Comment.ToString(),
-                                                                    CellDataType = s.Comment.GetType()
-                                                                }
-                                                                }
-                                                             )
-                                                          ).ToList();
+                var scheduleData = schedulesList.Select(s => _scheduleParser
+                                                              .GenerateDataRow(s)
+                                                       ).ToList();
 
                 excelData.DataRows = scheduleData;
             }

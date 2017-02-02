@@ -183,7 +183,6 @@ namespace AirplaneASP.Controllers
                 //import based on model.ScheduleList
                 if (model.ScheduleList.Count != 0)
                 {
-                    ;
                     //import parameter -> list of checked items
                     _scheduleService.UpdateSchedule(model.ScheduleList.Where(s => s.Check == true).Select(s => new ScheduleDTO()
                     {
@@ -211,23 +210,26 @@ namespace AirplaneASP.Controllers
 
             if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
             {
-                //Get list of imported schedule items
-                List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
-                scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
-                {
-                    ID = s.ID,
-                    FlightStateID = s.FlightStateID,
-                    FlightID = s.FlightID,
-                    DepartureDT = s.DepartureDT,
-                    ArrivalDT = s.ArrivalDT,
-                    Comment = s.Comment,
-                    CityDeparture = s.CityDeparture,
-                    CountryDeparture = s.CountryDeparture,
-                    CityArrival = s.CityArrival,
-                    CountryArrival = s.CountryArrival,
-                    Company = s.Company,
-                    Check = false
-                }).ToList();
+                    //Get list of imported schedule items
+                    List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
+
+                    scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
+                    {
+                        ID = s.ID,
+                        FlightStateID = s.FlightStateID,
+                        FlightID = s.FlightID,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment,
+                        CityDeparture = s.CityDeparture,
+                        CountryDeparture = s.CountryDeparture,
+                        CityArrival = s.CityArrival,
+                        CountryArrival = s.CountryArrival,
+                        Company = s.Company,
+                        Check = false
+                    }).ToList();
+
+                //error: couldn't import file
             }
             return scheduleList;
         }

@@ -71,6 +71,7 @@ namespace AirplaneASP.App_Start
             kernel.Bind<IScheduleUtils>().To<ScheduleExcelUtils>();
             kernel.Bind<IFlightStateService>().To<FlightStateService>();
             kernel.Bind<IFlightService>().To<FlightService>();
+            kernel.Bind<IScheduleParser>().To<ScheduleParser>();
         }        
     }
 }

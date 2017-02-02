@@ -11,12 +11,9 @@ namespace Utils
 {
     public class ScheduleExcelUtils : IScheduleUtils
     {
-        //private static readonly int _maxRows = 1000;
-        //private static readonly int _maxColumns = 26; //A-Z
-
-        public List<List<Tuple<string, int>>> Read(Stream excelStream)
+        public ExcelData Read(Stream excelStream)
         {
-            List<List<Tuple<string, int>>> objList = new List<List<Tuple<string, int>>>();
+            ExcelData excelData = new ExcelData();
 
             if (excelStream != null)
             {
@@ -38,17 +35,20 @@ namespace Utils
                         char fromColumnID = 'A';
                         for (int rowID = fromRowID; rowID <= rowsCount; rowID++)
                         {
-                            List<Tuple<string, int>> columnItem = new List<Tuple<string, int>> ();
+                            ExcelRowData rowData = new ExcelRowData();
                             for (char columnID = fromColumnID; columnID < rowSize; columnID++)
                             {
                                 string cellAddress = columnID + rowID.ToString();
-                                Tuple<string, CellValues> cellValueTypePair = GetCellValueTypePair(excelDoc, cellAddress);
-                                if (cellValueTypePair!=null)
+                                ExcelCellData cellData = GetCellExcelCellData(excelDoc, cellAddress);
+                                if (cellData!=null)
                                 {
-                                    columnItem.Add(System.Tuple.Create(cellValueTypePair.Item1, (int)cellValueTypePair.Item2));
+                                    rowData.DataRow.Add(cellData);
                                 }
                             }
-                            objList.Add(columnItem);
+                            if (rowID == fromRowID)
+                                excelData.HeadingRow = rowData;
+                            else
+                                excelData.DataRows.Add(rowData);
                         }
 
 
@@ -58,7 +58,7 @@ namespace Utils
             }
             else { }//error stream empty
             
-            return objList;
+            return excelData;
         }
 
         public byte[] Write(ExcelData excelData)
@@ -143,7 +143,11 @@ namespace Utils
             int rowID = fromRowID;
             foreach (var dataRow in allDataRows) //single object
             {
-                Row row = new Row() { RowIndex = (uint)rowID };
+                Row row = new Row()
+                                    {
+                                        RowIndex = (uint)rowID
+                                    };
+
                 char columnID = fromColumnID;
                 foreach (var cellData in dataRow)
                 {
@@ -167,6 +171,12 @@ namespace Utils
             else return CellValues.String;
         }
 
+        private Type GetCellType(CellValues cellDataType)
+        {
+            //if (cellDataType == CellValues.String)
+                return typeof(string);
+        }
+
         private uint GetCellStyleIndex(CellValues cellDataType)
         {
             if (cellDataType == CellValues.Number) return 1;
@@ -185,7 +195,7 @@ namespace Utils
             return cell;
         }
 
-        private Tuple<string, CellValues> GetCellValueTypePair(SpreadsheetDocument excelDoc, string cellAddress)
+        private ExcelCellData GetCellExcelCellData(SpreadsheetDocument excelDoc, string cellAddress)
         {
             //get string table in case the cell value is not an accual value,
             //but an index of sharedstringtable, where the value is stored by excel
@@ -227,11 +237,16 @@ namespace Utils
                     try
                     {
                         cellValue = DateTime.FromOADate(cellValueDouble).ToString();
+                        cellDataType = CellValues.Date;
                     }
                     catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
                 }
                 //if cell isn't null -> assign value
-                return System.Tuple.Create(cellValue, cellDataType);
+                return new ExcelCellData()
+                {
+                    CellValue = cellValue,
+                    CellDataType = GetCellType(cellDataType)
+                };
             }
             return null;
         }
