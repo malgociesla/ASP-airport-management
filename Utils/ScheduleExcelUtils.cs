@@ -82,7 +82,7 @@ namespace Utils
                         stylesPart.Stylesheet = SetStyleSheet();
 
                         //insert data	
-                        GenerateCellsFromItems(excelData, sheetData);
+                        GenerateCells(excelData, sheetData);
 
                         worksheetPart.Worksheet = new Worksheet(sheetData);
 
@@ -132,7 +132,7 @@ namespace Utils
             return styleSheet;
         }
 
-        private List<Cell> GenerateCellsFromItems(ExcelData excelData, SheetData sheetData)
+        private List<Cell> GenerateCells(ExcelData excelData, SheetData sheetData)
         {
             List<Cell> cellList = new List<Cell>();
             var allDataRows = excelData.AllRows;

@@ -22,11 +22,7 @@ namespace AirplaneASP.Controllers
         public ActionResult List()
         {
             List<CompanyDTO> cmpList = _companyService.GetAll();
-            List<CompanyModel> companyList = cmpList.Select(cmp => new CompanyModel
-            {
-                ID = cmp.ID,
-                Name = cmp.Name
-            }).ToList();
+            var companyList = AutoMapper.Mapper.Map<List<CompanyDTO>, List<CompanyModel>>(cmpList);
 
             return View("List", companyList);
         }
@@ -49,11 +45,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                CompanyDTO cmp = new CompanyDTO
-                {
-                    ID = company.ID,
-                    Name = company.Name
-                };
+                var cmp = AutoMapper.Mapper.Map<CompanyModel, CompanyDTO>(company);
                 _companyService.Add(cmp);
 
                 return RedirectToAction("List");
@@ -66,11 +58,7 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
-            CompanyModel companyItem = new CompanyModel
-            {
-                ID = cmpItem.ID,
-                Name = cmpItem.Name
-            };
+            var companyItem = AutoMapper.Mapper.Map<CompanyDTO, CompanyModel>(cmpItem);
 
             return View("Edit", companyItem);
         }
@@ -80,11 +68,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                CompanyDTO cmp = new CompanyDTO
-                {
-                    ID = company.ID,
-                    Name = company.Name
-                };
+                var cmp = AutoMapper.Mapper.Map<CompanyModel , CompanyDTO>(company);
                 _companyService.Edit(cmp);
 
                 return RedirectToAction("List");
