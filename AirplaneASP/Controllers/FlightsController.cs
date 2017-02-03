@@ -27,20 +27,20 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<FlightDTO> fliList = _flightService.GetAll();
+            List<FlightDTO> flightDTOList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO fli in fliList)
+            foreach (FlightDTO flightDTO in flightDTOList)
             {
                 FlightModel fliItem = new FlightModel
                 {
-                    ID = fli.ID,
-                    CompanyID = fli.CompanyID,
-                    Name = fli.Name,
-                    DayOfWeek = fli.DayOfWeek,
-                    CityDepartureID = fli.CityDepartureID,
-                    CityArrivalID = fli.CityArrivalID,
-                    DepartureTime = fli.DepartureTime,
-                    ArrivalTime = fli.ArrivalTime
+                    ID = flightDTO.ID,
+                    CompanyID = flightDTO.CompanyID,
+                    Name = flightDTO.Name,
+                    DayOfWeek = flightDTO.DayOfWeek,
+                    CityDepartureID = flightDTO.CityDepartureID,
+                    CityArrivalID = flightDTO.CityArrivalID,
+                    DepartureTime = flightDTO.DepartureTime,
+                    ArrivalTime = flightDTO.ArrivalTime
                 };
                 flightList.Add(fliItem);
             }
@@ -58,9 +58,9 @@ namespace AirplaneASP.Controllers
 
         public ActionResult Add()
         {
-            List<CompanyDTO> cmpList = _companyService.GetAll();
+            List<CompanyDTO> companyDTOList = _companyService.GetAll();
             List<CompanyModel> companyList = new List<CompanyModel>();
-            foreach (CompanyDTO cmp in cmpList)
+            foreach (CompanyDTO cmp in companyDTOList)
             {
                 CompanyModel cmpItem = new CompanyModel
                 {
@@ -71,9 +71,9 @@ namespace AirplaneASP.Controllers
             }
             ViewBag.CompanyList = companyList;
 
-            List<CityDTO> ciList = _cityService.GetAll();
+            List<CityDTO> cityDTOList = _cityService.GetAll();
             List<CityModel> cityList = new List<CityModel>();
-            foreach (CityDTO ci in ciList)
+            foreach (CityDTO ci in cityDTOList)
             {
                 CityModel ciItem = new CityModel
                 {
@@ -93,7 +93,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                FlightDTO fli = new FlightDTO
+                FlightDTO flightDTO = new FlightDTO
                 {
                     ID = flight.ID,
                     CompanyID = flight.CompanyID,
@@ -104,15 +104,15 @@ namespace AirplaneASP.Controllers
                     DepartureTime = flight.DepartureTime,
                     ArrivalTime = flight.ArrivalTime
                 };
-                _flightService.Add(fli);
+                _flightService.Add(flightDTO);
 
                 return RedirectToAction("List");
             }
             else
             {
-                List<CompanyDTO> cmpList = _companyService.GetAll();
+                List<CompanyDTO> companyDTOList = _companyService.GetAll();
                 List<CompanyModel> companyList = new List<CompanyModel>();
-                foreach (CompanyDTO cmp in cmpList)
+                foreach (CompanyDTO cmp in companyDTOList)
                 {
                     CompanyModel cmpItem = new CompanyModel
                     {
@@ -123,9 +123,9 @@ namespace AirplaneASP.Controllers
                 }
                 ViewBag.CompanyList = companyList;
 
-                List<CityDTO> ciList = _cityService.GetAll();
+                List<CityDTO> cityDTOList = _cityService.GetAll();
                 List<CityModel> cityList = new List<CityModel>();
-                foreach (CityDTO ci in ciList)
+                foreach (CityDTO ci in cityDTOList)
                 {
                     CityModel ciItem = new CityModel
                     {
@@ -146,35 +146,35 @@ namespace AirplaneASP.Controllers
         //[Route("Edit/{flightID}")]
         public ActionResult Edit(Guid id)
         {
-            FlightDTO fliItem = _flightService.GetAll().FirstOrDefault(f => f.ID == id);
-            FlightModel flightItem = new FlightModel
+            FlightDTO flightDTO = _flightService.GetAll().FirstOrDefault(f => f.ID == id);
+            FlightModel flight = new FlightModel
             {
-                ID = fliItem.ID,
-                CompanyID = fliItem.CompanyID,
-                Name = fliItem.Name,
-                DayOfWeek = fliItem.DayOfWeek,
-                CityDepartureID = fliItem.CityDepartureID,
-                CityArrivalID = fliItem.CityArrivalID,
-                DepartureTime = fliItem.DepartureTime,
-                ArrivalTime = fliItem.ArrivalTime
+                ID = flightDTO.ID,
+                CompanyID = flightDTO.CompanyID,
+                Name = flightDTO.Name,
+                DayOfWeek = flightDTO.DayOfWeek,
+                CityDepartureID = flightDTO.CityDepartureID,
+                CityArrivalID = flightDTO.CityArrivalID,
+                DepartureTime = flightDTO.DepartureTime,
+                ArrivalTime = flightDTO.ArrivalTime
             };
 
-            List<CompanyDTO> cmpList = _companyService.GetAll();
+            List<CompanyDTO> companyDTOList = _companyService.GetAll();
             List<CompanyModel> companyList = new List<CompanyModel>();
-            foreach (CompanyDTO cmp in cmpList)
+            foreach (CompanyDTO companyDTO in companyDTOList)
             {
-                CompanyModel cmpItem = new CompanyModel
+                CompanyModel company = new CompanyModel
                 {
-                    ID = cmp.ID,
-                    Name = cmp.Name
+                    ID = companyDTO.ID,
+                    Name = companyDTO.Name
                 };
-                companyList.Add(cmpItem);
+                companyList.Add(company);
             }
             ViewBag.CompanyList = companyList;
 
-            List<CityDTO> ciList = _cityService.GetAll();
+            List<CityDTO> cityDTOList = _cityService.GetAll();
             List<CityModel> cityList = new List<CityModel>();
-            foreach (CityDTO ci in ciList)
+            foreach (CityDTO ci in cityDTOList)
             {
                 CityModel ciItem = new CityModel
                 {
@@ -186,7 +186,7 @@ namespace AirplaneASP.Controllers
             }
             ViewBag.CityList = cityList;
 
-            return View("Edit", flightItem);
+            return View("Edit", flight);
         }
 
         [HttpPost]
@@ -194,7 +194,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                FlightDTO fli = new FlightDTO
+                FlightDTO flightDTO = new FlightDTO
                 {
                     ID = flight.ID,
                     CompanyID = flight.CompanyID,
@@ -205,15 +205,15 @@ namespace AirplaneASP.Controllers
                     DepartureTime = flight.DepartureTime,
                     ArrivalTime = flight.ArrivalTime
                 };
-                _flightService.Edit(fli);
+                _flightService.Edit(flightDTO);
 
                 return RedirectToAction("List");
             }
             else
             {
-                List<CompanyDTO> cmpList = _companyService.GetAll();
+                List<CompanyDTO> companyDTOList = _companyService.GetAll();
                 List<CompanyModel> companyList = new List<CompanyModel>();
-                foreach (CompanyDTO cmp in cmpList)
+                foreach (CompanyDTO cmp in companyDTOList)
                 {
                     CompanyModel cmpItem = new CompanyModel
                     {
@@ -224,9 +224,9 @@ namespace AirplaneASP.Controllers
                 }
                 ViewBag.CompanyList = companyList;
 
-                List<CityDTO> ciList = _cityService.GetAll();
+                List<CityDTO> cityDTOList = _cityService.GetAll();
                 List<CityModel> cityList = new List<CityModel>();
-                foreach (CityDTO ci in ciList)
+                foreach (CityDTO ci in cityDTOList)
                 {
                     CityModel ciItem = new CityModel
                     {

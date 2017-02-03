@@ -24,8 +24,8 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<CountryDTO> ctrList = _countryService.GetAll();
-            var countryList = _countryMaper.Map(ctrList);
+            List<CountryDTO> countryDTOList = _countryService.GetAll();
+            var countryList = _countryMaper.Map(countryDTOList);
 
             return View("List", countryList);
         }
@@ -48,8 +48,8 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ctr = _countryMaper.MapBack(country);
-                _countryService.Add(ctr);
+                var countryDTO = _countryMaper.MapBack(country);
+                _countryService.Add(countryDTO);
 
                 return RedirectToAction("List");
             }
@@ -59,10 +59,10 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id)
         {
-            CountryDTO ctrItem = _countryService.GetAll().FirstOrDefault(c => c.ID == id);
-            var countryItem = _countryMaper.Map(ctrItem);
+            CountryDTO countryDTO = _countryService.GetAll().FirstOrDefault(c => c.ID == id);
+            var country = _countryMaper.Map(countryDTO);
 
-            return View("Edit", countryItem);
+            return View("Edit", country);
         }
 
         [HttpPost]
@@ -70,8 +70,8 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ctr = _countryMaper.MapBack(country);
-                _countryService.Edit(ctr);
+                var countryDTO = _countryMaper.MapBack(country);
+                _countryService.Edit(countryDTO);
 
                 return RedirectToAction("List");
             }

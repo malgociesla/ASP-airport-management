@@ -59,10 +59,10 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            CompanyDTO companyDTOItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
-            var companyItem = this._companyMaper.Map(companyDTOItem);
+            CompanyDTO companyDTO = companyService.GetAll().FirstOrDefault(c => c.ID == id);
+            var company = this._companyMaper.Map(companyDTO);
 
-            return View("Edit", companyItem);
+            return View("Edit", company);
         }
 
         [HttpPost]

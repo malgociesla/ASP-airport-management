@@ -29,8 +29,8 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<CityDTO> ciList = _cityService.GetAll();
-            var cityList = _cityMaper.Map(ciList);
+            List<CityDTO> cityDTOList = _cityService.GetAll();
+            var cityList = _cityMaper.Map(cityDTOList);
 
             return View("List", cityList);
         }
@@ -45,8 +45,8 @@ namespace AirplaneASP.Controllers
 
         public ActionResult Add()
         {
-            List<CountryDTO> ctrList = _countryService.GetAll();
-            var countryList = _countryMaper.Map(ctrList);
+            List<CountryDTO> countryDTOList = _countryService.GetAll();
+            var countryList = _countryMaper.Map(countryDTOList);
             ViewBag.CountryList = countryList;
             return View();
         }
@@ -56,15 +56,15 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ci = _cityMaper.MapBack(city);
-                _cityService.Add(ci);
+                var cityDTO = _cityMaper.MapBack(city);
+                _cityService.Add(cityDTO);
 
                 return RedirectToAction("List");
             }
             else
             {
-                List<CountryDTO> ctrList = _countryService.GetAll();
-                var countryList = _countryMaper.Map(ctrList);
+                List<CountryDTO> countryDTOList = _countryService.GetAll();
+                var countryList = _countryMaper.Map(countryDTOList);
                 ViewBag.CountryList = countryList;
 
                 return View();
@@ -74,14 +74,14 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id)
         {
-            CityDTO ciItem = _cityService.GetAll().FirstOrDefault(c => c.ID == id);
-            var cityItem = _cityMaper.Map(ciItem);
+            CityDTO cityDTO = _cityService.GetAll().FirstOrDefault(c => c.ID == id);
+            var city = _cityMaper.Map(cityDTO);
 
-            List<CountryDTO> ctrList = _countryService.GetAll();
-            var countryList = _countryMaper.Map(ctrList);
+            List<CountryDTO> countryDTOList = _countryService.GetAll();
+            var countryList = _countryMaper.Map(countryDTOList);
             ViewBag.CountryList = countryList;
 
-            return View("Edit", cityItem);
+            return View("Edit", city);
         }
 
         [HttpPost]
@@ -89,15 +89,15 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var ci = _cityMaper.MapBack(city);
-                _cityService.Edit(ci);
+                var cityDTO = _cityMaper.MapBack(city);
+                _cityService.Edit(cityDTO);
 
                 return RedirectToAction("List");
             }
             else
             {
-                List<CountryDTO> ctrList = _countryService.GetAll();
-                var countryList = _countryMaper.Map(ctrList);
+                List<CountryDTO> countryDTOList = _countryService.GetAll();
+                var countryList = _countryMaper.Map(countryDTOList);
                 ViewBag.CountryList = countryList;
 
                 return View();

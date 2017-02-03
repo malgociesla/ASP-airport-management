@@ -58,9 +58,9 @@ namespace AirplaneASP.Controllers
         private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
         {
             int totalItemsCount = 0;
-            List<ScheduleDetailsDTO> schdPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
+            List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
             //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
-            var subset = schdPage
+            var subset = scheduleDTOPage
                .Select(s => new ScheduleDetailsModel
                {
                    ID = s.ID,
@@ -113,9 +113,9 @@ namespace AirplaneASP.Controllers
 
         public ActionResult GenerateSchedule()
         {
-            List<FlightDTO> fliList = _flightService.GetAll();
+            List<FlightDTO> flightDTOList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO fli in fliList)
+            foreach (FlightDTO fli in flightDTOList)
             {
                 FlightModel fliItem = new FlightModel
                 {
@@ -146,9 +146,9 @@ namespace AirplaneASP.Controllers
             }
             else
             {
-                List<FlightDTO> fliList = _flightService.GetAll();
+                List<FlightDTO> flightDTOList = _flightService.GetAll();
                 List<FlightModel> flightList = new List<FlightModel>();
-                foreach (FlightDTO fli in fliList)
+                foreach (FlightDTO fli in flightDTOList)
                 {
                     FlightModel fliItem = new FlightModel
                     {
@@ -266,22 +266,22 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Edit(Guid id, int? page)
         {
-            ScheduleDTO schdItem = _scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
-            ScheduleModel scheduleItem = new ScheduleModel
+            ScheduleDTO scheduleDTO = _scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
+            ScheduleModel schedule = new ScheduleModel
             {
-                ID = schdItem.ID,
-                FlightID = schdItem.FlightID,
-                FlightStateID = schdItem.FlightStateID,
-                DepartureDT = schdItem.DepartureDT,
-                ArrivalDT = schdItem.ArrivalDT,
-                Comment = schdItem.Comment
+                ID = scheduleDTO.ID,
+                FlightID = scheduleDTO.FlightID,
+                FlightStateID = scheduleDTO.FlightStateID,
+                DepartureDT = scheduleDTO.DepartureDT,
+                ArrivalDT = scheduleDTO.ArrivalDT,
+                Comment = scheduleDTO.Comment
             };
 
-            List<FlightDTO> fliList = _flightService.GetAll();
+            List<FlightDTO> flightDTOList = _flightService.GetAll();
             List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO fli in fliList)
+            foreach (FlightDTO fli in flightDTOList)
             {
-                FlightModel fliItem = new FlightModel
+                FlightModel flightDTO = new FlightModel
                 {
                     ID = fli.ID,
                     CompanyID = fli.CompanyID,
@@ -292,16 +292,16 @@ namespace AirplaneASP.Controllers
                     DepartureTime = fli.DepartureTime,
                     ArrivalTime = fli.ArrivalTime
                 };
-                flightList.Add(fliItem);
+                flightList.Add(flightDTO);
             }
             ViewBag.FlightList = flightList;
 
-            List<FlightStateDTO> flightStateList = _flightStateService.GetAll();
-            ViewBag.FlightStateList = flightStateList;
+            List<FlightStateDTO> flightStateDTOList = _flightStateService.GetAll();
+            ViewBag.FlightStateList = flightStateDTOList;
 
             ViewBag.Page = page;
 
-            return View("Edit", scheduleItem);
+            return View("Edit", schedule);
         }
 
         [HttpPost]
@@ -309,7 +309,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ScheduleDTO schd = new ScheduleDTO
+                ScheduleDTO scheduleDTO = new ScheduleDTO
                 {
                     ID = schedule.ID,
                     FlightID = schedule.FlightID,
@@ -318,7 +318,7 @@ namespace AirplaneASP.Controllers
                     ArrivalDT = schedule.ArrivalDT,
                     Comment = schedule.Comment
                 };
-                _scheduleService.Edit(schd);
+                _scheduleService.Edit(scheduleDTO);
 
                 return RedirectToAction("List", new { page = page });
             }
@@ -326,11 +326,11 @@ namespace AirplaneASP.Controllers
             {
                 ViewBag.Page = page;
 
-                List<FlightDTO> fliList = _flightService.GetAll();
+                List<FlightDTO> flightDTOList = _flightService.GetAll();
                 List<FlightModel> flightList = new List<FlightModel>();
-                foreach (FlightDTO fli in fliList)
+                foreach (FlightDTO fli in flightDTOList)
                 {
-                    FlightModel fliItem = new FlightModel
+                    FlightModel flight = new FlightModel
                     {
                         ID = fli.ID,
                         CompanyID = fli.CompanyID,
@@ -341,12 +341,12 @@ namespace AirplaneASP.Controllers
                         DepartureTime = fli.DepartureTime,
                         ArrivalTime = fli.ArrivalTime
                     };
-                    flightList.Add(fliItem);
+                    flightList.Add(flight);
                 }
                 ViewBag.FlightList = flightList;
 
-                List<FlightStateDTO> flightStateList = _flightStateService.GetAll();
-                ViewBag.FlightStateList = flightStateList;
+                List<FlightStateDTO> flightStateDTOList = _flightStateService.GetAll();
+                ViewBag.FlightStateList = flightStateDTOList;
 
                 return View();
             }
