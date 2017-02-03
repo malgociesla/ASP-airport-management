@@ -15,10 +15,15 @@ namespace AirplaneASP.Controllers
     {
         private readonly ICityService _cityService;
         private readonly ICountryService _countryService;
+
         private readonly IMapper<CityDTO, CityModel> _cityMaper;
         private readonly IMapper<CountryDTO, CountryModel> _countryMaper;
 
-        public CitiesController(ICityService cityService, ICountryService countryService, IMapper<CityDTO, CityModel> cityMaper, IMapper<CountryDTO, CountryModel> countryMaper)
+        public CitiesController(ICityService cityService,
+                                ICountryService countryService,
+
+                                IMapper<CityDTO, CityModel> cityMaper,
+                                IMapper<CountryDTO, CountryModel> countryMaper)
         {
             this._cityService = cityService;
             this._countryService = countryService;

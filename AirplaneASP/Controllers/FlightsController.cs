@@ -8,6 +8,7 @@ using AirportService.DTO;
 using AirplaneASP.Models.Flights;
 using AirplaneASP.Models.Companies;
 using AirplaneASP.Models.Cities;
+using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
@@ -17,33 +18,33 @@ namespace AirplaneASP.Controllers
         private readonly ICompanyService _companyService;
         private readonly ICityService _cityService;
 
-        public FlightsController(IFlightService flightService, ICompanyService companyService, ICityService cityService, ICountryService countryService)
+        private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
+        private readonly IMapper<CompanyDTO, CompanyModel> _companyMaper;
+        private readonly IMapper<CityDTO, CityModel> _cityMaper;
+
+        public FlightsController(IFlightService flightService,
+                                 ICompanyService companyService,
+                                 ICityService cityService,
+                                 ICountryService countryService,
+
+                                 IMapper<FlightDTO, FlightModel> flightMaper,
+                                 IMapper<CompanyDTO, CompanyModel> companyMaper,
+                                 IMapper<CityDTO, CityModel> cityMaper)
         {
             this._flightService = flightService;
             this._companyService = companyService;
             this._cityService = cityService;
+
+            this._flightMaper = flightMaper;
+            this._companyMaper = companyMaper;
+            this._cityMaper = cityMaper;
         }
 
         [HttpGet]
         public ActionResult List()
         {
             List<FlightDTO> flightDTOList = _flightService.GetAll();
-            List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO flightDTO in flightDTOList)
-            {
-                FlightModel fliItem = new FlightModel
-                {
-                    ID = flightDTO.ID,
-                    CompanyID = flightDTO.CompanyID,
-                    Name = flightDTO.Name,
-                    DayOfWeek = flightDTO.DayOfWeek,
-                    CityDepartureID = flightDTO.CityDepartureID,
-                    CityArrivalID = flightDTO.CityArrivalID,
-                    DepartureTime = flightDTO.DepartureTime,
-                    ArrivalTime = flightDTO.ArrivalTime
-                };
-                flightList.Add(fliItem);
-            }
+            var flightList = _flightMaper.Map(flightDTOList);          
 
             return View("List", flightList);
         }
@@ -59,30 +60,11 @@ namespace AirplaneASP.Controllers
         public ActionResult Add()
         {
             List<CompanyDTO> companyDTOList = _companyService.GetAll();
-            List<CompanyModel> companyList = new List<CompanyModel>();
-            foreach (CompanyDTO cmp in companyDTOList)
-            {
-                CompanyModel cmpItem = new CompanyModel
-                {
-                    ID = cmp.ID,
-                    Name = cmp.Name
-                };
-                companyList.Add(cmpItem);
-            }
+            var companyList = _companyMaper.Map(companyDTOList);
             ViewBag.CompanyList = companyList;
 
             List<CityDTO> cityDTOList = _cityService.GetAll();
-            List<CityModel> cityList = new List<CityModel>();
-            foreach (CityDTO ci in cityDTOList)
-            {
-                CityModel ciItem = new CityModel
-                {
-                    ID = ci.ID,
-                    CountryID = ci.CountryID,
-                    Name = ci.Name
-                };
-                cityList.Add(ciItem);
-            }
+            var cityList = _cityMaper.Map(cityDTOList);
             ViewBag.CityList = cityList;
 
             return View();
@@ -93,17 +75,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                FlightDTO flightDTO = new FlightDTO
-                {
-                    ID = flight.ID,
-                    CompanyID = flight.CompanyID,
-                    Name = flight.Name,
-                    DayOfWeek = flight.DayOfWeek,
-                    CityDepartureID = flight.CityDepartureID,
-                    CityArrivalID = flight.CityArrivalID,
-                    DepartureTime = flight.DepartureTime,
-                    ArrivalTime = flight.ArrivalTime
-                };
+                var flightDTO = _flightMaper.MapBack(flight);
                 _flightService.Add(flightDTO);
 
                 return RedirectToAction("List");
@@ -111,30 +83,11 @@ namespace AirplaneASP.Controllers
             else
             {
                 List<CompanyDTO> companyDTOList = _companyService.GetAll();
-                List<CompanyModel> companyList = new List<CompanyModel>();
-                foreach (CompanyDTO cmp in companyDTOList)
-                {
-                    CompanyModel cmpItem = new CompanyModel
-                    {
-                        ID = cmp.ID,
-                        Name = cmp.Name
-                    };
-                    companyList.Add(cmpItem);
-                }
+                var companyList = _companyMaper.Map(companyDTOList);
                 ViewBag.CompanyList = companyList;
 
                 List<CityDTO> cityDTOList = _cityService.GetAll();
-                List<CityModel> cityList = new List<CityModel>();
-                foreach (CityDTO ci in cityDTOList)
-                {
-                    CityModel ciItem = new CityModel
-                    {
-                        ID = ci.ID,
-                        CountryID = ci.CountryID,
-                        Name = ci.Name
-                    };
-                    cityList.Add(ciItem);
-                }
+                var cityList = _cityMaper.Map(cityDTOList);
                 ViewBag.CityList = cityList;
 
                 return View();
@@ -147,43 +100,14 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             FlightDTO flightDTO = _flightService.GetAll().FirstOrDefault(f => f.ID == id);
-            FlightModel flight = new FlightModel
-            {
-                ID = flightDTO.ID,
-                CompanyID = flightDTO.CompanyID,
-                Name = flightDTO.Name,
-                DayOfWeek = flightDTO.DayOfWeek,
-                CityDepartureID = flightDTO.CityDepartureID,
-                CityArrivalID = flightDTO.CityArrivalID,
-                DepartureTime = flightDTO.DepartureTime,
-                ArrivalTime = flightDTO.ArrivalTime
-            };
+            var flight = _flightMaper.Map(flightDTO);
 
             List<CompanyDTO> companyDTOList = _companyService.GetAll();
-            List<CompanyModel> companyList = new List<CompanyModel>();
-            foreach (CompanyDTO companyDTO in companyDTOList)
-            {
-                CompanyModel company = new CompanyModel
-                {
-                    ID = companyDTO.ID,
-                    Name = companyDTO.Name
-                };
-                companyList.Add(company);
-            }
+            var companyList = _companyMaper.Map(companyDTOList);
             ViewBag.CompanyList = companyList;
 
             List<CityDTO> cityDTOList = _cityService.GetAll();
-            List<CityModel> cityList = new List<CityModel>();
-            foreach (CityDTO ci in cityDTOList)
-            {
-                CityModel ciItem = new CityModel
-                {
-                    ID = ci.ID,
-                    CountryID = ci.CountryID,
-                    Name = ci.Name
-                };
-                cityList.Add(ciItem);
-            }
+            var cityList = _cityMaper.Map(cityDTOList);
             ViewBag.CityList = cityList;
 
             return View("Edit", flight);
@@ -194,17 +118,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                FlightDTO flightDTO = new FlightDTO
-                {
-                    ID = flight.ID,
-                    CompanyID = flight.CompanyID,
-                    Name = flight.Name,
-                    DayOfWeek = flight.DayOfWeek,
-                    CityDepartureID = flight.CityDepartureID,
-                    CityArrivalID = flight.CityArrivalID,
-                    DepartureTime = flight.DepartureTime,
-                    ArrivalTime = flight.ArrivalTime
-                };
+                var flightDTO = _flightMaper.MapBack(flight);
                 _flightService.Edit(flightDTO);
 
                 return RedirectToAction("List");
@@ -212,30 +126,11 @@ namespace AirplaneASP.Controllers
             else
             {
                 List<CompanyDTO> companyDTOList = _companyService.GetAll();
-                List<CompanyModel> companyList = new List<CompanyModel>();
-                foreach (CompanyDTO cmp in companyDTOList)
-                {
-                    CompanyModel cmpItem = new CompanyModel
-                    {
-                        ID = cmp.ID,
-                        Name = cmp.Name
-                    };
-                    companyList.Add(cmpItem);
-                }
+                var companyList = _companyMaper.Map(companyDTOList);
                 ViewBag.CompanyList = companyList;
 
                 List<CityDTO> cityDTOList = _cityService.GetAll();
-                List<CityModel> cityList = new List<CityModel>();
-                foreach (CityDTO ci in cityDTOList)
-                {
-                    CityModel ciItem = new CityModel
-                    {
-                        ID = ci.ID,
-                        CountryID = ci.CountryID,
-                        Name = ci.Name
-                    };
-                    cityList.Add(ciItem);
-                }
+                var cityList = _cityMaper.Map(cityDTOList);
                 ViewBag.CityList = cityList;
 
                 return View();

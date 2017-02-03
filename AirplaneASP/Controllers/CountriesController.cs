@@ -15,7 +15,8 @@ namespace AirplaneASP.Controllers
         private readonly ICountryService _countryService;
         private readonly IMapper<CountryDTO, CountryModel> _countryMaper;
 
-        public CountriesController(ICountryService countryService, IMapper<CountryDTO, CountryModel> countryMaper)
+        public CountriesController(ICountryService countryService,
+                                   IMapper<CountryDTO, CountryModel> countryMaper)
         {
             this._countryService = countryService;
             this._countryMaper = countryMaper;

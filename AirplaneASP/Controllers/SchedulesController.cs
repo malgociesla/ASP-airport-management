@@ -8,6 +8,7 @@ using AirportService.DTO;
 using AirplaneASP.Models.Schedules;
 using PagedList;
 using AirplaneASP.Models.Flights;
+using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
@@ -17,11 +18,22 @@ namespace AirplaneASP.Controllers
         private readonly IFlightStateService _flightStateService;
         private readonly IFlightService _flightService;
 
-        public SchedulesController(IScheduleService scheduleService, IFlightStateService flightStateService, IFlightService flightService)
+        private readonly IMapper<ScheduleDTO, ScheduleModel> _scheduleMaper;
+        private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
+
+        public SchedulesController(IScheduleService scheduleService,
+                                   IFlightStateService flightStateService,
+                                   IFlightService flightService,
+
+                                   IMapper<ScheduleDTO, ScheduleModel> scheduleMaper,
+                                   IMapper<FlightDTO, FlightModel> flightMaper)
         {
             this._scheduleService = scheduleService;
             this._flightStateService = flightStateService;
             this._flightService = flightService;
+
+            this._scheduleMaper = scheduleMaper;
+            this._flightMaper = flightMaper;
         }
 
         //[HttpGet]

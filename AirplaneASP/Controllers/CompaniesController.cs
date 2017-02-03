@@ -14,7 +14,8 @@ namespace AirplaneASP.Controllers
         private readonly ICompanyService _companyService;
         private readonly IMapper<CompanyDTO, CompanyModel> _companyMaper;
 
-        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyModelMaper)
+        public CompaniesController(ICompanyService companyService,
+                                   IMapper<CompanyDTO, CompanyModel> companyModelMaper)
         {
             this._companyService = companyService;
             this._companyMaper = companyModelMaper;
