@@ -23,8 +23,8 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult List()
         {
-            List<CompanyDTO> cmpList = _companyService.GetAll();
-            var companyList = this._companyMaper.Map(cmpList);
+            List<CompanyDTO> companyDTOList = _companyService.GetAll();
+            var companyList = this._companyMaper.Map(companyDTOList);
 
             return View("List", companyList);
         }
@@ -47,8 +47,8 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = _companyMaper.MapBack(company);
-                _companyService.Add(cmp);
+                var companyDTO = _companyMaper.MapBack(company);
+                _companyService.Add(companyDTO);
 
                 return RedirectToAction("List");
             }
@@ -59,8 +59,8 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             ICompanyService companyService = new CompanyService();
-            CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
-            var companyItem = this._companyMaper.Map(cmpItem);
+            CompanyDTO companyDTOItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
+            var companyItem = this._companyMaper.Map(companyDTOItem);
 
             return View("Edit", companyItem);
         }
@@ -70,8 +70,8 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = _companyMaper.MapBack(company);
-                _companyService.Edit(cmp);
+                var companyDTO = _companyMaper.MapBack(company);
+                _companyService.Edit(companyDTO);
 
                 return RedirectToAction("List");
             }
