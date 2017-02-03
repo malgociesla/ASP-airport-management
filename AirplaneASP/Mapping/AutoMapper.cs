@@ -20,5 +20,10 @@ namespace AirplaneASP.Mapping
             _mapper.Map(source, destination);
         }
 
+        public TSource MapBack(TDestination destination)
+        {
+            return _mapper.Map<TDestination, TSource>(destination);
+        }
+
     }
 }

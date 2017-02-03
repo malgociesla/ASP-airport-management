@@ -4,5 +4,6 @@
     {
         TDestination Map(TSource source);
         void Map(TSource source, TDestination destination);
+        TSource MapBack(TDestination destination);
     }
 }

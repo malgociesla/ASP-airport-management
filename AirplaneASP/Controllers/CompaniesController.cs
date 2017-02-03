@@ -12,21 +12,19 @@ namespace AirplaneASP.Controllers
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;
-        private readonly IMapper<CompanyDTO, CompanyModel> _companyModelMaper;
-        private readonly IMapper<CompanyModel, CompanyDTO> _companyDTOMaper;
+        private readonly IMapper<CompanyDTO, CompanyModel> _companyMaper;
 
-        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyModelMaper, IMapper<CompanyModel, CompanyDTO> companyDTOMaper)
+        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyModelMaper)
         {
             this._companyService = companyService;
-            this._companyModelMaper = companyModelMaper;
-            this._companyDTOMaper = companyDTOMaper;
+            this._companyMaper = companyModelMaper;
         }
 
         [HttpGet]
         public ActionResult List()
         {
             List<CompanyDTO> cmpList = _companyService.GetAll();
-            var companyList = this._companyModelMaper.Map(cmpList);
+            var companyList = this._companyMaper.Map(cmpList);
 
             return View("List", companyList);
         }
@@ -49,7 +47,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = _companyDTOMaper.Map(company);
+                var cmp = _companyMaper.MapBack(company);
                 _companyService.Add(cmp);
 
                 return RedirectToAction("List");
@@ -62,7 +60,7 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
-            var companyItem = this._companyModelMaper.Map(cmpItem);
+            var companyItem = this._companyMaper.Map(cmpItem);
 
             return View("Edit", companyItem);
         }
@@ -72,7 +70,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = _companyDTOMaper.Map(company);
+                var cmp = _companyMaper.MapBack(company);
                 _companyService.Edit(cmp);
 
                 return RedirectToAction("List");
