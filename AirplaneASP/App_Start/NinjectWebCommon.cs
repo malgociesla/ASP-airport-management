@@ -86,6 +86,7 @@ namespace AirplaneASP.App_Start
             var mapper = config.CreateMapper();
             kernel.Bind<IMapper>().ToConstant(mapper);
             kernel.Bind<IMapper<CompanyDTO, CompanyModel>>().To<AutoMapper<CompanyDTO,CompanyModel>>();
+            kernel.Bind<IMapper<CompanyModel, CompanyDTO>> ().To<AutoMapper<CompanyModel, CompanyDTO>>();
         }
     }
 }

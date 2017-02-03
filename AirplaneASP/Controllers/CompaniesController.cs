@@ -12,19 +12,21 @@ namespace AirplaneASP.Controllers
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;
-        private readonly IMapper<CompanyDTO, CompanyModel> _companyMaper;
+        private readonly IMapper<CompanyDTO, CompanyModel> _companyModelMaper;
+        private readonly IMapper<CompanyModel, CompanyDTO> _companyDTOMaper;
 
-        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyMaper)
+        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyModelMaper, IMapper<CompanyModel, CompanyDTO> companyDTOMaper)
         {
             this._companyService = companyService;
-            this._companyMaper = companyMaper;
+            this._companyModelMaper = companyModelMaper;
+            this._companyDTOMaper = companyDTOMaper;
         }
 
         [HttpGet]
         public ActionResult List()
         {
             List<CompanyDTO> cmpList = _companyService.GetAll();
-            var companyList = this._companyMaper.Map(cmpList);
+            var companyList = this._companyModelMaper.Map(cmpList);
 
             return View("List", companyList);
         }
@@ -47,7 +49,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = AutoMapper.Mapper.Map<CompanyModel, CompanyDTO>(company);
+                var cmp = _companyDTOMaper.Map(company);
                 _companyService.Add(cmp);
 
                 return RedirectToAction("List");
@@ -60,7 +62,7 @@ namespace AirplaneASP.Controllers
         {
             ICompanyService companyService = new CompanyService();
             CompanyDTO cmpItem = companyService.GetAll().FirstOrDefault(c => c.ID == id);
-            var companyItem = AutoMapper.Mapper.Map<CompanyDTO, CompanyModel>(cmpItem);
+            var companyItem = this._companyModelMaper.Map(cmpItem);
 
             return View("Edit", companyItem);
         }
@@ -70,7 +72,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                var cmp = AutoMapper.Mapper.Map<CompanyModel , CompanyDTO>(company);
+                var cmp = _companyDTOMaper.Map(company);
                 _companyService.Edit(cmp);
 
                 return RedirectToAction("List");
