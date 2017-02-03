@@ -14,20 +14,25 @@ namespace AirplaneASP.App_Start
     using AirportService;
     using Utils;
 
-    public static class NinjectWebCommon 
+    using AutoMapper;
+    using Models.Companies;
+    using AirportService.DTO;
+    using Mapping;
+
+    public static class NinjectWebCommon
     {
         private static readonly Bootstrapper bootstrapper = new Bootstrapper();
 
         /// <summary>
         /// Starts the application
         /// </summary>
-        public static void Start() 
+        public static void Start()
         {
             DynamicModuleUtility.RegisterModule(typeof(OnePerRequestHttpModule));
             DynamicModuleUtility.RegisterModule(typeof(NinjectHttpModule));
             bootstrapper.Initialize(CreateKernel);
         }
-        
+
         /// <summary>
         /// Stops the application.
         /// </summary>
@@ -35,7 +40,7 @@ namespace AirplaneASP.App_Start
         {
             bootstrapper.ShutDown();
         }
-        
+
         /// <summary>
         /// Creates the kernel that will manage your application.
         /// </summary>
@@ -49,6 +54,7 @@ namespace AirplaneASP.App_Start
                 kernel.Bind<IHttpModule>().To<HttpApplicationInitializationHttpModule>();
 
                 RegisterServices(kernel);
+                RegisterMappings(kernel);
                 return kernel;
             }
             catch
@@ -72,6 +78,14 @@ namespace AirplaneASP.App_Start
             kernel.Bind<IFlightStateService>().To<FlightStateService>();
             kernel.Bind<IFlightService>().To<FlightService>();
             kernel.Bind<IScheduleParser>().To<ScheduleParser>();
-        }        
+        }
+
+        private static void RegisterMappings(IKernel kernel)
+        {
+            var config = MappingConfig.ConfigureMappings();
+            var mapper = config.CreateMapper();
+            kernel.Bind<IMapper>().ToConstant(mapper);
+            kernel.Bind<IMapper<CompanyDTO, CompanyModel>>().To<AutoMapper<CompanyDTO,CompanyModel>>();
+        }
     }
 }

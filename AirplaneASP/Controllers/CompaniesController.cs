@@ -1,28 +1,30 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
 using AirplaneASP.Models.Companies;
+using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;
+        private readonly IMapper<CompanyDTO, CompanyModel> _companyMaper;
 
-        public CompaniesController(ICompanyService companyService)
+        public CompaniesController(ICompanyService companyService, IMapper<CompanyDTO,CompanyModel> companyMaper)
         {
             this._companyService = companyService;
+            this._companyMaper = companyMaper;
         }
 
         [HttpGet]
         public ActionResult List()
         {
             List<CompanyDTO> cmpList = _companyService.GetAll();
-            var companyList = AutoMapper.Mapper.Map<List<CompanyDTO>, List<CompanyModel>>(cmpList);
+            var companyList = this._companyMaper.Map(cmpList);
 
             return View("List", companyList);
         }

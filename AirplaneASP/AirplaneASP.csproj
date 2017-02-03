@@ -236,6 +236,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Mapping\AutoMapper.cs" />
+    <Compile Include="Mapping\IMapper.cs" />
+    <Compile Include="Mapping\IMapperExtension.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\Cities\CityModel.cs" />
     <Compile Include="Models\Companies\CompanyModel.cs" />
