@@ -126,22 +126,7 @@ namespace AirplaneASP.Controllers
         public ActionResult GenerateSchedule()
         {
             List<FlightDTO> flightDTOList = _flightService.GetAll();
-            List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO fli in flightDTOList)
-            {
-                FlightModel fliItem = new FlightModel
-                {
-                    ID = fli.ID,
-                    CompanyID = fli.CompanyID,
-                    Name = fli.Name,
-                    DayOfWeek = fli.DayOfWeek,
-                    CityDepartureID = fli.CityDepartureID,
-                    CityArrivalID = fli.CityArrivalID,
-                    DepartureTime = fli.DepartureTime,
-                    ArrivalTime = fli.ArrivalTime
-                };
-                flightList.Add(fliItem);
-            }
+            var flightList = _flightMaper.Map(flightDTOList);
             ViewBag.FlightList = flightList;
 
             return View();
@@ -159,22 +144,7 @@ namespace AirplaneASP.Controllers
             else
             {
                 List<FlightDTO> flightDTOList = _flightService.GetAll();
-                List<FlightModel> flightList = new List<FlightModel>();
-                foreach (FlightDTO fli in flightDTOList)
-                {
-                    FlightModel fliItem = new FlightModel
-                    {
-                        ID = fli.ID,
-                        CompanyID = fli.CompanyID,
-                        Name = fli.Name,
-                        DayOfWeek = fli.DayOfWeek,
-                        CityDepartureID = fli.CityDepartureID,
-                        CityArrivalID = fli.CityArrivalID,
-                        DepartureTime = fli.DepartureTime,
-                        ArrivalTime = fli.ArrivalTime
-                    };
-                    flightList.Add(fliItem);
-                }
+                var flightList = _flightMaper.Map(flightDTOList);
                 ViewBag.FlightList = flightList;
 
                 return View();
@@ -279,33 +249,10 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id, int? page)
         {
             ScheduleDTO scheduleDTO = _scheduleService.GetAll().FirstOrDefault(s => s.ID == id);
-            ScheduleModel schedule = new ScheduleModel
-            {
-                ID = scheduleDTO.ID,
-                FlightID = scheduleDTO.FlightID,
-                FlightStateID = scheduleDTO.FlightStateID,
-                DepartureDT = scheduleDTO.DepartureDT,
-                ArrivalDT = scheduleDTO.ArrivalDT,
-                Comment = scheduleDTO.Comment
-            };
+            var schedule = _scheduleMaper.Map(scheduleDTO);
 
             List<FlightDTO> flightDTOList = _flightService.GetAll();
-            List<FlightModel> flightList = new List<FlightModel>();
-            foreach (FlightDTO fli in flightDTOList)
-            {
-                FlightModel flightDTO = new FlightModel
-                {
-                    ID = fli.ID,
-                    CompanyID = fli.CompanyID,
-                    Name = fli.Name,
-                    DayOfWeek = fli.DayOfWeek,
-                    CityDepartureID = fli.CityDepartureID,
-                    CityArrivalID = fli.CityArrivalID,
-                    DepartureTime = fli.DepartureTime,
-                    ArrivalTime = fli.ArrivalTime
-                };
-                flightList.Add(flightDTO);
-            }
+            var flightList = _flightMaper.Map(flightDTOList);
             ViewBag.FlightList = flightList;
 
             List<FlightStateDTO> flightStateDTOList = _flightStateService.GetAll();
@@ -321,15 +268,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                ScheduleDTO scheduleDTO = new ScheduleDTO
-                {
-                    ID = schedule.ID,
-                    FlightID = schedule.FlightID,
-                    FlightStateID = schedule.FlightStateID,
-                    DepartureDT = schedule.DepartureDT,
-                    ArrivalDT = schedule.ArrivalDT,
-                    Comment = schedule.Comment
-                };
+                var scheduleDTO = _scheduleMaper.MapBack(schedule);
                 _scheduleService.Edit(scheduleDTO);
 
                 return RedirectToAction("List", new { page = page });
@@ -339,22 +278,7 @@ namespace AirplaneASP.Controllers
                 ViewBag.Page = page;
 
                 List<FlightDTO> flightDTOList = _flightService.GetAll();
-                List<FlightModel> flightList = new List<FlightModel>();
-                foreach (FlightDTO fli in flightDTOList)
-                {
-                    FlightModel flight = new FlightModel
-                    {
-                        ID = fli.ID,
-                        CompanyID = fli.CompanyID,
-                        Name = fli.Name,
-                        DayOfWeek = fli.DayOfWeek,
-                        CityDepartureID = fli.CityDepartureID,
-                        CityArrivalID = fli.CityArrivalID,
-                        DepartureTime = fli.DepartureTime,
-                        ArrivalTime = fli.ArrivalTime
-                    };
-                    flightList.Add(flight);
-                }
+                var flightList = _flightMaper.Map(flightDTOList);
                 ViewBag.FlightList = flightList;
 
                 List<FlightStateDTO> flightStateDTOList = _flightStateService.GetAll();
