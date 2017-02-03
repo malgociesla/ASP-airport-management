@@ -18,6 +18,10 @@ namespace AirplaneASP.App_Start
     using Models.Companies;
     using AirportService.DTO;
     using Mapping;
+    using Models.Countries;
+    using Models.Cities;
+    using Models.Flights;
+    using Models.Schedules;
 
     public static class NinjectWebCommon
     {
@@ -86,6 +90,10 @@ namespace AirplaneASP.App_Start
             var mapper = config.CreateMapper();
             kernel.Bind<IMapper>().ToConstant(mapper);
             kernel.Bind<IMapper<CompanyDTO, CompanyModel>>().To<AutoMapper<CompanyDTO,CompanyModel>>();
+            kernel.Bind<IMapper<CountryDTO, CountryModel>>().To<AutoMapper<CountryDTO, CountryModel>>();
+            kernel.Bind<IMapper<CityDTO, CityModel>>().To<AutoMapper<CityDTO, CityModel>>();
+            kernel.Bind<IMapper<FlightDTO, FlightModel>>().To<AutoMapper<FlightDTO, FlightModel>>();
+            kernel.Bind<IMapper<ScheduleDTO, ScheduleModel>>().To<AutoMapper<ScheduleDTO, ScheduleModel>>();
         }
     }
 }

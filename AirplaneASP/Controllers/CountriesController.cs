@@ -6,27 +6,26 @@ using System.Web.Mvc;
 using AirportService;
 using AirportService.DTO;
 using AirplaneASP.Models.Countries;
+using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
     public class CountriesController : Controller
     {
         private readonly ICountryService _countryService;
+        private readonly IMapper<CountryDTO, CountryModel> _countryMaper;
 
-        public CountriesController(ICountryService countryService)
+        public CountriesController(ICountryService countryService, IMapper<CountryDTO, CountryModel> countryMaper)
         {
             this._countryService = countryService;
+            this._countryMaper = countryMaper;
         }
 
         [HttpGet]
         public ActionResult List()
         {
             List<CountryDTO> ctrList = _countryService.GetAll();
-            List<CountryModel> countryList = ctrList.Select(ctr => new CountryModel
-            {
-                ID = ctr.ID,
-                Name = ctr.Name
-            }).ToList();
+            var countryList = _countryMaper.Map(ctrList);
 
             return View("List", countryList);
         }
@@ -49,11 +48,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                CountryDTO ctr = new CountryDTO
-                {
-                    ID = country.ID,
-                    Name = country.Name
-                };
+                var ctr = _countryMaper.MapBack(country);
                 _countryService.Add(ctr);
 
                 return RedirectToAction("List");
@@ -65,11 +60,7 @@ namespace AirplaneASP.Controllers
         public ActionResult Edit(Guid id)
         {
             CountryDTO ctrItem = _countryService.GetAll().FirstOrDefault(c => c.ID == id);
-            CountryModel countryItem = new CountryModel
-            {
-                ID = ctrItem.ID,
-                Name = ctrItem.Name
-            };
+            var countryItem = _countryMaper.Map(ctrItem);
 
             return View("Edit", countryItem);
         }
@@ -79,11 +70,7 @@ namespace AirplaneASP.Controllers
         {
             if (ModelState.IsValid)
             {
-                CountryDTO ctr = new CountryDTO
-                {
-                    ID = country.ID,
-                    Name = country.Name
-                };
+                var ctr = _countryMaper.MapBack(country);
                 _countryService.Edit(ctr);
 
                 return RedirectToAction("List");
