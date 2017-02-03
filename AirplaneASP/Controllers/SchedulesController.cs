@@ -19,6 +19,7 @@ namespace AirplaneASP.Controllers
         private readonly IFlightService _flightService;
 
         private readonly IMapper<ScheduleDTO, ScheduleModel> _scheduleMaper;
+        private readonly IMapper<ScheduleDetailsDTO, ScheduleDetailsModel> _scheduleDetailsMaper;
         private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
 
         public SchedulesController(IScheduleService scheduleService,
@@ -26,6 +27,7 @@ namespace AirplaneASP.Controllers
                                    IFlightService flightService,
 
                                    IMapper<ScheduleDTO, ScheduleModel> scheduleMaper,
+                                   IMapper<ScheduleDetailsDTO, ScheduleDetailsModel> scheduleDetailsMaper,
                                    IMapper<FlightDTO, FlightModel> flightMaper)
         {
             this._scheduleService = scheduleService;
@@ -33,6 +35,7 @@ namespace AirplaneASP.Controllers
             this._flightService = flightService;
 
             this._scheduleMaper = scheduleMaper;
+            this._scheduleDetailsMaper = scheduleDetailsMaper;
             this._flightMaper = flightMaper;
         }
 
@@ -71,22 +74,9 @@ namespace AirplaneASP.Controllers
         {
             int totalItemsCount = 0;
             List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
-            //get subset of IPagedList and translate from ScheduleDTO to ScheduleModel
-            var subset = scheduleDTOPage
-               .Select(s => new ScheduleDetailsModel
-               {
-                   ID = s.ID,
-                   FlightStateID = s.FlightStateID,
-                   FlightID = s.FlightID,
-                   DepartureDT = s.DepartureDT,
-                   ArrivalDT = s.ArrivalDT,
-                   Comment = s.Comment,
-                   CityDeparture = s.CityDeparture,
-                   CountryDeparture = s.CountryDeparture,
-                   CityArrival = s.CityArrival,
-                   CountryArrival = s.CountryArrival,
-                   Company = s.Company
-               });
+            //get subset of IPagedList and translate from ScheduleDetailsDTO to ScheduleDetailsModel
+            var subset = _scheduleDetailsMaper.Map(scheduleDTOPage);
+
             IPagedList schedulePage = new StaticPagedList<ScheduleDetailsModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
             return schedulePage;
         }
@@ -188,30 +178,29 @@ namespace AirplaneASP.Controllers
 
         private List<ScheduleDetailsImportModel> GetUploadedList(HttpPostedFileBase file)
         {
-            List<ScheduleDetailsImportModel> scheduleList = null;
-
+            List<ScheduleDetailsImportModel> scheduleList = new List<ScheduleDetailsImportModel>();
             if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
             {
                     //Get list of imported schedule items
-                    List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
+                List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
 
-                    scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
-                    {
-                        ID = s.ID,
-                        FlightStateID = s.FlightStateID,
-                        FlightID = s.FlightID,
-                        DepartureDT = s.DepartureDT,
-                        ArrivalDT = s.ArrivalDT,
-                        Comment = s.Comment,
-                        CityDeparture = s.CityDeparture,
-                        CountryDeparture = s.CountryDeparture,
-                        CityArrival = s.CityArrival,
-                        CountryArrival = s.CountryArrival,
-                        Company = s.Company,
-                        Check = false
-                    }).ToList();
-
+                scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
+                {
+                    ID = s.ID,
+                    FlightStateID = s.FlightStateID,
+                    FlightID = s.FlightID,
+                    DepartureDT = s.DepartureDT,
+                    ArrivalDT = s.ArrivalDT,
+                    Comment = s.Comment,
+                    CityDeparture = s.CityDeparture,
+                    CountryDeparture = s.CountryDeparture,
+                    CityArrival = s.CityArrival,
+                    CountryArrival = s.CountryArrival,
+                    Company = s.Company,
+                    Check = false
+                }).ToList();
                 //error: couldn't import file
+
             }
             return scheduleList;
         }

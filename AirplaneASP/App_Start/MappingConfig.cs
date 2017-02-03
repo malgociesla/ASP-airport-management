@@ -29,7 +29,9 @@ namespace AirplaneASP
                 c.CreateMap<FlightModel, FlightDTO>();
                 //Schedule
                 c.CreateMap<ScheduleDTO, ScheduleModel>();
+                c.CreateMap<ScheduleDetailsDTO, ScheduleDetailsModel>();
                 c.CreateMap<ScheduleModel, ScheduleDTO>();
+                c.CreateMap<ScheduleDetailsModel, ScheduleDetailsDTO>();
             });
         }
     }

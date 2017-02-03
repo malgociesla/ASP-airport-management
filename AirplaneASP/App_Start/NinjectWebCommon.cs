@@ -94,6 +94,7 @@ namespace AirplaneASP.App_Start
             kernel.Bind<IMapper<CityDTO, CityModel>>().To<AutoMapper<CityDTO, CityModel>>();
             kernel.Bind<IMapper<FlightDTO, FlightModel>>().To<AutoMapper<FlightDTO, FlightModel>>();
             kernel.Bind<IMapper<ScheduleDTO, ScheduleModel>>().To<AutoMapper<ScheduleDTO, ScheduleModel>>();
+            kernel.Bind<IMapper<ScheduleDetailsDTO, ScheduleDetailsModel>>().To<AutoMapper<ScheduleDetailsDTO, ScheduleDetailsModel>>();
         }
     }
 }
