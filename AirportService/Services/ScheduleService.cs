@@ -6,7 +6,6 @@ using AirplaneEF;
 using System.Data.Entity;
 using Utils;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace AirportService
 {
@@ -207,7 +206,16 @@ namespace AirportService
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)
         {
-            return PrepareToExcelImport(_scheduleUtils.Read(excelStream));
+            List<ScheduleDetailsDTO> importedList = new List<ScheduleDetailsDTO>();
+            try
+            {
+                importedList = PrepareToExcelImport(_scheduleUtils.Read(excelStream));
+            }
+            catch (UtilsException ex)
+            {
+                throw new AirportServiceException("Couldn't read data from source.", ex);
+            }
+            return importedList;
         }
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)

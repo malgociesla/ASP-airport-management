@@ -17,5 +17,12 @@ namespace AirplaneASP
             RouteConfig.RegisterRoutes(RouteTable.Routes);
             BundleConfig.RegisterBundles(BundleTable.Bundles);
         }
+
+        protected void Application_Error(Object sender, EventArgs e)
+        {
+            var raisedException = Server.GetLastError();
+            //time, type, message, stack trace - .txt file - config filename in config
+            // Process exception
+        }
     }
 }

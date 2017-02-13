@@ -25,6 +25,7 @@
         <div class="form-group">
             <div class="col-md-10">
                 @Html.ValidationMessageFor(model => model.UploadedFile, "", new { @class = "text-danger" })
+                @Html.ValidationMessage("ImportModelException")
             </div>
         </div>
     </div>

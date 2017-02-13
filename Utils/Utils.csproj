@@ -51,6 +51,7 @@
     <Compile Include="IScheduleUtils.cs" />
     <Compile Include="ScheduleExcelUtils.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="UtilsException.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

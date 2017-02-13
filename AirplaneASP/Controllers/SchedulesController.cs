@@ -1,14 +1,14 @@
-﻿using System;
+﻿using AirplaneASP.Mapping;
+using AirplaneASP.Models.Flights;
+using AirplaneASP.Models.Schedules;
+using AirportService;
+using AirportService.DTO;
+using PagedList;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
-using AirportService;
-using AirportService.DTO;
-using AirplaneASP.Models.Schedules;
-using PagedList;
-using AirplaneASP.Models.Flights;
-using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
@@ -150,21 +150,30 @@ namespace AirplaneASP.Controllers
         [HttpPost]
         public ActionResult ImportSchedule(ImportViewModel model)
         {
-            if (ModelState.IsValid)
+            try
             {
-                //import based on model.ScheduleList
-                if (model.ScheduleList.Count != 0)
+                if (ModelState.IsValid)
                 {
-                    //import parameter -> list of checked items
-                    var scheduleDTOList = _scheduleMaper.MapBack(model.ScheduleList.Where(s => s.Check == true)).ToList();
-                    _scheduleService.UpdateSchedule(scheduleDTOList);
-                }
-                //upload items from file to view
-                if (model.UploadedFile != null)
-                {
-                    model.ScheduleList = GetUploadedList(model.UploadedFile);
+                    //import based on model.ScheduleList
+                    if (model.ScheduleList.Count != 0)
+                    {
+                        //import parameter -> list of checked items
+                        var scheduleDTOList = _scheduleMaper.MapBack(model.ScheduleList.Where(s => s.Check == true)).ToList();
+                        _scheduleService.UpdateSchedule(scheduleDTOList);
+                    }
+                    //upload items from file to view
+                    if (model.UploadedFile != null)
+                    {
+                        model.ScheduleList = GetUploadedList(model.UploadedFile);
+                    }
                 }
             }
+            catch (AirportServiceException ex)
+            {
+                //throw ex;
+                //ModelState.AddModelError("ImportModelException", ex.Message);
+            }
+            catch (Exception ex) { throw ex;  } 
             return View(model);
         }
 

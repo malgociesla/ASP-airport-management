@@ -29,32 +29,36 @@ namespace Utils
 
                         int rowsCount = rows.Count();
                         int cellsCount = cells.Count();
-                        int rowSize = 'A' + (cellsCount/rowsCount);
 
-                        int fromRowID = 1;
-                        char fromColumnID = 'A';
-                        for (int rowID = fromRowID; rowID <= rowsCount; rowID++)
+                        if (rowsCount > 0 && cellsCount > 0)
                         {
-                            ExcelRowData rowData = new ExcelRowData();
-                            for (char columnID = fromColumnID; columnID < rowSize; columnID++)
-                            {
-                                string cellAddress = columnID + rowID.ToString();
-                                ExcelCellData cellData = GetCellExcelCellData(excelDoc, cellAddress);
-                                if (cellData!=null)
-                                {
-                                    rowData.DataRow.Add(cellData);
-                                }
-                            }
-                            if (rowID == fromRowID)
-                                excelData.HeadingRow = rowData;
-                            else
-                                excelData.DataRows.Add(rowData);
-                        }
+                            int rowSize = 'A' + (cellsCount / rowsCount);
 
+                            int fromRowID = 1;
+                            char fromColumnID = 'A';
+                            for (int rowID = fromRowID; rowID <= rowsCount; rowID++)
+                            {
+                                ExcelRowData rowData = new ExcelRowData();
+                                for (char columnID = fromColumnID; columnID < rowSize; columnID++)
+                                {
+                                    string cellAddress = columnID + rowID.ToString();
+                                    ExcelCellData cellData = GetCellExcelCellData(excelDoc, cellAddress);
+                                    if (cellData != null)
+                                    {
+                                        rowData.DataRow.Add(cellData);
+                                    }
+                                }
+                                if (rowID == fromRowID)
+                                    excelData.HeadingRow = rowData;
+                                else
+                                    excelData.DataRows.Add(rowData);
+                            }
+                        }
+                        else { throw new UtilsException("Cannot read Excel file.");  }
 
                     }
                 }
-                catch (Exception ex) { }//error sth went wrong with reading excel file
+                catch (Exception ex) { throw new UtilsException("Cannot read Excel file.", ex); }//error sth went wrong with reading excel file
             }
             else { }//error stream empty
             

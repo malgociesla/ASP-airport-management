@@ -49,6 +49,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AirportServiceException.cs" />
     <Compile Include="Constants.cs" />
     <Compile Include="AirportTypes.cs" />
     <Compile Include="DTO\ScheduleDetailsDTO.cs" />
