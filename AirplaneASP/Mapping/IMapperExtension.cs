@@ -9,5 +9,10 @@ namespace AirplaneASP.Mapping
         {
             return source.Select(x => mapper.Map(x));
         }
+
+        public static IEnumerable<TSource> MapBack<TDestination, TSource>(this IMapper<TSource, TDestination> mapper, IEnumerable<TDestination> destination)
+        {
+            return destination.Select(x => mapper.MapBack(x));
+        }
     }
 }

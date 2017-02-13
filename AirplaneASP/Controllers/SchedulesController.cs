@@ -19,7 +19,7 @@ namespace AirplaneASP.Controllers
         private readonly IFlightService _flightService;
 
         private readonly IMapper<ScheduleDTO, ScheduleModel> _scheduleMaper;
-        private readonly IMapper<ScheduleDetailsDTO, ScheduleDetailsModel> _scheduleDetailsMaper;
+        private readonly IMapper<ScheduleDetailsDTO, ScheduleDetailsImportModel> _scheduleDetailsMaper;
         private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
 
         public SchedulesController(IScheduleService scheduleService,
@@ -27,7 +27,7 @@ namespace AirplaneASP.Controllers
                                    IFlightService flightService,
 
                                    IMapper<ScheduleDTO, ScheduleModel> scheduleMaper,
-                                   IMapper<ScheduleDetailsDTO, ScheduleDetailsModel> scheduleDetailsMaper,
+                                   IMapper<ScheduleDetailsDTO, ScheduleDetailsImportModel> scheduleDetailsMaper,
                                    IMapper<FlightDTO, FlightModel> flightMaper)
         {
             this._scheduleService = scheduleService;
@@ -156,16 +156,8 @@ namespace AirplaneASP.Controllers
                 if (model.ScheduleList.Count != 0)
                 {
                     //import parameter -> list of checked items
-                    _scheduleService.UpdateSchedule(model.ScheduleList.Where(s => s.Check == true).Select(s => new ScheduleDTO()
-                    {
-                        ID = s.ID,
-                        FlightStateID = s.FlightStateID,
-                        FlightID = s.FlightID,
-                        DepartureDT = s.DepartureDT,
-                        ArrivalDT = s.ArrivalDT,
-                        Comment = s.Comment
-                    }
-                    ).ToList());
+                    var scheduleDTOList = _scheduleMaper.MapBack(model.ScheduleList.Where(s => s.Check == true)).ToList();
+                    _scheduleService.UpdateSchedule(scheduleDTOList);
                 }
                 //upload items from file to view
                 if (model.UploadedFile != null)
@@ -179,26 +171,13 @@ namespace AirplaneASP.Controllers
         private List<ScheduleDetailsImportModel> GetUploadedList(HttpPostedFileBase file)
         {
             List<ScheduleDetailsImportModel> scheduleList = new List<ScheduleDetailsImportModel>();
+
             if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
             {
-                    //Get list of imported schedule items
+                //Get list of imported schedule items
                 List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
 
-                scheduleList = scheduleDTOList.Select(s => new ScheduleDetailsImportModel
-                {
-                    ID = s.ID,
-                    FlightStateID = s.FlightStateID,
-                    FlightID = s.FlightID,
-                    DepartureDT = s.DepartureDT,
-                    ArrivalDT = s.ArrivalDT,
-                    Comment = s.Comment,
-                    CityDeparture = s.CityDeparture,
-                    CountryDeparture = s.CountryDeparture,
-                    CityArrival = s.CityArrival,
-                    CountryArrival = s.CountryArrival,
-                    Company = s.Company,
-                    Check = false
-                }).ToList();
+                scheduleList = _scheduleDetailsMaper.Map(scheduleDTOList).ToList();
                 //error: couldn't import file
 
             }
