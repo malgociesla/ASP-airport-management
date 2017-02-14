@@ -8,13 +8,6 @@ namespace AirplaneASP
 {
     public class MvcApplication : System.Web.HttpApplication
     {
-        private readonly IExceptionLogger _exceptionLogger;
-
-        public MvcApplication(IExceptionLogger exceptionLogger)
-        {
-            this._exceptionLogger = exceptionLogger;
-        }
-
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -28,7 +21,8 @@ namespace AirplaneASP
             var raisedException = Server.GetLastError();
 
             //Logg exception
-            _exceptionLogger.LogException(raisedException);
+            ExceptionLogger exLogger = new ExceptionLogger();
+            exLogger.LogException(raisedException);
 
             // Process exception
         }

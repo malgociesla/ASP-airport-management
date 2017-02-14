@@ -9,13 +9,11 @@ namespace AirplaneASP.Loggers
         public void LogException(Exception ex)
         {
             //time, type, message, stack trace - .txt file - config filename in config
-            throw new NotImplementedException();
-
             if (File.Exists(_filePath))
             {
                 using (StreamWriter sw = File.CreateText(_filePath))
                 {
-                    sw.WriteLine(DateTime.Now + "/t");
+                    sw.WriteLine(DateTime.Now + "\t" + ex.Message + "\t" + ex.StackTrace);
                 }
             }
 
