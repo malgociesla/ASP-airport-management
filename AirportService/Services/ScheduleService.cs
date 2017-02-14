@@ -6,6 +6,7 @@ using AirplaneEF;
 using System.Data.Entity;
 using Utils;
 using System.IO;
+using System.Data.Entity.Infrastructure;
 
 namespace AirportService
 {
@@ -159,6 +160,43 @@ namespace AirportService
             }
         }
 
+        private int GetCountOfLandingPlanes(DateTime landingTime)
+        {
+            int landingPlanesCount;
+
+            DateTime timeFrom = landingTime.AddMinutes(-4).AddSeconds(-59);
+            DateTime timeTo = landingTime.AddMinutes(4).AddSeconds(59);
+
+            landingPlanesCount = _airplaneContext.Schedules
+                                                .Where(s => s.ArrivalDT > timeFrom &&
+                                                            s.ArrivalDT < timeTo)
+                                                .ToList()
+                                                .Count();
+
+            return landingPlanesCount;
+        }
+
+        //validate for plane collision before update
+        //repeat ValidatePlaneCollision trigger behavior
+        //to fix concurrency EF error caused by trigger on insert
+        private DateTime IncrementTimeToAvoidPlaneCollision(DateTime arrivatDT)
+        {
+          //max 4 planes landing at the same time
+          int maxLandingCapacity = 4;
+          //check how many planes are landing at the same time
+          DateTime timeCounter = arrivatDT;
+          int planeCount = GetCountOfLandingPlanes(timeCounter);
+            //if there are to many planes landing at the same time
+            while (planeCount >= maxLandingCapacity)
+            {
+                //increment time by 5min
+                timeCounter = timeCounter.AddMinutes(5);
+                //check again for plane collision
+                planeCount = GetCountOfLandingPlanes(timeCounter);
+            }
+            return timeCounter;
+        }
+
         //TODO: https://msdn.microsoft.com/en-us/data/jj592904
         public void UpdateSchedule(List<ScheduleDTO> schedulesList)
         {
@@ -183,10 +221,11 @@ namespace AirportService
                             IdFlight = newScheduleDTO.FlightID,
                             IdFlightState = newScheduleDTO.FlightStateID,
                             DepartureDT = newScheduleDTO.DepartureDT,
-                            ArrivalDT = newScheduleDTO.ArrivalDT,
+                            ArrivalDT = IncrementTimeToAvoidPlaneCollision(newScheduleDTO.ArrivalDT.Value),
                             Comment = newScheduleDTO.Comment
                         };
                         _airplaneContext.Schedules.Add(newSchedule);
+                       // _airplaneContext.SaveChanges();
                     }
                     else if (oldSchedule.Id == newScheduleDTO.ID)
                     //edit oldSchedule from db
@@ -199,7 +238,23 @@ namespace AirportService
                         oldSchedule.Comment = newScheduleDTO.Comment;
                     }
                 }
-                if (schedulesList.Count > 0) _airplaneContext.SaveChanges();
+            if (schedulesList.Count > 0)
+                {
+                    bool saveFailes;
+                    do
+                    {
+                        saveFailes = false;
+                        try
+                        {
+                            _airplaneContext.SaveChanges();
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            saveFailes = true;
+                            ex.Entries.Single().Reload();
+                        }
+                    } while (saveFailes);
+                }
             }
             else { } //error - list is empty
         }
