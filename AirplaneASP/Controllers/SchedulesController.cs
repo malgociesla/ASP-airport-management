@@ -169,9 +169,9 @@ namespace AirplaneASP.Controllers
                 }
             }
             catch (AirportServiceException ex)
-            {
-                //throw ex;
-                //ModelState.AddModelError("ImportModelException", ex.Message);
+            {  
+                ModelState.AddModelError("ImportModelException", ex.Message);
+                throw ex;
             }
             catch (Exception ex) { throw ex;  } 
             return View(model);

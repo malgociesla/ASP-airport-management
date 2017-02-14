@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+using AirplaneASP.Loggers;
 using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
@@ -10,6 +8,13 @@ namespace AirplaneASP
 {
     public class MvcApplication : System.Web.HttpApplication
     {
+        private readonly IExceptionLogger _exceptionLogger;
+
+        public MvcApplication(IExceptionLogger exceptionLogger)
+        {
+            this._exceptionLogger = exceptionLogger;
+        }
+
         protected void Application_Start()
         {
             AreaRegistration.RegisterAllAreas();
@@ -21,7 +26,10 @@ namespace AirplaneASP
         protected void Application_Error(Object sender, EventArgs e)
         {
             var raisedException = Server.GetLastError();
-            //time, type, message, stack trace - .txt file - config filename in config
+
+            //Logg exception
+            _exceptionLogger.LogException(raisedException);
+
             // Process exception
         }
     }

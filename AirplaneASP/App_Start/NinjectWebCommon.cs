@@ -22,6 +22,7 @@ namespace AirplaneASP.App_Start
     using Models.Cities;
     using Models.Flights;
     using Models.Schedules;
+    using Loggers;
 
     public static class NinjectWebCommon
     {
@@ -74,6 +75,7 @@ namespace AirplaneASP.App_Start
         /// <param name="kernel">The kernel.</param>
         private static void RegisterServices(IKernel kernel)
         {
+            //AirportServices - services, parsers
             kernel.Bind<ICityService>().To<CityService>();
             kernel.Bind<ICountryService>().To<CountryService>();
             kernel.Bind<ICompanyService>().To<CompanyService>();
@@ -82,6 +84,9 @@ namespace AirplaneASP.App_Start
             kernel.Bind<IFlightStateService>().To<FlightStateService>();
             kernel.Bind<IFlightService>().To<FlightService>();
             kernel.Bind<IScheduleParser>().To<ScheduleParser>();
+
+            //AirplaneASP - error/request loggers
+            kernel.Bind<IExceptionLogger>().To<ExceptionLogger>();
         }
 
         private static void RegisterMappings(IKernel kernel)

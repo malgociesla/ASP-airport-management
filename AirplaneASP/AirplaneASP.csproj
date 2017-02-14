@@ -236,6 +236,10 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Loggers\ExceptionLogger.cs" />
+    <Compile Include="Loggers\IExceptionLogger.cs" />
+    <Compile Include="Loggers\IRequestLogger.cs" />
+    <Compile Include="Loggers\RequestLogger.cs" />
     <Compile Include="Mapping\AutoMapper.cs" />
     <Compile Include="Mapping\IMapper.cs" />
     <Compile Include="Mapping\IMapperExtension.cs" />
