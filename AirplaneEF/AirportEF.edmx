@@ -51,7 +51,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="uniqueidentifier" Nullable="false" StoreGeneratedPattern="None" />
           <Property Name="IdFlight" Type="uniqueidentifier" Nullable="false" />
           <Property Name="IdFlightState" Type="uniqueidentifier" Nullable="false" />
           <Property Name="DepartureDT" Type="datetime" />
@@ -239,7 +239,7 @@
           <Key>
             <PropertyRef Name="Id" />
           </Key>
-          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Id" Type="Guid" Nullable="false" annotation:StoreGeneratedPattern="None" />
           <Property Name="IdFlight" Type="Guid" Nullable="false" />
           <Property Name="IdFlightState" Type="Guid" Nullable="false" />
           <Property Name="DepartureDT" Type="DateTime" Precision="3" />

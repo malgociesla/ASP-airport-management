@@ -218,7 +218,7 @@ namespace AirportService
                     {
                         newSchedule = new Schedule
                         {
-                            //Id = newScheduleDTO.ID,
+                            Id = newScheduleDTO.ID,
                             IdFlight = newScheduleDTO.FlightID,
                             IdFlightState = newScheduleDTO.FlightStateID,
                             DepartureDT = newScheduleDTO.DepartureDT,
