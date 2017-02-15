@@ -5,7 +5,7 @@ namespace AirplaneASP.Loggers
 {
     public class ExceptionLogger : IExceptionLogger
     {
-        private readonly string _filePath = @"C:\Users\mciesla\Documents\visual studio 2015\Projects\airplaneProj\myrep\log\ExceptionLogg.txt";
+        private readonly string _filePath = System.Configuration.ConfigurationManager.AppSettings["exceptionLogerFilePath"].ToString();
         public void LogException(Exception ex)
         {
             //time, type, message, stack trace - .txt file - config filename in config
