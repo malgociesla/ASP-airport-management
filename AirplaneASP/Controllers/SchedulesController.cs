@@ -9,6 +9,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using System.Configuration;
 
 namespace AirplaneASP.Controllers
 {
@@ -50,7 +51,7 @@ namespace AirplaneASP.Controllers
             }
             int pageNumber = page.Value;
             int pageSize;
-            int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+            int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
             //filter
             if (from != null && to != null)
@@ -98,7 +99,7 @@ namespace AirplaneASP.Controllers
                 }
                 int pageNumber = page.Value;
                 int pageSize;
-                int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+                int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
 
                 ViewBag.FilterModel = filterModel;
                 return View(GetPage(pageNumber, pageSize)); //returns page without filter
@@ -210,7 +211,7 @@ namespace AirplaneASP.Controllers
                 }
                 int pageNumber = page.Value;
                 int pageSize;
-                int.TryParse(System.Configuration.ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+                int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
                 int totalItemsCount = 0;
                 excelBytes = _scheduleService.Export(_scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
             }
