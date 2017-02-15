@@ -25,46 +25,64 @@ namespace AirportService
 
         public Guid Add(ScheduleDTO scheduleDTO)
         {
-            if (scheduleDTO != null)
+            try
             {
-                Schedule schedule = new Schedule
+                if (scheduleDTO != null)
                 {
-                    IdFlight = scheduleDTO.FlightID,
-                    IdFlightState = scheduleDTO.FlightStateID,
-                    DepartureDT = scheduleDTO.DepartureDT,
-                    ArrivalDT = scheduleDTO.ArrivalDT,
-                    Comment = scheduleDTO.Comment
-                };
-                _airplaneContext.Schedules.Add(schedule);
-                _airplaneContext.SaveChanges();
-                return schedule.Id;
+                    Schedule schedule = new Schedule
+                    {
+                        IdFlight = scheduleDTO.FlightID,
+                        IdFlightState = scheduleDTO.FlightStateID,
+                        DepartureDT = scheduleDTO.DepartureDT,
+                        ArrivalDT = scheduleDTO.ArrivalDT,
+                        Comment = scheduleDTO.Comment
+                    };
+                    _airplaneContext.Schedules.Add(schedule);
+                    _airplaneContext.SaveChanges();
+                    return schedule.Id;
+                }
+                else
+                {
+                    throw new AirportServiceException("Couldn't add Schedule. Provided data was invalid.");
+                    return new Guid();
+                }
             }
-            else
+            catch (DbUpdateException ex)
             {
-                //throw error!!!
-                return new Guid();
+                throw new AirportServiceException("Couldn't add Schedule. Provided data was invalid.");
             }
         }
 
         public void Edit(ScheduleDTO scheduleDTO)
         {
-            if (scheduleDTO != null)
+            try
             {
-                var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.Id == scheduleDTO.ID);
-                if (schedule != null)
+                if (scheduleDTO != null)
                 {
-                    schedule.IdFlight = scheduleDTO.FlightID;
-                    schedule.IdFlightState = scheduleDTO.FlightStateID;
-                    schedule.DepartureDT = scheduleDTO.DepartureDT;
-                    schedule.ArrivalDT = scheduleDTO.ArrivalDT;
-                    schedule.Comment = scheduleDTO.Comment;
+                    var schedule = _airplaneContext.Schedules.FirstOrDefault(c => c.Id == scheduleDTO.ID);
+                    if (schedule != null)
+                    {
+                        schedule.IdFlight = scheduleDTO.FlightID;
+                        schedule.IdFlightState = scheduleDTO.FlightStateID;
+                        schedule.DepartureDT = scheduleDTO.DepartureDT;
+                        schedule.ArrivalDT = scheduleDTO.ArrivalDT;
+                        schedule.Comment = scheduleDTO.Comment;
 
-                    _airplaneContext.SaveChanges();
-                }//else schedule doesn't exist
+                        _airplaneContext.SaveChanges();
+                    }
+                    else
+                    {
+                        throw new AirportServiceException("Couldn't edit Schedule. Provided schedule doesn't exist.");
+                    }
+                }
+                else
+                {
+                    throw new AirportServiceException("Couldn't edit Schedule. Provided data was invalid.");
+                }
             }
-            else
+            catch (DbUpdateException ex)
             {
-                //throw ex
+                throw new AirportServiceException("Couldn't edit Schedule. Provided data was invalid.");
             }
         }
 
