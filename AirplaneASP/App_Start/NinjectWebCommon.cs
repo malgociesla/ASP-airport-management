@@ -84,6 +84,8 @@ namespace AirplaneASP.App_Start
             kernel.Bind<IFlightStateService>().To<FlightStateService>();
             kernel.Bind<IFlightService>().To<FlightService>();
             kernel.Bind<IScheduleParser>().To<ScheduleParser>();
+
+            kernel.Bind<IExceptionLogger>().To<ExceptionLogger>();
         }
 
         private static void RegisterMappings(IKernel kernel)
