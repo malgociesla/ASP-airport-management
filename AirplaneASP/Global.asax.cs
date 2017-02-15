@@ -25,8 +25,8 @@ namespace AirplaneASP
             //exLogger.LogException(raisedException);
 
             // Process exception
-            Server.ClearError();
-            Response.Redirect("/Shared/Error");
+            //Server.ClearError();
+            //Response.Redirect("Shared/Error");
         }
     }
 }
