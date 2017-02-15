@@ -181,11 +181,11 @@ namespace AirportService
         //to fix concurrency EF error caused by trigger on insert
         private DateTime IncrementTimeToAvoidPlaneCollision(DateTime arrivatDT)
         {
-          //max 4 planes landing at the same time
-          int maxLandingCapacity = 4;
-          //check how many planes are landing at the same time
-          DateTime timeCounter = arrivatDT;
-          int planeCount = GetCountOfLandingPlanes(timeCounter);
+            //max 4 planes landing at the same time
+            int maxLandingCapacity = 4;
+            //check how many planes are landing at the same time
+            DateTime timeCounter = arrivatDT;
+            int planeCount = GetCountOfLandingPlanes(timeCounter);
             //if there are to many planes landing at the same time
             while (planeCount >= maxLandingCapacity)
             {
@@ -200,64 +200,74 @@ namespace AirportService
         //TODO: https://msdn.microsoft.com/en-us/data/jj592904
         public void UpdateSchedule(List<ScheduleDTO> schedulesList)
         {
-            //update database
-            //create new items in database, update old ones
-            if (schedulesList != null)
+            try
             {
-                var existingScheduleIds = schedulesList.Select(s => s.ID).ToList();
-                var oldSchedules = _airplaneContext.Schedules.Where(s => existingScheduleIds.Contains(s.Id)).ToList();
-                List<Schedule> newSchedulesList = new List<Schedule>();
-
-                foreach (ScheduleDTO newScheduleDTO in schedulesList)
+                //update database
+                //create new items in database, update old ones
+                if (schedulesList != null)
                 {
-                    Schedule oldSchedule = oldSchedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); /*_airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once*/
-                    Schedule newSchedule = null;
-                    if (oldSchedule == null)
-                    //add new scheduleItem
-                    //work directly on airplanecontext add few items and save later
+                    var existingScheduleIds = schedulesList.Select(s => s.ID).ToList();
+                    var oldSchedules = _airplaneContext.Schedules.Where(s => existingScheduleIds.Contains(s.Id)).ToList();
+                    List<Schedule> newSchedulesList = new List<Schedule>();
+
+                    foreach (ScheduleDTO newScheduleDTO in schedulesList)
                     {
-                        newSchedule = new Schedule
+                        Schedule oldSchedule = oldSchedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); /*_airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once*/
+                        Schedule newSchedule = null;
+                        if (oldSchedule == null)
+                        //add new scheduleItem
+                        //work directly on airplanecontext add few items and save later
                         {
-                            Id = newScheduleDTO.ID,
-                            IdFlight = newScheduleDTO.FlightID,
-                            IdFlightState = newScheduleDTO.FlightStateID,
-                            DepartureDT = newScheduleDTO.DepartureDT,
-                            ArrivalDT = IncrementTimeToAvoidPlaneCollision(newScheduleDTO.ArrivalDT.Value),
-                            Comment = newScheduleDTO.Comment
-                        };
-                        newSchedulesList.Add(newSchedule);
+                            newSchedule = new Schedule
+                            {
+                                Id = newScheduleDTO.ID,
+                                IdFlight = newScheduleDTO.FlightID,
+                                IdFlightState = newScheduleDTO.FlightStateID,
+                                DepartureDT = newScheduleDTO.DepartureDT,
+                                ArrivalDT = IncrementTimeToAvoidPlaneCollision(newScheduleDTO.ArrivalDT.Value),
+                                Comment = newScheduleDTO.Comment
+                            };
+                            newSchedulesList.Add(newSchedule);
+                        }
+                        else if (oldSchedule.Id == newScheduleDTO.ID)
+                        //edit oldSchedule from db
+                        //work directly on airplanecontext add few items and save later
+                        {
+                            oldSchedule.IdFlight = newScheduleDTO.FlightID;
+                            oldSchedule.IdFlightState = newScheduleDTO.FlightStateID;
+                            oldSchedule.DepartureDT = newScheduleDTO.DepartureDT;
+                            oldSchedule.ArrivalDT = newScheduleDTO.ArrivalDT;
+                            oldSchedule.Comment = newScheduleDTO.Comment;
+                        }
                     }
-                    else if (oldSchedule.Id == newScheduleDTO.ID)
-                    //edit oldSchedule from db
-                    //work directly on airplanecontext add few items and save later
+                    if (schedulesList.Count > 0)
                     {
-                        oldSchedule.IdFlight = newScheduleDTO.FlightID;
-                        oldSchedule.IdFlightState = newScheduleDTO.FlightStateID;
-                        oldSchedule.DepartureDT = newScheduleDTO.DepartureDT;
-                        oldSchedule.ArrivalDT = newScheduleDTO.ArrivalDT;
-                        oldSchedule.Comment = newScheduleDTO.Comment;
+                        bool saveFailes;
+                        do
+                        {
+                            saveFailes = false;
+                            try
+                            {
+                                _airplaneContext.Schedules.AddRange(newSchedulesList);
+                                _airplaneContext.SaveChanges();
+                            }
+                            catch (DbUpdateConcurrencyException ex)
+                            {
+                                saveFailes = true;
+                                ex.Entries.Single().Reload();
+                            }
+                        } while (saveFailes);
                     }
                 }
-            if (schedulesList.Count > 0)
+                else
                 {
-                    bool saveFailes;
-                    do
-                    {
-                        saveFailes = false;
-                        try
-                        {
-                            _airplaneContext.Schedules.AddRange(newSchedulesList);
-                            _airplaneContext.SaveChanges();
-                        }
-                        catch (DbUpdateConcurrencyException ex)
-                        {
-                            saveFailes = true;
-                            ex.Entries.Single().Reload();
-                        }
-                    } while (saveFailes);
+                    throw new AirportServiceException("No data was provided for update");
                 }
             }
-            else { } //error - list is empty
+            catch (DbUpdateException ex)
+            {
+                throw new AirportServiceException("Provided data was invalid");
+            }
         }
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)

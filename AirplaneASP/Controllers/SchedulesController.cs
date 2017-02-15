@@ -10,6 +10,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using System.Data.Entity.Infrastructure;
 
 namespace AirplaneASP.Controllers
 {
@@ -170,11 +171,10 @@ namespace AirplaneASP.Controllers
                 }
             }
             catch (AirportServiceException ex)
-            {  
+            {
                 ModelState.AddModelError("ImportModelException", ex.Message);
-                throw ex;
             }
-            catch (Exception ex) { throw ex;  } 
+            catch (Exception ex) { throw ex; } 
             return View(model);
         }
 
