@@ -21,10 +21,12 @@ namespace AirplaneASP
             var raisedException = Server.GetLastError();
 
             //Logg exception
-            ExceptionLogger exLogger = new ExceptionLogger();
-            exLogger.LogException(raisedException);
+            //ExceptionLogger exLogger = new ExceptionLogger();
+            //exLogger.LogException(raisedException);
 
             // Process exception
+            Server.ClearError();
+            Response.Redirect("/Shared/Error");
         }
     }
 }

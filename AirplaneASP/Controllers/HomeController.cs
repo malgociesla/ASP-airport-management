@@ -28,16 +28,6 @@ namespace AirplaneASP.Controllers
             return Index();
         }
 
-        //[HttpPost]
-        //public ActionResult Index(Guid cityID)
-        //{
-        //    ICityService cityService = new CityService();
-        //    cityService.Remove(cityID);
-        //   // List<CityDTO> cityList = cityService.GetCities();
-
-        //    return Index();
-        //}
-
 
         public ActionResult About()
         {
