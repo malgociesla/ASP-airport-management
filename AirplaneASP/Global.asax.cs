@@ -10,6 +10,7 @@ namespace AirplaneASP
     public class MvcApplication : HttpApplication
     {
         private readonly IExceptionLogger _exceptionLogger = DependencyResolver.Current.GetService<IExceptionLogger>();
+        private readonly IRequestLogger _requestLogger = DependencyResolver.Current.GetService<IRequestLogger>();
 
         protected void Application_Start()
         {
@@ -29,6 +30,11 @@ namespace AirplaneASP
             //Process exception
             Server.ClearError();
             Response.Redirect("/Shared/Error");
+        }
+
+        protected void Application_LogRequest(Object sender, EventArgs e)
+        {
+            _requestLogger.LogRequest(Request);
         }
     }
 }

@@ -225,6 +225,7 @@ namespace AirportService
                             Comment = newScheduleDTO.Comment
                         };
                         _airplaneContext.Schedules.Add(newSchedule);
+                        //.AddRange
                        // _airplaneContext.SaveChanges();
                     }
                     else if (oldSchedule.Id == newScheduleDTO.ID)

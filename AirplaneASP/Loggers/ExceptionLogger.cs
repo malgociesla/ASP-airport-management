@@ -6,7 +6,7 @@ namespace AirplaneASP.Loggers
 {
     public class ExceptionLogger : IExceptionLogger
     {
-        private static string _filePath = ConfigurationManager.AppSettings["exceptionLogerFilePath"].ToString();
+        private static string _filePath = ConfigurationManager.AppSettings["exceptionLoggerFilePath"].ToString();
 
         public void LogException(Exception ex)
         {
