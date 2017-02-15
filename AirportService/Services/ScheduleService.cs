@@ -205,8 +205,8 @@ namespace AirportService
             if (schedulesList != null)
             {
                 var existingScheduleIds = schedulesList.Select(s => s.ID).ToList();
-
                 var oldSchedules = _airplaneContext.Schedules.Where(s => existingScheduleIds.Contains(s.Id)).ToList();
+                List<Schedule> newSchedulesList = new List<Schedule>();
 
                 foreach (ScheduleDTO newScheduleDTO in schedulesList)
                 {
@@ -218,15 +218,14 @@ namespace AirportService
                     {
                         newSchedule = new Schedule
                         {
+                            //Id = newScheduleDTO.ID,
                             IdFlight = newScheduleDTO.FlightID,
                             IdFlightState = newScheduleDTO.FlightStateID,
                             DepartureDT = newScheduleDTO.DepartureDT,
                             ArrivalDT = IncrementTimeToAvoidPlaneCollision(newScheduleDTO.ArrivalDT.Value),
                             Comment = newScheduleDTO.Comment
                         };
-                        _airplaneContext.Schedules.Add(newSchedule);
-                        //.AddRange
-                       // _airplaneContext.SaveChanges();
+                        newSchedulesList.Add(newSchedule);
                     }
                     else if (oldSchedule.Id == newScheduleDTO.ID)
                     //edit oldSchedule from db
@@ -247,6 +246,7 @@ namespace AirportService
                         saveFailes = false;
                         try
                         {
+                            _airplaneContext.Schedules.AddRange(newSchedulesList);
                             _airplaneContext.SaveChanges();
                         }
                         catch (DbUpdateConcurrencyException ex)
