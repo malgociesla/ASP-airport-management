@@ -82,15 +82,14 @@ namespace Utils
 
                         // Add a WorksheetPart to the WorkbookPart.
                         WorksheetPart worksheetPart = workbookpart.AddNewPart<WorksheetPart>();
-                        SheetData sheetData = new SheetData();
+                        
+                        //Insert generated cells
+                        SheetData sheetData = GenerateSheetDataCells(excelData);
+                        worksheetPart.Worksheet = new Worksheet(sheetData);
 
                         // Add minimal Stylesheet to format DateTime cells
                         var stylesPart = excelDoc.WorkbookPart.AddNewPart<WorkbookStylesPart>();
                         stylesPart.Stylesheet = SetStyleSheet();
-
-                        //insert data	
-                        GenerateCells(excelData, sheetData);
-                        worksheetPart.Worksheet = new Worksheet(sheetData);
 
                         // Add Sheets to the Workbook.
                         Sheets sheets = excelDoc.WorkbookPart.Workbook.
@@ -140,9 +139,9 @@ namespace Utils
             return styleSheet;
         }
 
-        private List<Cell> GenerateCells(ExcelData excelData, SheetData sheetData)
+        private SheetData GenerateSheetDataCells(ExcelData excelData)
         {
-            List<Cell> cellList = new List<Cell>();
+            SheetData sheetData = new SheetData();
             var allDataRows = excelData.AllRows;
 
             int fromRowID = 1;
@@ -162,14 +161,13 @@ namespace Utils
                     string cellAddress = columnID + rowID.ToString();
                     Cell cell = SetCell(cellData.CellValue, GetCellType(cellData.CellDataType), cellAddress);
                     row.Append(cell);
-                    cellList.Add(cell);
 
                     columnID++;
                 }
                 sheetData.Append(row);
                 rowID++;
             }
-            return cellList;
+            return sheetData;
         }
 
         private CellValues GetCellType(Type cellDataType)
