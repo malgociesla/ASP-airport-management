@@ -31,8 +31,14 @@ namespace AirportService
                     Comment = excelRowData.DataRow[8].CellValue,
                 };
             }
-            catch (ArgumentOutOfRangeException ex) { }//error "Couldn't parse data"
-            catch (FormatException ex) { } //error "Couldn't parse data"
+            catch (ArgumentOutOfRangeException ex)
+            {
+                throw new AirportServiceException("Couldn't parse the data.");
+            }
+            catch (FormatException ex)
+            {
+                throw new AirportServiceException("Couldn't parse the data.");
+            }
 
             return schedule;
         }
