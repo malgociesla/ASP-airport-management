@@ -12,7 +12,6 @@ namespace AirplaneASP
     {
         public static MapperConfiguration ConfigureMappings()
         {
-            //TODO: automapper -> if list null - new model (model can't be null)
             return new MapperConfiguration(c =>
             {
                 //Company
