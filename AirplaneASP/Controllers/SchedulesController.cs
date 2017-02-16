@@ -24,7 +24,7 @@ namespace AirplaneASP.Controllers
         private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
 
         //paging
-        private readonly int _pageSize;
+        private static int _pageSize = int.Parse(ConfigurationManager.AppSettings["pageSize"].ToString());
 
         public SchedulesController(IScheduleService scheduleService,
                                    IFlightStateService flightStateService,
@@ -41,11 +41,6 @@ namespace AirplaneASP.Controllers
             this._scheduleMaper = scheduleMaper;
             this._scheduleDetailsMaper = scheduleDetailsMaper;
             this._flightMaper = flightMaper;
-
-            //paging
-            bool pageSizedConfigured = int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out this._pageSize);
-            if (!pageSizedConfigured) _pageSize = 3;
-
         }
 
         private int ValidatePageNo(int? page)
