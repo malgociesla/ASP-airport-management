@@ -43,13 +43,12 @@ namespace AirportService
                 }
                 else
                 {
-                    throw new AirportServiceException("Couldn't add Schedule. Provided data was invalid.");
-                    return new Guid();
+                    throw new AirportServiceException("Couldn't add schedule. Provided data was invalid.");
                 }
             }
             catch (DbUpdateException ex)
             {
-                throw new AirportServiceException("Couldn't add Schedule. Provided data was invalid.");
+                throw new AirportServiceException("Couldn't add schedule. Provided data was invalid.");
             }
         }
 
@@ -72,24 +71,31 @@ namespace AirportService
                     }
                     else
                     {
-                        throw new AirportServiceException("Couldn't edit Schedule. Provided schedule doesn't exist.");
+                        throw new AirportServiceException("Couldn't edit schedule. Provided schedule doesn't exist.");
                     }
                 }
                 else
                 {
-                    throw new AirportServiceException("Couldn't edit Schedule. Provided data was invalid.");
+                    throw new AirportServiceException("Couldn't edit schedule. Provided data was invalid.");
                 }
             }
             catch (DbUpdateException ex)
             {
-                throw new AirportServiceException("Couldn't edit Schedule. Provided data was invalid.");
+                throw new AirportServiceException("Couldn't edit schedule. Provided data was invalid.");
             }
         }
 
         public void GenerateSchedule(DateTime startDate, DateTime endDate, Guid? flightId)
         {
-            _airplaneContext.GenerateSchedule(startDate, endDate, flightId);
-            _airplaneContext.SaveChanges();
+            if (startDate != null && endDate != null)
+            {
+                _airplaneContext.GenerateSchedule(startDate, endDate, flightId);
+                _airplaneContext.SaveChanges();
+            }
+            else
+            {
+                throw new AirportServiceException("Couldn't generate schedule. Provided data was invalid.");
+            }
         }
 
         public List<ScheduleDetailsDTO> GetAll()
@@ -176,6 +182,10 @@ namespace AirportService
                 _airplaneContext.Schedules.Remove(schedule);
                 _airplaneContext.SaveChanges();
             }
+            else
+            {
+                throw new AirportServiceException("Couldn't remove schedule. Provided data was invalid.");
+            }
         }
 
         private int GetCountOfLandingPlanes(DateTime landingTime)
@@ -190,7 +200,6 @@ namespace AirportService
                                                             s.ArrivalDT < timeTo)
                                                 .ToList()
                                                 .Count();
-
             return landingPlanesCount;
         }
 
@@ -215,26 +224,24 @@ namespace AirportService
             return timeCounter;
         }
 
-        //TODO: https://msdn.microsoft.com/en-us/data/jj592904
+        //update database
+        //create new items in database, update old ones
         public void UpdateSchedule(List<ScheduleDTO> schedulesList)
         {
             try
             {
-                //update database
-                //create new items in database, update old ones
                 if (schedulesList != null)
                 {
-                    var existingScheduleIds = schedulesList.Select(s => s.ID).ToList();
-                    var oldSchedules = _airplaneContext.Schedules.Where(s => existingScheduleIds.Contains(s.Id)).ToList();
+                    var selectedSchedulesIds = schedulesList.Select(s => s.ID).ToList();
+                    var existingSchedulesList = _airplaneContext.Schedules.Where(s => selectedSchedulesIds.Contains(s.Id)).ToList();
                     List<Schedule> newSchedulesList = new List<Schedule>();
 
                     foreach (ScheduleDTO newScheduleDTO in schedulesList)
                     {
-                        Schedule oldSchedule = oldSchedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); /*_airplaneContext.Schedules.FirstOrDefault(s => s.Id == newScheduleDTO.ID); //get whole list of items at once*/
+                        Schedule existingSchedule = existingSchedulesList.FirstOrDefault(s => s.Id == newScheduleDTO.ID);
                         Schedule newSchedule = null;
-                        if (oldSchedule == null)
-                        //add new scheduleItem
-                        //work directly on airplanecontext add few items and save later
+                        if (existingSchedule == null)
+                        //add new schedule
                         {
                             newSchedule = new Schedule
                             {
@@ -247,15 +254,14 @@ namespace AirportService
                             };
                             newSchedulesList.Add(newSchedule);
                         }
-                        else if (oldSchedule.Id == newScheduleDTO.ID)
-                        //edit oldSchedule from db
-                        //work directly on airplanecontext add few items and save later
+                        else if (existingSchedule.Id == newScheduleDTO.ID)
+                        //update exising schedule
                         {
-                            oldSchedule.IdFlight = newScheduleDTO.FlightID;
-                            oldSchedule.IdFlightState = newScheduleDTO.FlightStateID;
-                            oldSchedule.DepartureDT = newScheduleDTO.DepartureDT;
-                            oldSchedule.ArrivalDT = newScheduleDTO.ArrivalDT;
-                            oldSchedule.Comment = newScheduleDTO.Comment;
+                            existingSchedule.IdFlight = newScheduleDTO.FlightID;
+                            existingSchedule.IdFlightState = newScheduleDTO.FlightStateID;
+                            existingSchedule.DepartureDT = newScheduleDTO.DepartureDT;
+                            existingSchedule.ArrivalDT = newScheduleDTO.ArrivalDT;
+                            existingSchedule.Comment = newScheduleDTO.Comment;
                         }
                     }
                     if (schedulesList.Count > 0)
@@ -279,27 +285,18 @@ namespace AirportService
                 }
                 else
                 {
-                    throw new AirportServiceException("No data was provided for update");
+                    throw new AirportServiceException("No data was provided for update.");
                 }
             }
             catch (DbUpdateException ex)
             {
-                throw new AirportServiceException("Provided data was invalid");
+                throw new AirportServiceException("Provided data was invalid.");
             }
         }
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)
         {
-            List<ScheduleDetailsDTO> importedList = new List<ScheduleDetailsDTO>();
-            try
-            {
-                importedList = PrepareToExcelImport(_scheduleUtils.Read(excelStream));
-            }
-            catch (UtilsException ex)
-            {
-                throw new AirportServiceException("Couldn't read data from source.", ex);
-            }
-            return importedList;
+            return PrepareToExcelImport(_scheduleUtils.Read(excelStream));
         }
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
@@ -310,13 +307,18 @@ namespace AirportService
         private List<ScheduleDetailsDTO> PrepareToExcelImport(ExcelData excelData)
         {
             List<ScheduleDetailsDTO> scheduleList = new List<ScheduleDetailsDTO>();
-
-            var schedules = excelData.DataRows.Select(s => _scheduleParser
-                                                            .ParseDataRow(s)
-                                                      )
-                                                      .ToList();
-            scheduleList.AddRange(schedules);
-
+            if (excelData != null)
+            {
+                var schedules = excelData.DataRows.Select(s => _scheduleParser
+                                                                .ParseDataRow(s)
+                                                          )
+                                                          .ToList();
+                scheduleList.AddRange(schedules);
+            }
+            else
+            {
+                throw new AirportServiceException("Coudn't read data from source.");
+            }
             return scheduleList;
         }
 
@@ -333,7 +335,10 @@ namespace AirportService
 
                 excelData.DataRows = scheduleData;
             }
-            catch (Exception ex) { } //rethrow exception eg. too many columns or rows
+            catch (UtilsException ex)
+            {
+                throw new AirportServiceException(ex.Message);
+            }
             return excelData;
         }
     }

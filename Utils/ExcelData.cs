@@ -19,9 +19,9 @@ namespace Utils
             }
             set
             {
-                if(_headingRow.Count() <= _maxColumns)
+                if (_headingRow.Count() <= _maxColumns)
                     _headingRow = value;
-                //else throw error: too many columns!
+                else throw new UtilsException("To many columns.");
             }
         }
 
@@ -35,12 +35,17 @@ namespace Utils
             set
             {
                 if (value.Count() < _maxRows)
+                {
                     if (value.All(r => r.Count() <= _maxColumns))
-                        _dataRows = value;    
-                    //else throw error: to many columns            
-                //else throw error: too many rows!
+                    {
+                        _dataRows = value;
+                    }
+                    else throw new UtilsException("To many columns.");
+                }
+                else throw new UtilsException("To many rows.");
             }
         }
+
 
         private readonly List<ExcelRowData> _allRows;
         public List<ExcelRowData> AllRows

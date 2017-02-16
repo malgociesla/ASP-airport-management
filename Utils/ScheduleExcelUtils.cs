@@ -5,7 +5,6 @@ using DocumentFormat.OpenXml;
 using DocumentFormat.OpenXml.Packaging;
 using DocumentFormat.OpenXml.Spreadsheet;
 using System.IO;
-using System.Text.RegularExpressions;
 
 namespace Utils
 {
@@ -17,51 +16,55 @@ namespace Utils
 
             if (excelStream != null)
             {
-                try
+                using (var excelDoc = SpreadsheetDocument.Open(excelStream, false))
                 {
-                    using (var excelDoc = SpreadsheetDocument.Open(excelStream, false))
+                    var rows = excelDoc.WorkbookPart.WorksheetParts.First()
+                            .Worksheet.GetFirstChild<SheetData>().Descendants<Row>();
+
+                    var cells = excelDoc.WorkbookPart.WorksheetParts.First()
+                            .Worksheet.GetFirstChild<SheetData>().Descendants<Cell>();
+
+                    int rowsCount = rows.Count();
+                    int cellsCount = cells.Count();
+
+                    if (rowsCount > 0 && cellsCount > 0)
                     {
-                        var rows = excelDoc.WorkbookPart.WorksheetParts.First()
-                                .Worksheet.GetFirstChild<SheetData>().Descendants<Row>();
+                        int rowSize = 'A' + (cellsCount / rowsCount);
 
-                        var cells = excelDoc.WorkbookPart.WorksheetParts.First()
-                                .Worksheet.GetFirstChild<SheetData>().Descendants<Cell>();
-
-                        int rowsCount = rows.Count();
-                        int cellsCount = cells.Count();
-
-                        if (rowsCount > 0 && cellsCount > 0)
+                        int fromRowID = 1;
+                        char fromColumnID = 'A';
+                        for (int rowID = fromRowID; rowID <= rowsCount; rowID++)
                         {
-                            int rowSize = 'A' + (cellsCount / rowsCount);
-
-                            int fromRowID = 1;
-                            char fromColumnID = 'A';
-                            for (int rowID = fromRowID; rowID <= rowsCount; rowID++)
+                            ExcelRowData rowData = new ExcelRowData();
+                            for (char columnID = fromColumnID; columnID < rowSize; columnID++)
                             {
-                                ExcelRowData rowData = new ExcelRowData();
-                                for (char columnID = fromColumnID; columnID < rowSize; columnID++)
+                                string cellAddress = columnID + rowID.ToString();
+                                ExcelCellData cellData = GetExcelCellData(excelDoc, cellAddress);
+                                if (cellData != null)
                                 {
-                                    string cellAddress = columnID + rowID.ToString();
-                                    ExcelCellData cellData = GetCellExcelCellData(excelDoc, cellAddress);
-                                    if (cellData != null)
-                                    {
-                                        rowData.DataRow.Add(cellData);
-                                    }
+                                    rowData.DataRow.Add(cellData);
                                 }
-                                if (rowID == fromRowID)
-                                    excelData.HeadingRow = rowData;
-                                else
-                                    excelData.DataRows.Add(rowData);
+                            }
+                            if (rowID == fromRowID)
+                            {
+                                excelData.HeadingRow = rowData;
+                            }
+                            else
+                            {
+                                excelData.DataRows.Add(rowData);
                             }
                         }
-                        else { throw new UtilsException("Cannot read Excel file.");  }
-
+                    }
+                    else
+                    {
+                        throw new UtilsException("Couldn't read the Excel file.");
                     }
                 }
-                catch (Exception ex) { throw new UtilsException("Cannot read Excel file.", ex); }//error sth went wrong with reading excel file
             }
-            else { }//error stream empty
-            
+            else
+            {
+                throw new UtilsException("No data was provided for reading.");
+            }
             return excelData;
         }
 
@@ -87,7 +90,6 @@ namespace Utils
 
                         //insert data	
                         GenerateCells(excelData, sheetData);
-
                         worksheetPart.Worksheet = new Worksheet(sheetData);
 
                         // Add Sheets to the Workbook.
@@ -112,8 +114,10 @@ namespace Utils
                     return result;
                 }
             }
-            //error - empty parameter scheduleList
-            return null;
+            else
+            {
+                throw new UtilsException("No data was provided.");
+            }
         }
 
         private Stylesheet SetStyleSheet()
@@ -126,7 +130,7 @@ namespace Utils
                 CellStyleFormats = new CellStyleFormats(new CellFormat()),
                 CellFormats =
                                 new CellFormats(
-                                    new CellFormat(), //StyleIndex=0
+                                    new CellFormat(), //StyleIndex=0 (default: no formatting)
                                     new CellFormat    //StyleIndex=1 (for DateTime)
                                     {
                                         NumberFormatId = 22,
@@ -145,22 +149,22 @@ namespace Utils
             char fromColumnID = 'A';
 
             int rowID = fromRowID;
-            foreach (var dataRow in allDataRows) //single object
+            foreach (var dataRow in allDataRows)
             {
                 Row row = new Row()
-                                    {
-                                        RowIndex = (uint)rowID
-                                    };
+                {
+                    RowIndex = (uint)rowID
+                };
 
                 char columnID = fromColumnID;
                 foreach (var cellData in dataRow)
                 {
-                        string cellAddress = columnID + rowID.ToString();
-                        Cell cell = SetCell(cellData.CellValue, GetCellType(cellData.CellDataType), cellAddress);
-                        row.Append(cell);
-                        cellList.Add(cell);
+                    string cellAddress = columnID + rowID.ToString();
+                    Cell cell = SetCell(cellData.CellValue, GetCellType(cellData.CellDataType), cellAddress);
+                    row.Append(cell);
+                    cellList.Add(cell);
 
-                        columnID++;  
+                    columnID++;
                 }
                 sheetData.Append(row);
                 rowID++;
@@ -177,8 +181,7 @@ namespace Utils
 
         private Type GetCellType(CellValues cellDataType)
         {
-            //if (cellDataType == CellValues.String)
-                return typeof(string);
+            return typeof(string);
         }
 
         private uint GetCellStyleIndex(CellValues cellDataType)
@@ -189,17 +192,24 @@ namespace Utils
 
         private Cell SetCell(string cellValue, CellValues cellDataType, string cellAddress)
         {
-            Cell cell = new Cell()
+            if (cellValue != null && cellAddress != null)
             {
-                CellValue = new CellValue(cellValue),
-                DataType = new EnumValue<CellValues>(cellDataType),
-                CellReference = cellAddress,
-                StyleIndex = GetCellStyleIndex(cellDataType)
-            };
-            return cell;
+                Cell cell = new Cell()
+                {
+                    CellValue = new CellValue(cellValue),
+                    DataType = new EnumValue<CellValues>(cellDataType),
+                    CellReference = cellAddress,
+                    StyleIndex = GetCellStyleIndex(cellDataType)
+                };
+                return cell;
+            }
+            else
+            {
+                throw new UtilsException("Couldn't generate cell.");
+            }
         }
 
-        private ExcelCellData GetCellExcelCellData(SpreadsheetDocument excelDoc, string cellAddress)
+        private ExcelCellData GetExcelCellData(SpreadsheetDocument excelDoc, string cellAddress)
         {
             //get string table in case the cell value is not an accual value,
             //but an index of sharedstringtable, where the value is stored by excel
@@ -236,14 +246,17 @@ namespace Utils
                 //DateType is null for numerics and date values
                 if (double.TryParse(cellValue, out cellValueDouble))
                 {
-                    cellDataType = CellValues.Number;
                     //try to parse value as date
                     try
                     {
                         cellValue = DateTime.FromOADate(cellValueDouble).ToString();
                         cellDataType = CellValues.Date;
                     }
-                    catch (ArgumentException ex) { }// this wasn't valid date so it must be numeric value
+                    catch (ArgumentException ex)
+                    // this wasn't valid date so it must be numeric value
+                    {
+                        cellDataType = CellValues.Number;
+                    }
                 }
                 //if cell isn't null -> assign value
                 return new ExcelCellData()
