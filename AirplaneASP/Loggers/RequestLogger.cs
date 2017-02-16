@@ -11,11 +11,13 @@ namespace AirplaneASP.Loggers
 
         public void LogRequest(HttpRequest request)
         {
-            using (FileStream fs = new FileStream(_filePath, FileMode.Append, FileAccess.Write))
-            using (StreamWriter sw = new StreamWriter(fs))
+            using (FileStream fs = File.Open(_filePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
             {
-                sw.WriteLine("[" + DateTime.Now + "]" + "\t" + request.UrlReferrer + "\t" + request.UserAgent);
-                sw.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("[" + DateTime.Now + "]" + "\t" + request.UrlReferrer + "\t" + request.UserAgent);
+                    sw.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+                }
             }
         }
     }

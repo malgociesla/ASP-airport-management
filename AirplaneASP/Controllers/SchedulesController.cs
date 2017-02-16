@@ -10,7 +10,6 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
-using System.Data.Entity.Infrastructure;
 
 namespace AirplaneASP.Controllers
 {
@@ -23,6 +22,9 @@ namespace AirplaneASP.Controllers
         private readonly IMapper<ScheduleDTO, ScheduleModel> _scheduleMaper;
         private readonly IMapper<ScheduleDetailsDTO, ScheduleDetailsImportModel> _scheduleDetailsMaper;
         private readonly IMapper<FlightDTO, FlightModel> _flightMaper;
+
+        //paging
+        private readonly int _pageSize;
 
         public SchedulesController(IScheduleService scheduleService,
                                    IFlightStateService flightStateService,
@@ -39,20 +41,38 @@ namespace AirplaneASP.Controllers
             this._scheduleMaper = scheduleMaper;
             this._scheduleDetailsMaper = scheduleDetailsMaper;
             this._flightMaper = flightMaper;
+
+            //paging
+            bool pageSizedConfigured = int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out this._pageSize);
+            if (!pageSizedConfigured) _pageSize = 3;
+
         }
 
-        //[HttpGet]
-        public ActionResult List(int? page, DateTime? from, DateTime? to)
+        private int ValidatePageNo(int? page)
         {
-            //pagination
             if (page == null ||
                 page < 1)
             {
                 page = 1;
             }
-            int pageNumber = page.Value;
-            int pageSize;
-            int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+            return page.Value;
+        }
+
+        private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
+        {
+            int totalItemsCount = 0;
+            List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
+            //get subset of IPagedList and translate from ScheduleDetailsDTO to ScheduleDetailsModel
+            var subset = _scheduleDetailsMaper.Map(scheduleDTOPage);
+
+            IPagedList schedulePage = new StaticPagedList<ScheduleDetailsModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
+            return schedulePage;
+        }
+        //[HttpGet]
+        public ActionResult List(int? page, DateTime? from, DateTime? to)
+        {
+            //pagination
+            int pageNumber = ValidatePageNo(page);
 
             //filter
             if (from != null && to != null)
@@ -67,20 +87,9 @@ namespace AirplaneASP.Controllers
             }
 
             //get Page
-            IPagedList schedulePage = GetPage(pageNumber, pageSize, from, to);
+            IPagedList schedulePage = GetPage(pageNumber, _pageSize, from, to);
 
             return View(schedulePage);
-        }
-
-        private IPagedList GetPage(int pageNumber, int pageSize, DateTime? from = null, DateTime? to = null)
-        {
-            int totalItemsCount = 0;
-            List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
-            //get subset of IPagedList and translate from ScheduleDetailsDTO to ScheduleDetailsModel
-            var subset = _scheduleDetailsMaper.Map(scheduleDTOPage);
-
-            IPagedList schedulePage = new StaticPagedList<ScheduleDetailsModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
-            return schedulePage;
         }
 
         [HttpPost]
@@ -93,26 +102,11 @@ namespace AirplaneASP.Controllers
             else
             {
                 //pagination
-                if (page == null ||
-                    page < 1)
-                {
-                    page = 1;
-                }
-                int pageNumber = page.Value;
-                int pageSize;
-                int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
+                int pageNumber = ValidatePageNo(page);
 
                 ViewBag.FilterModel = filterModel;
-                return View(GetPage(pageNumber, pageSize)); //returns page without filter
+                return View(GetPage(pageNumber, _pageSize)); //returns page without filter
             }
-        }
-
-        [HttpGet]
-        public ActionResult Remove(Guid id, int? page)
-        {
-            _scheduleService.Remove(id);
-
-            return RedirectToAction("List", new { page = page });
         }
 
         public ActionResult GenerateSchedule()
@@ -142,87 +136,6 @@ namespace AirplaneASP.Controllers
                 return View();
             }
         }
-
-        public ActionResult ImportSchedule()
-        {
-            ImportViewModel model = new ImportViewModel();
-            return View(model);
-        }
-
-        [HttpPost]
-        public ActionResult ImportSchedule(ImportViewModel model)
-        {
-            try
-            {
-                if (ModelState.IsValid)
-                {
-                    //import based on model.ScheduleList
-                    if (model.ScheduleList.Count != 0)
-                    {
-                        //import parameter -> list of checked items
-                        var scheduleDTOList = _scheduleMaper.MapBack(model.ScheduleList.Where(s => s.Check == true)).ToList();
-                        _scheduleService.UpdateSchedule(scheduleDTOList);
-                    }
-                    //upload items from file to view
-                    if (model.UploadedFile != null)
-                    {
-                        model.ScheduleList = GetUploadedList(model.UploadedFile);
-                    }
-                }
-            }
-            catch (AirportServiceException ex)
-            {
-                ModelState.AddModelError("ImportModelException", ex.Message);
-            }
-            catch (Exception ex) { throw ex; } 
-            return View(model);
-        }
-
-        private List<ScheduleDetailsImportModel> GetUploadedList(HttpPostedFileBase file)
-        {
-            List<ScheduleDetailsImportModel> scheduleList = new List<ScheduleDetailsImportModel>();
-
-            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
-            {
-                //Get list of imported schedule items
-                List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
-
-                scheduleList = _scheduleDetailsMaper.Map(scheduleDTOList).ToList();
-                //error: couldn't import file
-
-            }
-            return scheduleList;
-        }
-
-        public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)
-        {
-            byte[] excelBytes;
-            if (all)
-            {
-                excelBytes = _scheduleService.Export(_scheduleService.GetAll());
-            }
-            else
-            {
-                //pagination
-                if (page == null ||
-                    page < 1)
-                {
-                    page = 1;
-                }
-                int pageNumber = page.Value;
-                int pageSize;
-                int.TryParse(ConfigurationManager.AppSettings["pageSize"].ToString(), out pageSize);
-                int totalItemsCount = 0;
-                excelBytes = _scheduleService.Export(_scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to));
-            }
-            FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
-            {
-                FileDownloadName = string.Format("Export_{0}_{1}.xlsx", DateTime.Now.ToString("yyMMdd"), "Schedules")
-            };
-
-            return fr;
-        }
-
         [HttpGet]
         public ActionResult Edit(Guid id, int? page)
         {
@@ -266,5 +179,83 @@ namespace AirplaneASP.Controllers
             }
         }
 
+        [HttpGet]
+        public ActionResult Remove(Guid id, int? page)
+        {
+            _scheduleService.Remove(id);
+
+            return RedirectToAction("List", new { page = page });
+        }
+
+        public ActionResult ImportSchedule()
+        {
+            ImportViewModel model = new ImportViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult ImportSchedule(ImportViewModel model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    //import based on model.ScheduleList
+                    if (model.ScheduleList.Count != 0)
+                    {
+                        //import parameter -> list of checked items
+                        var scheduleDTOList = _scheduleMaper.MapBack(model.ScheduleList.Where(s => s.Check == true)).ToList();
+                        _scheduleService.UpdateSchedule(scheduleDTOList);
+                    }
+                    //upload items from file to view
+                    if (model.UploadedFile != null)
+                    {
+                        model.ScheduleList = GetUploadedList(model.UploadedFile);
+                    }
+                }
+            }
+            catch (AirportServiceException ex)
+            {
+                ModelState.AddModelError("ImportModelException", ex.Message);
+            }
+            return View(model);
+        }
+
+        private List<ScheduleDetailsImportModel> GetUploadedList(HttpPostedFileBase file)
+        {
+            List<ScheduleDetailsImportModel> scheduleList = new List<ScheduleDetailsImportModel>();
+            if ((file != null) && (file.ContentLength > 0) && !string.IsNullOrEmpty(file.FileName))
+            {
+                //Get list of imported schedule items
+                List<ScheduleDetailsDTO> scheduleDTOList = _scheduleService.Import(file.InputStream);
+
+                scheduleList = _scheduleDetailsMaper.Map(scheduleDTOList).ToList();
+            }
+
+            return scheduleList;
+        }
+
+        public ActionResult ExportSchedule(bool all, int? page, DateTime? from = null, DateTime? to = null)
+        {
+            byte[] excelBytes;
+            if (all)
+            {
+                excelBytes = _scheduleService.Export(_scheduleService.GetAll());
+            }
+            else
+            {
+                //pagination
+                int pageNumber = ValidatePageNo(page);
+
+                int totalItemsCount = 0;
+                excelBytes = _scheduleService.Export(_scheduleService.GetList(pageNumber, _pageSize, out totalItemsCount, from, to));
+            }
+            FileResult fr = new FileContentResult(excelBytes, "application/vnd.ms-excel")
+            {
+                FileDownloadName = string.Format("Export_{0}_{1}.xlsx", DateTime.Now.ToString("yyMMdd"), "Schedules")
+            };
+
+            return fr;
+        }
     }
 }

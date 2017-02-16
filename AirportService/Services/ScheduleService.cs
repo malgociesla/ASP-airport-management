@@ -296,12 +296,26 @@ namespace AirportService
 
         public List<ScheduleDetailsDTO> Import(Stream excelStream)
         {
-            return PrepareToExcelImport(_scheduleUtils.Read(excelStream));
+            try
+            {
+                return PrepareToExcelImport(_scheduleUtils.Read(excelStream));
+            }
+            catch (UtilsException ex)
+            {
+                throw new AirportServiceException(ex.Message,ex);
+            }
         }
 
         public byte[] Export(List<ScheduleDetailsDTO> schedulesList)
         {
-            return _scheduleUtils.Write(PrepareToExcelExport(schedulesList));
+            try
+            {
+                return _scheduleUtils.Write(PrepareToExcelExport(schedulesList));
+            }
+            catch (UtilsException ex)
+            {
+                throw new AirportServiceException(ex.Message, ex);
+            }
         }
 
         private List<ScheduleDetailsDTO> PrepareToExcelImport(ExcelData excelData)
@@ -319,25 +333,25 @@ namespace AirportService
             {
                 throw new AirportServiceException("Coudn't read data from source.");
             }
+
             return scheduleList;
         }
 
         private ExcelData PrepareToExcelExport(List<ScheduleDetailsDTO> schedulesList)
         {
             ExcelData excelData = new ExcelData();
-            try
+            if (schedulesList != null)
             {
                 excelData.HeadingRow = _scheduleParser.GenerateHeadingRow();
 
                 var scheduleData = schedulesList.Select(s => _scheduleParser
                                                               .GenerateDataRow(s)
                                                        ).ToList();
-
                 excelData.DataRows = scheduleData;
             }
-            catch (UtilsException ex)
+            else
             {
-                throw new AirportServiceException(ex.Message);
+                throw new AirportServiceException("No data was provided for export.");
             }
             return excelData;
         }

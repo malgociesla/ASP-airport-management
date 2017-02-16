@@ -11,12 +11,14 @@ namespace AirplaneASP.Loggers
         public void LogException(Exception ex)
         {
             //time, type, message, stack trace - .txt file - config filename in config
-            using (FileStream fs = new FileStream(_filePath, FileMode.Append, FileAccess.Write))
-            using (StreamWriter sw = new StreamWriter(fs))
+            using (FileStream fs = File.Open(_filePath, FileMode.Append, FileAccess.Write, FileShare.ReadWrite))
             {
-                sw.WriteLine("[" + DateTime.Now + "]" + "\t" + ex.Message);
-                sw.WriteLine(ex.StackTrace);
-                sw.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+                using (StreamWriter sw = new StreamWriter(fs))
+                {
+                    sw.WriteLine("[" + DateTime.Now + "]" + "\t" + ex.Message);
+                    sw.WriteLine(ex.StackTrace);
+                    sw.WriteLine("------------------------------------------------------------------------------------------------------------------------------");
+                }
             }
         }
     }
