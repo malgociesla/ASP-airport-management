@@ -30,7 +30,7 @@ namespace AirplaneASP.ModelValidation
                 }
                 else return true; 
             }
-            return false; //type not handled by validation - error
+            return false; //type not handled by validation
         }
     }
 }
