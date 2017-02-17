@@ -11,6 +11,7 @@ using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class CitiesController : Controller
     {
         private readonly ICityService _cityService;

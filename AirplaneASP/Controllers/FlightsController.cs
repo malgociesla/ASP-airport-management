@@ -12,6 +12,7 @@ using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class FlightsController : Controller
     {
         private readonly IFlightService _flightService;

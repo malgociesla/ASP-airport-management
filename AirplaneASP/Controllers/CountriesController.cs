@@ -10,6 +10,7 @@ using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
+    [Authorize(Roles = "ADMIN")]
     public class CountriesController : Controller
     {
         private readonly ICountryService _countryService;

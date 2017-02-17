@@ -9,7 +9,7 @@ using AirplaneASP.Mapping;
 
 namespace AirplaneASP.Controllers
 {
-    [Authorize(Roles = "USER")]
+    [Authorize(Roles = "ADMIN")]
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;
