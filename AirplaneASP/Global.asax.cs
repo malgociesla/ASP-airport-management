@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using System.Web.Optimization;
 using System.Web.Routing;
 using System.Web;
+using System.Net;
 
 namespace AirplaneASP
 {
@@ -35,6 +36,12 @@ namespace AirplaneASP
         protected void Application_LogRequest(Object sender, EventArgs e)
         {
             _requestLogger.LogRequest(Request);
+        }
+
+        protected void Application_EndRequest(Object sender, EventArgs e)
+        {
+            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
+            Response.SuppressFormsAuthenticationRedirect = true;
         }
     }
 }
