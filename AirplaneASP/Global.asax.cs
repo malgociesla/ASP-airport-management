@@ -37,11 +37,5 @@ namespace AirplaneASP
         {
             _requestLogger.LogRequest(Request);
         }
-
-        protected void Application_EndRequest(Object sender, EventArgs e)
-        {
-            Response.StatusCode = (int)HttpStatusCode.Unauthorized;
-            Response.SuppressFormsAuthenticationRedirect = true;
-        }
     }
 }

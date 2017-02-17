@@ -6,10 +6,11 @@ using AirportService;
 using AirportService.DTO;
 using AirplaneASP.Models.Companies;
 using AirplaneASP.Mapping;
+using AirplaneASP.Authorization;
 
 namespace AirplaneASP.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [AuthorizeAccess(Roles = "ADMIN")]
     public class CompaniesController : Controller
     {
         private readonly ICompanyService _companyService;

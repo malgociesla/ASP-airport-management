@@ -9,10 +9,11 @@ using AirplaneASP.Models.Flights;
 using AirplaneASP.Models.Companies;
 using AirplaneASP.Models.Cities;
 using AirplaneASP.Mapping;
+using AirplaneASP.Authorization;
 
 namespace AirplaneASP.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [AuthorizeAccess(Roles = "ADMIN")]
     public class FlightsController : Controller
     {
         private readonly IFlightService _flightService;

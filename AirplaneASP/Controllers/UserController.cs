@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AirplaneASP.Authorization;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -8,7 +9,7 @@ namespace AirplaneASP.Controllers
 {
     public class UserController : Controller
     {
-        [Authorize(Roles = "USER")]
+        [AuthorizeAccess(Roles = "USER")]
         public ActionResult Index()
         {
             return View();

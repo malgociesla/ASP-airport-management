@@ -10,10 +10,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using System.Configuration;
+using AirplaneASP.Authorization;
 
 namespace AirplaneASP.Controllers
 {
-    [Authorize(Roles ="ADMIN")]
+    [AuthorizeAccess(Roles = "ADMIN")]
     public class SchedulesController : Controller
     {
         private readonly IScheduleService _scheduleService;

@@ -8,10 +8,11 @@ using AirportService.DTO;
 using AirplaneASP.Models.Cities;
 using AirplaneASP.Models.Countries;
 using AirplaneASP.Mapping;
+using AirplaneASP.Authorization;
 
 namespace AirplaneASP.Controllers
 {
-    [Authorize(Roles = "ADMIN")]
+    [AuthorizeAccess(Roles = "ADMIN")]
     public class CitiesController : Controller
     {
         private readonly ICityService _cityService;
