@@ -7,13 +7,29 @@
     @Html.ActionLink("Application name", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })
 </div>
 <div class="navbar-collapse collapse">
+    @if (!User.Identity.IsAuthenticated)
+    {
+        <ul class="nav navbar-nav">
+            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
+        </ul>
+    }
+    else if (User.IsInRole("ADMIN"))
+    {
     <ul class="nav navbar-nav">
         <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
-        <li class="@(ViewContext.RouteData.Values["Controller"].ToString()== "Schedules" ? "active" : "")">@Html.ActionLink("Schedules", "List", "Schedules")</li>
+        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Schedules" ? "active" : "")">@Html.ActionLink("Schedules", "List", "Schedules")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Flights" ? "active" : "")">@Html.ActionLink("Flights", "List", "Flights")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Cities" ? "active" : "")">@Html.ActionLink("Cities", "List", "Cities")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Countries" ? "active" : "")">@Html.ActionLink("Countries", "List", "Countries")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Companies" ? "active" : "")">@Html.ActionLink("Companies", "List", "Companies")</li>
     </ul>
+    }
+    else if (User.IsInRole("USER"))
+    {
+        <ul class="nav navbar-nav">
+            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
+            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "User" ? "active" : "")">@Html.ActionLink("User", "Index", "User")</li>
+        </ul>
+    }
     @Html.Partial("_LoginPartial")
 </div>
