@@ -13,6 +13,7 @@ using System.Configuration;
 
 namespace AirplaneASP.Controllers
 {
+    [Authorize(Roles ="ADMIN")]
     public class SchedulesController : Controller
     {
         private readonly IScheduleService _scheduleService;
@@ -63,7 +64,7 @@ namespace AirplaneASP.Controllers
             IPagedList schedulePage = new StaticPagedList<ScheduleDetailsModel>(subset, pageNumber, pageSize, totalItemsCount) as IPagedList;
             return schedulePage;
         }
-        //[HttpGet]
+
         public ActionResult List(int? page, DateTime? from, DateTime? to)
         {
             //pagination
