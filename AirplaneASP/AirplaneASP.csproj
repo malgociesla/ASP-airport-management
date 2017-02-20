@@ -342,6 +342,7 @@
     <Content Include="Views\Schedules\FilterSchedule.cshtml" />
     <Content Include="Views\Schedules\ImportSchedule.cshtml" />
     <Content Include="Views\User\Index.cshtml" />
+    <Content Include="Views\Shared\Info.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
