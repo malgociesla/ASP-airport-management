@@ -1,6 +1,38 @@
 ﻿@{
     ViewBag.Title = "User";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    //Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
+<script src="/Scripts/knockout-3.4.1.js" type="text/javascript"></script>
+@*<script src="/Scripts/knockout.mapping.js"></script>*@
+
 <h2>User page</h2>
+
+<p>Cities:</p>
+    <ul data-bind="foreach: Cities">
+        <li>
+            <span data-bind="text: Name"></span>
+        </li>
+    </ul>
+<button data-bind="click: Edit">Edit</button>
+
+<script type="text/javascript">
+        function City(data) {
+            this.ID = ko.observable(data.ID);
+            this.CountryID = ko.observable(data.CountryID);
+            this.Name = ko.observable(data.Name);
+        };
+
+        function CityListModel() {
+            var self = this;
+            self.Cities = ko.observableArray([]);
+            $.getJSON("/User/GetCities", function (data) {
+                var mappedCities = $.map(data, function (item) { return new City(item) });
+                self.Cities(mappedCities);
+                //ko.mapping.fromJSON(data, {}, self.Cities);
+            });
+        }
+
+        ko.applyBindings(new CityListModel());
+</script>
