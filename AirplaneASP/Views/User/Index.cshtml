@@ -6,18 +6,27 @@
 @*<script src="/Scripts/knockout.mapping.js"></script>*@
 
 <h2>User page</h2>
-
-<p>Cities:</p>
-    <ul data-bind="foreach: Cities">
+<div>
+    <p>Cities:</p>
+    <ul data-bind="foreach: chosenCities ">
         <li>
             <span data-bind="text: Name"></span>
         </li>
     </ul>
-
-<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Dialog test' }, dialogVisible: isOpen">foo dialog</div>
-<div>
     <button data-bind="click: open">Edit</button>
 </div>
+
+<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Dialog test' }, dialogVisible: isOpen">
+    <ul data-bind="foreach: Cities">
+    <li>
+        <input type="checkbox" data-bind="checked: isChecked" />
+        <span data-bind="text: Name"></span>       
+    </li>
+</ul>
+<button data-bind="click: save">OK</button></div>
+
+    
+
 
 
 <script type="text/javascript">
@@ -57,19 +66,29 @@
             this.ID = ko.observable(data.ID);
             this.CountryID = ko.observable(data.CountryID);
             this.Name = ko.observable(data.Name);
+            this.isChecked = ko.observable(false);
         };
 
         function CityListModel() {
             var self = this;
             self.Cities = ko.observableArray([]);
-            $.getJSON("/User/GetCities", function (data) {
-                var mappedCities = $.map(data, function (item) { return new City(item) });
-                self.Cities(mappedCities);
-                //ko.mapping.fromJSON(data, {}, self.Cities);
+            self.chosenCities = ko.computed(function () {
+                return ko.utils.arrayFilter(self.Cities(), function (city) { return city.isChecked() });
             });
+            self.load = function () {
+                $.getJSON("/User/GetCities", function (data) {
+                    var mappedCities = $.map(data, function (item) { return new City(item) });
+                    self.Cities(mappedCities);
+                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                });
+            }
             self.isOpen = ko.observable(false);
             self.open = function () {
+                self.load();
                 self.isOpen(true);
+            };
+            self.save = function () {
+                self.isOpen(false);
             };
         }
 
