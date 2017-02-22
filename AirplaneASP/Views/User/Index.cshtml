@@ -8,15 +8,15 @@
 <h2>User page</h2>
 <div>
     <p>Cities:</p>
-    <ul data-bind="foreach: chosenCities ">
-        <li>
+    <ul data-bind="foreach: Cities">
+        <li data-bind="visible: isChecked">
             <span data-bind="text: Name"></span>
         </li>
     </ul>
     <button data-bind="click: open">Edit</button>
 </div>
 
-<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Dialog test' }, dialogVisible: isOpen">
+<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities' }, dialogVisible: isOpen">
     <ul data-bind="foreach: Cities">
     <li>
         <input type="checkbox" data-bind="checked: isChecked" />
@@ -77,9 +77,24 @@
             });
             self.load = function () {
                 $.getJSON("/User/GetCities", function (data) {
-                    var mappedCities = $.map(data, function (item) { return new City(item) });
-                    self.Cities(mappedCities);
-                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                    //TODO load items if id's changed
+                    var mappedCities = $.map(data, function (item) {
+                        var old;
+                        var match = ko.utils.arrayFirst(self.Cities(), function(oldItem){
+                            old = oldItem;
+                            return oldItem.ID() == item.ID;
+                        });
+                        if (!match) {
+                            //return new City(item)
+                            self.Cities.push(new City(item));
+                        }
+                        else {
+                            old.Name = item.Name;
+                            old.CountryID = item.CountryID;
+                        }
+                    });
+                        //self.Cities(mappedCities);
+                        //ko.mapping.fromJSON(data, {}, self.Cities);
                 });
             }
             self.isOpen = ko.observable(false);
