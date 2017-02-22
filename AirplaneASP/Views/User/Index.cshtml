@@ -63,9 +63,9 @@
     };
 
         function City(data) {
-            this.ID = ko.observable(data.ID);
-            this.CountryID = ko.observable(data.CountryID);
-            this.Name = ko.observable(data.Name);
+            this.ID = data.ID;
+            this.CountryID = data.CountryID;
+            this.Name = data.Name;
             this.isChecked = ko.observable(false);
         };
 
@@ -82,7 +82,7 @@
                         var old;
                         var match = ko.utils.arrayFirst(self.Cities(), function(oldItem){
                             old = oldItem;
-                            return oldItem.ID() == item.ID;
+                            return oldItem.ID == item.ID;
                         });
                         if (!match) {
                             //return new City(item)
