@@ -1,9 +1,7 @@
 ﻿@{
     ViewBag.Title = "User";
-    //Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
-
-<script src="/Scripts/jquery-1.10.2.min.js" type="text/javascript"></script>
 <script src="/Scripts/knockout-3.4.1.js" type="text/javascript"></script>
 @*<script src="/Scripts/knockout.mapping.js"></script>*@
 
@@ -15,9 +13,46 @@
             <span data-bind="text: Name"></span>
         </li>
     </ul>
-<button data-bind="click: Edit">Edit</button>
+
+<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Dialog test' }, dialogVisible: isOpen">foo dialog</div>
+<div>
+    <button data-bind="click: open">Edit</button>
+</div>
+
 
 <script type="text/javascript">
+    //$( function() {
+    //    $( "#dialog" ).dialog();
+    //} );
+    ko.bindingHandlers.dialog = {
+        init: function (element, valueAccessor, allBindingsAccessor) {
+            var options = ko.utils.unwrapObservable(valueAccessor()) || {};
+            //do in a setTimeout, so the applyBindings doesn't bind twice from element being copied and moved to bottom
+            setTimeout(function () {
+                options.close = function () {
+                    allBindingsAccessor().dialogVisible(false);
+                };
+
+                $(element).dialog(options);
+            }, 0);
+
+            //handle disposal (not strictly necessary in this scenario)
+            ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
+                $(element).dialog("destroy");
+            });
+        },
+        update: function (element, valueAccessor, allBindingsAccessor) {
+            var shouldBeOpen = ko.utils.unwrapObservable(allBindingsAccessor().dialogVisible),
+                $el = $(element),
+                dialog = $el.data("uiDialog") || $el.data("dialog");
+
+            //don't call open/close before initilization
+            if (dialog) {
+                $el.dialog(shouldBeOpen ? "open" : "close");
+            }
+        }
+    };
+
         function City(data) {
             this.ID = ko.observable(data.ID);
             this.CountryID = ko.observable(data.CountryID);
@@ -32,6 +67,10 @@
                 self.Cities(mappedCities);
                 //ko.mapping.fromJSON(data, {}, self.Cities);
             });
+            self.isOpen = ko.observable(false);
+            self.open = function () {
+                self.isOpen(true);
+            };
         }
 
         ko.applyBindings(new CityListModel());
