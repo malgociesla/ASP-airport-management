@@ -11,8 +11,9 @@
 @*Cities section*@
 <div>
     <p>Cities:</p>
-    <ul data-bind="foreach: Cities">
-        <li data-bind="visible: isChecked">
+    <ul data-bind="foreach: chosenCities()">
+        @*<li data-bind="visible: isChecked">*@
+        <li>
             <span data-bind="text: Name"></span>
         </li>
     </ul>
@@ -51,7 +52,7 @@
                 <span>Comment</span>
             </th>
         </tr>
-        <tbody data-bind="foreach: Schedules">
+        <tbody data-bind="foreach: chosenSchedules()">
             <tr>
                 <td>
                     <span data-bind="text: From()"></span>
@@ -117,22 +118,21 @@
 
         function Schedule(data) {
             self = this;
-            this.ID = data.ID;
-            this.FlightID = data.FlightID;
-            this.FlightStateID = data.FlightStateID;
-            this.DepartureDT = data.DepartureDT;
-            this.ArrivalDT = data.ArrivalDT;
-            this.Comment = data.Comment;
-            this.CityDeparture = data.CityDeparture;
-            this.CountryDeparture = data.CountryDeparture;
-            this.CityArrival = data.CityArrival;
-            this.CountryArrival = data.CountryArrival;
-            this.Company = data.Company;
-
-            this.From = function () {
+            self.ID = data.ID;
+            self.FlightID = data.FlightID;
+            self.FlightStateID = data.FlightStateID;
+            self.DepartureDT = data.DepartureDT;
+            self.ArrivalDT = data.ArrivalDT;
+            self.Comment = data.Comment;
+            self.CityDeparture = data.CityDeparture;
+            self.CountryDeparture = data.CountryDeparture;
+            self.CityArrival = data.CityArrival;
+            self.CountryArrival = data.CountryArrival;
+            self.Company = data.Company;
+            self.From = function () {
                 return self.CityDeparture + " (" + self.CountryDeparture + ")";
             };
-            this.To = function () {
+            self.To = function () {
                 return self.CityArrival + " (" + self.CountryArrival + ")";
             };
         };
@@ -140,10 +140,19 @@
         function CityListModel() {
             var self = this;
             self.Cities = ko.observableArray([]);
-            this.Schedules = ko.observableArray([]);
-            //this.chosenCities = ko.computed(function () {
-            //    return ko.utils.arrayFilter(this.Cities(), function (city) { return city.isChecked() });
-            //});
+            self.chosenCities = function () {
+                return ko.utils.arrayFilter(self.Cities(), function (city) {
+                    return city.isChecked();
+                })
+            };
+            self.Schedules = ko.observableArray([]);
+            self.chosenSchedules = function () {
+                return ko.utils.arrayFilter(self.Schedules(), function (schedule) {
+                    return ko.utils.arrayFirst(self.chosenCities(), function(chosenCity) {
+                        return (chosenCity.Name == schedule.CityArrival) || (chosenCity.Name == schedule.CityDeparture);
+                    });
+                });
+            };
             self.load = function () {
                 //load Cities
                 $.getJSON("/User/GetCities", function (data) {
