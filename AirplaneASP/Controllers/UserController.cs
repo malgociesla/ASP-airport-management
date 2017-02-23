@@ -67,5 +67,13 @@ namespace AirplaneASP.Controllers
             var subset = _scheduleDetailsMaper.Map(scheduleDTOPage);
             return Json(subset, JsonRequestBehavior.AllowGet);
         }
+
+        [HttpGet]
+        public JsonResult GetListByCity(DateTime from, DateTime to, List<Guid> selectedCityIDs = null)
+        {
+            List<ScheduleDetailsDTO> scheduleDTO = _scheduleService.GetListByCity(from,to,selectedCityIDs);
+            var schedules = _scheduleDetailsMaper.Map(scheduleDTO);
+            return Json(schedules, JsonRequestBehavior.AllowGet);
+        }
     }
 }

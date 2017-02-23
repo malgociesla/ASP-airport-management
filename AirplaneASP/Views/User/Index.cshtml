@@ -30,6 +30,22 @@
         <button data-bind="click: save">OK</button>
     </div>
 </div>
+@*Filter date section*@
+<div class="form-group">
+    <label class="control-label col-md-2" for="FromDate">From date</label>
+    <div class="col-md-10">
+        <input data-bind="value: startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field From date must be a date." id="FromDate" name="FromDate" type="date"/>
+        <span class="field-validation-valid text-danger" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+    </div>
+</div>
+
+<div class="form-group">
+    <label class="control-label col-md-2" for="ToDate">To date</label>
+    <div class="col-md-10">
+        <input data-bind="value: endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field To date must be a date." id="ToDate" name="ToDate" type="date"/>
+        <span class="field-validation-valid text-danger" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+    </div>
+</div>
 @*Schedule section*@
     <table class="table">
         <tr>
@@ -139,6 +155,8 @@
 
         function CityListModel() {
             var self = this;
+            self.startDate = ko.observable();
+            self.endDate = ko.observable();
             self.Cities = ko.observableArray([]);
             self.chosenCities = function () {
                 return ko.utils.arrayFilter(self.Cities(), function (city) {
@@ -153,9 +171,9 @@
                     });
                 });
             };
-            self.load = function () {
+            self.loadCities = function () {
                 //load Cities
-                $.getJSON("/User/GetCities", function (data) {
+                $.getJSON("/ScheduleController/GetAll", function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
@@ -172,10 +190,11 @@
                             old.CountryID = item.CountryID;
                         }
                     });
-                        //self.Cities(mappedCities);
-                        //ko.mapping.fromJSON(data, {}, self.Cities);
+                    //self.Cities(mappedCities);
+                    //ko.mapping.fromJSON(data, {}, self.Cities);
                 });
-
+            };
+            self.loadSchedules = function () {
                 //load Schedule
                 $.getJSON("/User/GetSchedule", function (data) {
                     //TODO load items if id's changed
@@ -208,13 +227,50 @@
                     //self.Cities(mappedCities);
                     //ko.mapping.fromJSON(data, {}, self.Cities);
                 });
-            }
+            };
+            self.loadScheduless = function () {
+                //load Schedule
+                //WEB API url
+                //http://localhost:4993/api/Schedule/GetAll
+                $.getJSON("User/GetListByCity/" + self.startDate + "/" + self.endDate, function (data) {
+                    //TODO load items if id's changed
+                    var mappedCities = $.map(data, function (item) {
+                        var old;
+                        var match = ko.utils.arrayFirst(self.Schedules(), function (oldItem) {
+                            old = oldItem;
+                            return oldItem.ID == item.ID;
+                        });
+                        var adjustedItem = item;
+                        adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
+                        adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
+                        if (!match) {
+                            //return new Schedule(item)
+                            self.Schedules.push(new Schedule(adjustedItem));
+                        }
+                        else {
+                            old.FlightID = adjustedItem.FlightID;
+                            old.FlightStateID = adjustedItem.FlightStateID;
+                            old.DepartureDT = adjustedItem.DepartureDT;
+                            old.ArrivalDT = adjustedItem.ArrivalDT;
+                            old.Comment = adjustedItem.Comment;
+                            old.CityDeparture = adjustedItem.CityDeparture;
+                            old.CountryDeparture = adjustedItem.CountryDeparture;
+                            old.CityArrival = adjustedItem.CityArrival;
+                            old.CountryArrival = adjustedItem.CountryArrival;
+                            old.Company = adjustedItem.Company;
+                        }
+                    });
+                    //self.Cities(mappedCities);
+                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                });
+            };
             self.isOpen = ko.observable(false);
             self.open = function () {
-                self.load();
+                self.loadCities();
                 self.isOpen(true);
             };
             self.save = function () {
+                self.loadScheduless();
                 self.isOpen(false);
             };
             }

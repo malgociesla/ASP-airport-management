@@ -16,6 +16,12 @@ namespace AirportService
         private readonly IScheduleParser _scheduleParser;
         private readonly AirportContext _airplaneContext;
 
+        public ScheduleService()
+        {
+            _airplaneContext = new AirportContext();
+            _scheduleUtils = new ScheduleExcelUtils();
+            _scheduleParser = new ScheduleParser();
+        }
         public ScheduleService(IScheduleUtils scheduleUtils, IScheduleParser scheduleParser)
         {
             _airplaneContext = new AirportContext();
@@ -186,6 +192,64 @@ namespace AirportService
             {
                 throw new AirportServiceException("Couldn't remove schedule. Provided data was invalid.");
             }
+        }
+
+        public List<ScheduleDetailsDTO> GetListByCity(DateTime from, DateTime to, List<Guid> selectedCityIDs=null)
+        {
+            List<ScheduleDetailsDTO> schedules = null;
+            if (from != null && to != null)
+            {
+                if (selectedCityIDs != null)
+                {
+                    schedules = _airplaneContext.Schedules
+                    .Include(a => a.FlightState)
+                    .Where(s => selectedCityIDs.Contains(s.Flight.IdCityArrival) || selectedCityIDs.Contains(s.Flight.IdCityDeparture))
+                    .OrderBy(s => s.DepartureDT)
+                    .Select(s => new ScheduleDetailsDTO
+                    {
+                        ID = s.Id,
+                        FlightStateID = s.IdFlightState,
+                        FlightID = s.IdFlight,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment,
+                        CityDeparture = s.Flight.CityDeparture.Name,
+                        CountryDeparture = s.Flight.CityDeparture.Country.Name,
+                        CityArrival = s.Flight.CityArrival.Name,
+                        CountryArrival = s.Flight.CityArrival.Country.Name,
+                        Company = s.Flight.Company.Name
+                    })
+                    .Where(s =>
+                        ((s.ArrivalDT >= from && s.ArrivalDT <= to)
+                     && (s.DepartureDT >= from && s.DepartureDT <= to)))
+                    .ToList();
+                }
+                else
+                {
+                    schedules = _airplaneContext.Schedules
+                    .Include(a => a.FlightState)
+                    .OrderBy(s => s.DepartureDT)
+                    .Select(s => new ScheduleDetailsDTO
+                    {
+                        ID = s.Id,
+                        FlightStateID = s.IdFlightState,
+                        FlightID = s.IdFlight,
+                        DepartureDT = s.DepartureDT,
+                        ArrivalDT = s.ArrivalDT,
+                        Comment = s.Comment,
+                        CityDeparture = s.Flight.CityDeparture.Name,
+                        CountryDeparture = s.Flight.CityDeparture.Country.Name,
+                        CityArrival = s.Flight.CityArrival.Name,
+                        CountryArrival = s.Flight.CityArrival.Country.Name,
+                        Company = s.Flight.Company.Name
+                    })
+                    .Where(s =>
+                        ((s.ArrivalDT >= from && s.ArrivalDT <= to)
+                     && (s.DepartureDT >= from && s.DepartureDT <= to)))
+                    .ToList();
+                }
+            }
+            return schedules;
         }
 
         private int GetCountOfLandingPlanes(DateTime landingTime)
