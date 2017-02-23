@@ -6,6 +6,7 @@
 @*<script src="/Scripts/knockout.mapping.js"></script>*@
 
 <h2>User page</h2>
+@*Cities section*@
 <div>
     <p>Cities:</p>
     <ul data-bind="foreach: Cities">
@@ -14,20 +15,61 @@
         </li>
     </ul>
     <button data-bind="click: open">Edit</button>
+
+
+    <div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities' }, dialogVisible: isOpen">
+        <ul data-bind="foreach: Cities">
+            <li>
+                <input type="checkbox" data-bind="checked: isChecked" />
+                <span data-bind="text: Name"></span>
+            </li>
+        </ul>
+        <button data-bind="click: save">OK</button>
+    </div>
 </div>
-
-<div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities' }, dialogVisible: isOpen">
-    <ul data-bind="foreach: Cities">
-    <li>
-        <input type="checkbox" data-bind="checked: isChecked" />
-        <span data-bind="text: Name"></span>       
-    </li>
-</ul>
-<button data-bind="click: save">OK</button></div>
-
-    
-
-
+@*Schedule section*@
+    <table class="table">
+        <tr>
+            <th>
+                <span>From</span>
+            </th>
+            <th>
+                <span>To</span>
+            </th>
+            <th>
+                <span>Departure</span>
+            </th>
+            <th>
+                <span>Arrival</span>
+            </th>
+            <th>
+                <span>Company</span>
+            </th>
+            <th>
+                <span>Comment</span>
+            </th>
+        </tr>
+        <tr>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: From()"></span>
+            </td>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: To()"></span>
+            </td>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: DepartureDT"></span>
+            </td>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: ArrivalDT"></span>
+            </td>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: Company"></span>
+            </td>
+            <td data-bind="foreach: Schedules">
+                <span data-bind="text: Comment"></span>
+            </td>
+        </tr>
+    </table>
 
 <script type="text/javascript">
     //$( function() {
@@ -69,18 +111,42 @@
             this.isChecked = ko.observable(false);
         };
 
+        function Schedule(data) {
+            self = this;
+            this.ID = data.ID;
+            this.FlightID = data.FlightID;
+            this.FlightStateID = data.FlightStateID;
+            this.DepartureDT = data.DepartureDT;
+            this.ArrivalDT = data.ArrivalDT;
+            this.Comment = data.Comment;
+            this.CityDeparture = data.CityDeparture;
+            this.CountryDeparture = data.CountryDeparture;
+            this.CityArrival = data.CityArrival;
+            this.CountryArrival = data.CountryArrival;
+            this.Company = data.Company;
+
+            this.From = function () {
+                return self.CityDeparture + " (" + self.CountryDeparture + ")";
+            };
+            this.To = function () {
+                return self.CityArrival + " (" + self.CountryArrival + ")";
+            };
+        };
+
         function CityListModel() {
             var self = this;
             self.Cities = ko.observableArray([]);
-            self.chosenCities = ko.computed(function () {
-                return ko.utils.arrayFilter(self.Cities(), function (city) { return city.isChecked() });
-            });
+            this.Schedules = ko.observableArray([]);
+            //this.chosenCities = ko.computed(function () {
+            //    return ko.utils.arrayFilter(this.Cities(), function (city) { return city.isChecked() });
+            //});
             self.load = function () {
+                //load Cities
                 $.getJSON("/User/GetCities", function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
-                        var match = ko.utils.arrayFirst(self.Cities(), function(oldItem){
+                        var match = ko.utils.arrayFirst(self.Cities(), function (oldItem) {
                             old = oldItem;
                             return oldItem.ID == item.ID;
                         });
@@ -96,6 +162,36 @@
                         //self.Cities(mappedCities);
                         //ko.mapping.fromJSON(data, {}, self.Cities);
                 });
+
+                //load Schedule
+                $.getJSON("/User/GetSchedule", function (data) {
+                    //TODO load items if id's changed
+                    var mappedCities = $.map(data, function (item) {
+                        var old;
+                        var match = ko.utils.arrayFirst(self.Schedules(), function (oldItem) {
+                            old = oldItem;
+                            return oldItem.ID == item.ID;
+                        });
+                        if (!match) {
+                            //return new Schedule(item)
+                            self.Schedules.push(new Schedule(item));
+                        }
+                        else {
+                            old.FlightID = item.FlightID;
+                            old.FlightStateID = item.FlightStateID;
+                            old.DepartureDT = item.DepartureDT;
+                            old.ArrivalDT = item.ArrivalDT;
+                            old.Comment = item.Comment;
+                            old.CityDeparture = item.CityDeparture;
+                            old.CountryDeparture = item.CountryDeparture;
+                            old.CityArrival = item.CityArrival;
+                            old.CountryArrival = item.CountryArrival;
+                            old.Company = item.Company;
+                        }
+                    });
+                    //self.Cities(mappedCities);
+                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                });
             }
             self.isOpen = ko.observable(false);
             self.open = function () {
@@ -105,7 +201,7 @@
             self.save = function () {
                 self.isOpen(false);
             };
-        }
+            }
 
         ko.applyBindings(new CityListModel());
 </script>
