@@ -2,7 +2,9 @@
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
-<script src="/Scripts/knockout-3.4.1.js" type="text/javascript"></script>
+
+@*<script src="/Scripts/knockout-3.4.1.js" type="text/javascript"></script>
+<script src="/Scripts/moment.js" type="text/javascript"></script>*@
 @*<script src="/Scripts/knockout.mapping.js"></script>*@
 
 <h2>User page</h2>
@@ -49,27 +51,29 @@
                 <span>Comment</span>
             </th>
         </tr>
-        <tr>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: From()"></span>
-            </td>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: To()"></span>
-            </td>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: DepartureDT"></span>
-            </td>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: ArrivalDT"></span>
-            </td>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: Company"></span>
-            </td>
-            <td data-bind="foreach: Schedules">
-                <span data-bind="text: Comment"></span>
-            </td>
-        </tr>
-    </table>
+        <tbody data-bind="foreach: Schedules">
+            <tr>
+                <td>
+                    <span data-bind="text: From()"></span>
+                </td>
+                <td>
+                    <span data-bind="text: To()"></span>
+                </td>
+                <td>
+                    <span data-bind="text: DepartureDT"></span>
+                </td>
+                <td>
+                    <span data-bind="text: ArrivalDT"></span>
+                </td>
+                <td>
+                    <span data-bind="text: Company"></span>
+                </td>
+                <td>
+                    <span data-bind="text: Comment"></span>
+                </td>
+            </tr>
+            </tbody>
+</table>
 
 <script type="text/javascript">
     //$( function() {
@@ -172,21 +176,24 @@
                             old = oldItem;
                             return oldItem.ID == item.ID;
                         });
+                        var adjustedItem = item;
+                        adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
+                        adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
                         if (!match) {
                             //return new Schedule(item)
-                            self.Schedules.push(new Schedule(item));
+                            self.Schedules.push(new Schedule(adjustedItem));
                         }
                         else {
-                            old.FlightID = item.FlightID;
-                            old.FlightStateID = item.FlightStateID;
-                            old.DepartureDT = item.DepartureDT;
-                            old.ArrivalDT = item.ArrivalDT;
-                            old.Comment = item.Comment;
-                            old.CityDeparture = item.CityDeparture;
-                            old.CountryDeparture = item.CountryDeparture;
-                            old.CityArrival = item.CityArrival;
-                            old.CountryArrival = item.CountryArrival;
-                            old.Company = item.Company;
+                            old.FlightID = adjustedItem.FlightID;
+                            old.FlightStateID = adjustedItem.FlightStateID;
+                            old.DepartureDT = adjustedItem.DepartureDT;
+                            old.ArrivalDT = adjustedItem.ArrivalDT;
+                            old.Comment = adjustedItem.Comment;
+                            old.CityDeparture = adjustedItem.CityDeparture;
+                            old.CountryDeparture = adjustedItem.CountryDeparture;
+                            old.CityArrival = adjustedItem.CityArrival;
+                            old.CountryArrival = adjustedItem.CountryArrival;
+                            old.Company = adjustedItem.Company;
                         }
                     });
                     //self.Cities(mappedCities);
