@@ -16,46 +16,42 @@ namespace AirplaneASP.Controllers
     [AuthorizeAccess(Roles = "USER")]
     public class UserController : Controller
     {
-        private readonly ICityService _cityService;
-        private readonly ICountryService _countryService;
+        //private readonly ICityService _cityService;
+        //private readonly ICountryService _countryService;
        private readonly IScheduleService _scheduleService;
 
-        private readonly IMapper<CityDTO, CityModel> _cityMaper;
-        private readonly IMapper<CountryDTO, CountryModel> _countryMaper;
+        //private readonly IMapper<CityDTO, CityModel> _cityMaper;
+        //private readonly IMapper<CountryDTO, CountryModel> _countryMaper;
         private readonly IMapper<ScheduleDetailsDTO, ScheduleDetailsImportModel> _scheduleDetailsMaper;
 
-        public UserController(ICityService cityService,
-                                ICountryService countryService,
+        public UserController(
+                                 //ICityService cityService,
+                                //ICountryService countryService,
                                 IScheduleService scheduleService,
 
-                                IMapper<CityDTO, CityModel> cityMaper,
-                                IMapper<CountryDTO, CountryModel> countryMaper,
+                                //IMapper<CityDTO, CityModel> cityMaper,
+                                //IMapper<CountryDTO, CountryModel> countryMaper,
                                 IMapper<ScheduleDetailsDTO, ScheduleDetailsImportModel> scheduleDetailsMaper)
         {
-            this._cityService = cityService;
-            this._countryService = countryService;
+            //this._cityService = cityService;
+            //this._countryService = countryService;
             this._scheduleService = scheduleService;
-            this._cityMaper = cityMaper;
-            this._countryMaper = countryMaper;
+            //this._cityMaper = cityMaper;
+            //this._countryMaper = countryMaper;
             this._scheduleDetailsMaper = scheduleDetailsMaper;
         }
         public ActionResult Index()
         {
-            var cityDTOList = _cityService.GetAll();
-            var cityList = _cityMaper.Map(cityDTOList);
-
-            ViewBag.CityList = cityList;
-
             return View();
         }
 
-        [HttpGet]
-        public JsonResult GetCities()
-        {
-            var cityDTOList = _cityService.GetAll();
-            var cityList = _cityMaper.Map(cityDTOList);
-            return Json(cityList, JsonRequestBehavior.AllowGet);
-        }
+        //[HttpGet]
+        //public JsonResult GetCities()
+        //{
+        //    var cityDTOList = _cityService.GetAll();
+        //    var cityList = _cityMaper.Map(cityDTOList);
+        //    return Json(cityList, JsonRequestBehavior.AllowGet);
+        //}
 
         [HttpGet]
         public JsonResult GetSchedule()

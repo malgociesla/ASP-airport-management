@@ -173,7 +173,7 @@
             };
             self.loadCities = function () {
                 //load Cities
-                $.getJSON("/ScheduleController/GetAll", function (data) {
+                $.getJSON("http://localhost:4993/api/City/CityDTOs", function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
@@ -181,13 +181,14 @@
                             old = oldItem;
                             return oldItem.ID == item.ID;
                         });
+                        var adjustedItem = item;
                         if (!match) {
                             //return new City(item)
-                            self.Cities.push(new City(item));
+                            self.Cities.push(new City(adjustedItem));
                         }
                         else {
-                            old.Name = item.Name;
-                            old.CountryID = item.CountryID;
+                            old.Name = adjustedItem.Name;
+                            old.CountryID = adjustedItem.CountryID;
                         }
                     });
                     //self.Cities(mappedCities);
@@ -196,7 +197,9 @@
             };
             self.loadSchedules = function () {
                 //load Schedule
-                $.getJSON("/User/GetSchedule", function (data) {
+                //MVC Controller: /User/GetSchedule
+                //http://localhost:4993/api/Schedule/ScheduleDetailsDTOs
+                $.getJSON("http://localhost:4993/api/Schedule/ScheduleDetailsDTOs", function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
@@ -205,44 +208,8 @@
                             return oldItem.ID == item.ID;
                         });
                         var adjustedItem = item;
-                        adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
-                        adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
-                        if (!match) {
-                            //return new Schedule(item)
-                            self.Schedules.push(new Schedule(adjustedItem));
-                        }
-                        else {
-                            old.FlightID = adjustedItem.FlightID;
-                            old.FlightStateID = adjustedItem.FlightStateID;
-                            old.DepartureDT = adjustedItem.DepartureDT;
-                            old.ArrivalDT = adjustedItem.ArrivalDT;
-                            old.Comment = adjustedItem.Comment;
-                            old.CityDeparture = adjustedItem.CityDeparture;
-                            old.CountryDeparture = adjustedItem.CountryDeparture;
-                            old.CityArrival = adjustedItem.CityArrival;
-                            old.CountryArrival = adjustedItem.CountryArrival;
-                            old.Company = adjustedItem.Company;
-                        }
-                    });
-                    //self.Cities(mappedCities);
-                    //ko.mapping.fromJSON(data, {}, self.Cities);
-                });
-            };
-            self.loadScheduless = function () {
-                //load Schedule
-                //WEB API url
-                //http://localhost:4993/api/Schedule/GetAll
-                $.getJSON("User/GetListByCity/" + self.startDate + "/" + self.endDate, function (data) {
-                    //TODO load items if id's changed
-                    var mappedCities = $.map(data, function (item) {
-                        var old;
-                        var match = ko.utils.arrayFirst(self.Schedules(), function (oldItem) {
-                            old = oldItem;
-                            return oldItem.ID == item.ID;
-                        });
-                        var adjustedItem = item;
-                        adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
-                        adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
+                        //adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
+                        //adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
                         if (!match) {
                             //return new Schedule(item)
                             self.Schedules.push(new Schedule(adjustedItem));
@@ -270,7 +237,7 @@
                 self.isOpen(true);
             };
             self.save = function () {
-                self.loadScheduless();
+                self.loadSchedules();
                 self.isOpen(false);
             };
             }
