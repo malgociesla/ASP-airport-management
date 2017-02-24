@@ -5,6 +5,8 @@ using System.Net.Http;
 using System.Web.Http;
 using Microsoft.Owin.Security.OAuth;
 using Newtonsoft.Json.Serialization;
+using System.Net.Http.Headers;
+using System.Net.Http.Formatting;
 
 namespace AirplaneWebApi
 {
@@ -25,6 +27,13 @@ namespace AirplaneWebApi
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+
+            GlobalConfiguration.Configuration.Formatters.JsonFormatter.MediaTypeMappings
+                              .Add(new RequestHeaderMapping("Accept",
+                              "text/html",
+                              StringComparison.InvariantCultureIgnoreCase,
+                              true,
+                              "application/json"));
         }
     }
 }

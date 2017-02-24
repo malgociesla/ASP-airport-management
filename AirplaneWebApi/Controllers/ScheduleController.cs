@@ -9,6 +9,7 @@ using System.Web.Http;
 
 namespace AirplaneWebApi.Controllers
 {
+    [RoutePrefix("api/schedules")]
     public class ScheduleController : ApiController
     {
         private readonly IScheduleService _scheduleService;
@@ -18,18 +19,19 @@ namespace AirplaneWebApi.Controllers
             this._scheduleService = new ScheduleService();
         }
 
-        public IEnumerable<ScheduleDetailsDTO> GetSchesules()
-        {
-            int totalItemsCount = 0;
-            //List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
-            List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(1, 12, out totalItemsCount);
+        //public IEnumerable<ScheduleDetailsDTO> GetSchesules()
+        //{
+        //    int totalItemsCount = 0;
+        //    //List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(pageNumber, pageSize, out totalItemsCount, from, to);
+        //    List<ScheduleDetailsDTO> scheduleDTOPage = _scheduleService.GetList(1, 12, out totalItemsCount);
 
-            return scheduleDTOPage;
-        }
+        //    return scheduleDTOPage;
+        //}
 
-        public IEnumerable<ScheduleDetailsDTO> GetListByCity(DateTime from, DateTime to, List<Guid> selectedCityIDs = null)
+        public IEnumerable<ScheduleDetailsDTO> GetListByCity(DateTime startDate, DateTime endDate, [FromUri]List<Guid> guid)
+        //public IEnumerable<ScheduleDetailsDTO> GetListByCity(DateTime startDate, DateTime endDate, List<Guid> selectedCityIDs = null)
         {
-            List<ScheduleDetailsDTO> scheduleDTO = _scheduleService.GetListByCity(from, to, selectedCityIDs);
+            List<ScheduleDetailsDTO> scheduleDTO = _scheduleService.GetListByCity(startDate, endDate, guid);
             return scheduleDTO;
         }
     }

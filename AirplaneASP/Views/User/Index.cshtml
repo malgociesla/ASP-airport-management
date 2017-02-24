@@ -125,6 +125,8 @@
         }
     };
 
+    var WebApiUrl = "http://localhost:4993/api";
+
         function City(data) {
             this.ID = data.ID;
             this.CountryID = data.CountryID;
@@ -155,8 +157,8 @@
 
         function CityListModel() {
             var self = this;
-            self.startDate = ko.observable();
-            self.endDate = ko.observable();
+            self.startDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
+            self.endDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
             self.Cities = ko.observableArray([]);
             self.chosenCities = function () {
                 return ko.utils.arrayFilter(self.Cities(), function (city) {
@@ -173,7 +175,7 @@
             };
             self.loadCities = function () {
                 //load Cities
-                $.getJSON("http://localhost:4993/api/City/CityDTOs", function (data) {
+                $.getJSON(WebApiUrl + "/City/CityDTOs", function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
@@ -198,8 +200,10 @@
             self.loadSchedules = function () {
                 //load Schedule
                 //MVC Controller: /User/GetSchedule
-                //http://localhost:4993/api/Schedule/ScheduleDetailsDTOs
-                $.getJSON("http://localhost:4993/api/Schedule/ScheduleDetailsDTOs", function (data) {
+                var startDateString = moment(self.startDate()).toJSON();
+                var endDateString = moment(self.endDate()).toJSON();
+                var selectedCityIDsString = self.chosenCities().map(function (city) { return city.ID; });
+                $.getJSON(WebApiUrl + "/Schedule/schedules", { startdate: startDateString, enddate: endDateString, guid: selectedCityIDsString }, function (data) {
                     //TODO load items if id's changed
                     var mappedCities = $.map(data, function (item) {
                         var old;
@@ -208,8 +212,6 @@
                             return oldItem.ID == item.ID;
                         });
                         var adjustedItem = item;
-                        //adjustedItem.DepartureDT = moment(item.DepartureDT).format('DD/MM/YYYY hh:mm A');
-                        //adjustedItem.ArrivalDT = moment(item.ArrivalDT).format('DD/MM/YYYY hh:mm A');
                         if (!match) {
                             //return new Schedule(item)
                             self.Schedules.push(new Schedule(adjustedItem));
