@@ -20,6 +20,9 @@ namespace AirplaneASP
             bundles.Add(new ScriptBundle("~/bundles/knockout").Include(
                         "~/Scripts/knockout-{version}.js"));
 
+            //bundles.Add(new ScriptBundle("~/bundles/knockoutmapping").Include(
+            //"~/Scripts/knockout.mapping.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                         "~/Scripts/moment.min.js"));
 

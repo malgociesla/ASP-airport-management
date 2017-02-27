@@ -3,10 +3,6 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-@*<script src="/Scripts/knockout-3.4.1.js" type="text/javascript"></script>
-<script src="/Scripts/moment.js" type="text/javascript"></script>*@
-@*<script src="/Scripts/knockout.mapping.js"></script>*@
-
 <h2>User page</h2>
 @*Cities section*@
 <div>
@@ -18,8 +14,7 @@
         </li>
     </ul>
     <button data-bind="click: open">Edit</button>
-
-
+@*Cities dialog*@
     <div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities' }, dialogVisible: isOpen">
         <ul data-bind="foreach: Cities">
             <li>
@@ -31,65 +26,71 @@
     </div>
 </div>
 @*Filter date section*@
-<div class="form-group">
-    <label class="control-label col-md-2" for="FromDate">From date</label>
-    <div class="col-md-10">
-        <input data-bind="value: startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field From date must be a date." id="FromDate" name="FromDate" type="date"/>
-        <span class="field-validation-valid text-danger" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+<div class="form-inline">
+    <div class="form-group">
+        <label class="control-label col-md-2" for="FromDate">From date</label>
+        <div class="col-md-10">
+            <input data-bind="value: startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field From date must be a date." id="FromDate" name="FromDate" type="date" />
+            <span class="field-validation-valid text-danger" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+        </div>
     </div>
-</div>
-
-<div class="form-group">
-    <label class="control-label col-md-2" for="ToDate">To date</label>
-    <div class="col-md-10">
-        <input data-bind="value: endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field To date must be a date." id="ToDate" name="ToDate" type="date"/>
-        <span class="field-validation-valid text-danger" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+    <div class="form-group">
+        <label class="control-label col-md-2" for="ToDate">To date</label>
+        <div class="col-md-10">
+            <input data-bind="value: endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field To date must be a date." id="ToDate" name="ToDate" type="date" />
+            <span class="field-validation-valid text-danger" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+        </div>
+    </div>
+    <div class="form-group">
+        <div class="col-md-offset-2 col-md-10">
+            <button data-bind="click: save">OK</button>
+        </div>
     </div>
 </div>
 @*Schedule section*@
-    <table class="table">
+<table class="table">
+    <tr>
+        <th>
+            <span>From</span>
+        </th>
+        <th>
+            <span>To</span>
+        </th>
+        <th>
+            <span>Departure</span>
+        </th>
+        <th>
+            <span>Arrival</span>
+        </th>
+        <th>
+            <span>Company</span>
+        </th>
+        <th>
+            <span>Comment</span>
+        </th>
+    </tr>
+    <tbody data-bind="foreach: chosenSchedules()">
         <tr>
-            <th>
-                <span>From</span>
-            </th>
-            <th>
-                <span>To</span>
-            </th>
-            <th>
-                <span>Departure</span>
-            </th>
-            <th>
-                <span>Arrival</span>
-            </th>
-            <th>
-                <span>Company</span>
-            </th>
-            <th>
-                <span>Comment</span>
-            </th>
+            <td>
+                <span data-bind="text: From()"></span>
+            </td>
+            <td>
+                <span data-bind="text: To()"></span>
+            </td>
+            <td>
+                <span data-bind="text: DepartureDT"></span>
+            </td>
+            <td>
+                <span data-bind="text: ArrivalDT"></span>
+            </td>
+            <td>
+                <span data-bind="text: Company"></span>
+            </td>
+            <td>
+                <span data-bind="text: Comment"></span>
+            </td>
         </tr>
-        <tbody data-bind="foreach: chosenSchedules()">
-            <tr>
-                <td>
-                    <span data-bind="text: From()"></span>
-                </td>
-                <td>
-                    <span data-bind="text: To()"></span>
-                </td>
-                <td>
-                    <span data-bind="text: DepartureDT"></span>
-                </td>
-                <td>
-                    <span data-bind="text: ArrivalDT"></span>
-                </td>
-                <td>
-                    <span data-bind="text: Company"></span>
-                </td>
-                <td>
-                    <span data-bind="text: Comment"></span>
-                </td>
-            </tr>
-            </tbody>
+    </tbody>
 </table>
 
 <script type="text/javascript">
@@ -127,122 +128,96 @@
 
     var WebApiUrl = "http://localhost:4993/api";
 
-        function City(data) {
-            this.ID = data.ID;
-            this.CountryID = data.CountryID;
-            this.Name = data.Name;
-            this.isChecked = ko.observable(false);
-        };
+    function City(data) {
+        this.ID = data.ID;
+        this.CountryID = data.CountryID;
+        this.Name = data.Name;
+        this.isChecked = ko.observable(false);
+    };
 
-        function Schedule(data) {
-            self = this;
-            self.ID = data.ID;
-            self.FlightID = data.FlightID;
-            self.FlightStateID = data.FlightStateID;
-            self.DepartureDT = data.DepartureDT;
-            self.ArrivalDT = data.ArrivalDT;
-            self.Comment = data.Comment;
-            self.CityDeparture = data.CityDeparture;
-            self.CountryDeparture = data.CountryDeparture;
-            self.CityArrival = data.CityArrival;
-            self.CountryArrival = data.CountryArrival;
-            self.Company = data.Company;
-            self.From = function () {
-                return self.CityDeparture + " (" + self.CountryDeparture + ")";
-            };
-            self.To = function () {
-                return self.CityArrival + " (" + self.CountryArrival + ")";
-            };
+    function Schedule(data) {
+        self = this;
+        self.ID = data.ID;
+        self.FlightID = data.FlightID;
+        self.FlightStateID = data.FlightStateID;
+        self.DepartureDT = data.DepartureDT;
+        self.ArrivalDT = data.ArrivalDT;
+        self.Comment = data.Comment;
+        self.CityDeparture = data.CityDeparture;
+        self.CountryDeparture = data.CountryDeparture;
+        self.CityArrival = data.CityArrival;
+        self.CountryArrival = data.CountryArrival;
+        self.Company = data.Company;
+        self.From = function () {
+            return self.CityDeparture + " (" + self.CountryDeparture + ")";
         };
+        self.To = function () {
+            return self.CityArrival + " (" + self.CountryArrival + ")";
+        };
+    };
 
-        function CityListModel() {
-            var self = this;
-            self.startDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
-            self.endDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
-            self.Cities = ko.observableArray([]);
-            self.chosenCities = function () {
-                return ko.utils.arrayFilter(self.Cities(), function (city) {
-                    return city.isChecked();
-                })
-            };
-            self.Schedules = ko.observableArray([]);
-            self.chosenSchedules = function () {
-                return ko.utils.arrayFilter(self.Schedules(), function (schedule) {
-                    return ko.utils.arrayFirst(self.chosenCities(), function(chosenCity) {
-                        return (chosenCity.Name == schedule.CityArrival) || (chosenCity.Name == schedule.CityDeparture);
-                    });
+    function CityListModel() {
+        var self = this;
+        self.startDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
+        self.endDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
+        self.Cities = ko.observableArray([]);
+        self.chosenCities = function () {
+            return ko.utils.arrayFilter(self.Cities(), function (city) {
+                return city.isChecked();
+            })
+        };
+        self.Schedules = ko.observableArray([]);
+        self.chosenSchedules = function () {
+            return ko.utils.arrayFilter(self.Schedules(), function (schedule) {
+                return ko.utils.arrayFirst(self.chosenCities(), function (chosenCity) {
+                    return (chosenCity.Name == schedule.CityArrival) || (chosenCity.Name == schedule.CityDeparture);
                 });
-            };
-            self.loadCities = function () {
-                //load Cities
-                $.getJSON(WebApiUrl + "/City/CityDTOs", function (data) {
-                    //TODO load items if id's changed
-                    var mappedCities = $.map(data, function (item) {
-                        var old;
-                        var match = ko.utils.arrayFirst(self.Cities(), function (oldItem) {
-                            old = oldItem;
+            });
+        };
+        self.loadCities = function () {
+            $.getJSON(WebApiUrl + "/City/CityDTOs", function (data) {
+                var mappedCities = $.map(data, function (item) {
+                    var city = new City(item);
+                    if (self.chosenCities().length > 0) {
+                        var match = ko.utils.arrayFirst(self.chosenCities(), function (oldItem) {
                             return oldItem.ID == item.ID;
                         });
-                        var adjustedItem = item;
-                        if (!match) {
-                            //return new City(item)
-                            self.Cities.push(new City(adjustedItem));
+                        if(match) {
+                            city.isChecked = ko.observable(true);
                         }
-                        else {
-                            old.Name = adjustedItem.Name;
-                            old.CountryID = adjustedItem.CountryID;
-                        }
-                    });
-                    //self.Cities(mappedCities);
-                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                    }
+                    return city;
                 });
-            };
-            self.loadSchedules = function () {
-                //load Schedule
-                //MVC Controller: /User/GetSchedule
-                var startDateString = moment(self.startDate()).toJSON();
-                var endDateString = moment(self.endDate()).toJSON();
-                var selectedCityIDsString = self.chosenCities().map(function (city) { return city.ID; });
-                $.getJSON(WebApiUrl + "/Schedule/schedules", { startdate: startDateString, enddate: endDateString, guid: selectedCityIDsString }, function (data) {
-                    //TODO load items if id's changed
-                    var mappedCities = $.map(data, function (item) {
-                        var old;
-                        var match = ko.utils.arrayFirst(self.Schedules(), function (oldItem) {
-                            old = oldItem;
-                            return oldItem.ID == item.ID;
-                        });
-                        var adjustedItem = item;
-                        if (!match) {
-                            //return new Schedule(item)
-                            self.Schedules.push(new Schedule(adjustedItem));
-                        }
-                        else {
-                            old.FlightID = adjustedItem.FlightID;
-                            old.FlightStateID = adjustedItem.FlightStateID;
-                            old.DepartureDT = adjustedItem.DepartureDT;
-                            old.ArrivalDT = adjustedItem.ArrivalDT;
-                            old.Comment = adjustedItem.Comment;
-                            old.CityDeparture = adjustedItem.CityDeparture;
-                            old.CountryDeparture = adjustedItem.CountryDeparture;
-                            old.CityArrival = adjustedItem.CityArrival;
-                            old.CountryArrival = adjustedItem.CountryArrival;
-                            old.Company = adjustedItem.Company;
-                        }
-                    });
-                    //self.Cities(mappedCities);
-                    //ko.mapping.fromJSON(data, {}, self.Cities);
+                self.Cities(mappedCities);
+            });
+        };
+        self.loadSchedules = function () {
+            var startDateString = moment(self.startDate()).toJSON();
+            var endDateString = moment(self.endDate()).toJSON();
+            var selectedCityIDsString = self.chosenCities().map(function (city) { return city.ID; });
+            $.getJSON(WebApiUrl +
+                        "/Schedule/schedules", {
+                              startdate: startDateString,
+                              enddate: endDateString,
+                              guid: selectedCityIDsString
+                          },
+                        function (data) {
+                var mappedCities = $.map(data, function (item) {
+                    return new Schedule(item);
                 });
-            };
-            self.isOpen = ko.observable(false);
-            self.open = function () {
-                self.loadCities();
-                self.isOpen(true);
-            };
-            self.save = function () {
-                self.loadSchedules();
-                self.isOpen(false);
-            };
-            }
+                self.Schedules(mappedCities);
+            });
+        };
+        self.isOpen = ko.observable(false);
+        self.open = function () {
+            self.loadCities();
+            self.isOpen(true);
+        };
+        self.save = function () {
+            self.loadSchedules();
+            self.isOpen(false);
+        };
+    }
 
-        ko.applyBindings(new CityListModel());
+    ko.applyBindings(new CityListModel());
 </script>
