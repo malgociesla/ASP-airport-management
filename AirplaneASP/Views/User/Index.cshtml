@@ -158,8 +158,8 @@
 
     function CityListModel() {
         var self = this;
-        self.startDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
-        self.endDate = ko.observable(moment(Date.now()).format("MM/DD/YYYY"));
+        self.startDate = ko.observable(moment(Date.now()).format("L"));
+        self.endDate = ko.observable(moment(Date.now()).add(24, 'hours').format("L"));
         self.Cities = ko.observableArray([]);
         self.chosenCities = function () {
             return ko.utils.arrayFilter(self.Cities(), function (city) {
