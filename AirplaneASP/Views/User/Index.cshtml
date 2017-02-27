@@ -78,10 +78,10 @@
                 <span data-bind="text: To()"></span>
             </td>
             <td>
-                <span data-bind="text: DepartureDT"></span>
+                <span data-bind="text: moment(DepartureDT).format('L LTS')"></span>
             </td>
             <td>
-                <span data-bind="text: ArrivalDT"></span>
+                <span data-bind="text: moment(ArrivalDT).format('L LTS')"></span>
             </td>
             <td>
                 <span data-bind="text: Company"></span>
