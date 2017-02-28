@@ -10,16 +10,16 @@
     <ul data-bind="foreach: chosenCities()">
         @*<li data-bind="visible: isChecked">*@
         <li>
-            <span data-bind="text: Name"></span>
+            <span data-bind="text: name"></span>
         </li>
     </ul>
     <button data-bind="click: open">Edit</button>
 @*Cities dialog*@
     <div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities' }, dialogVisible: isOpen">
-        <ul data-bind="foreach: Cities">
+        <ul data-bind="foreach: cities">
             <li>
                 <input type="checkbox" data-bind="checked: isChecked" />
-                <span data-bind="text: Name"></span>
+                <span data-bind="text: name"></span>
             </li>
         </ul>
         <button data-bind="click: save">OK</button>
@@ -72,22 +72,22 @@
     <tbody data-bind="foreach: chosenSchedules()">
         <tr>
             <td>
-                <span data-bind="text: From()"></span>
+                <span data-bind="text: from()"></span>
             </td>
             <td>
-                <span data-bind="text: To()"></span>
+                <span data-bind="text: to()"></span>
             </td>
             <td>
-                <span data-bind="text: moment(DepartureDT).format('L LTS')"></span>
+                <span data-bind="text: moment(departureDT).format('L LTS')"></span>
             </td>
             <td>
-                <span data-bind="text: moment(ArrivalDT).format('L LTS')"></span>
+                <span data-bind="text: moment(arrivalDT).format('L LTS')"></span>
             </td>
             <td>
-                <span data-bind="text: Company"></span>
+                <span data-bind="text: company"></span>
             </td>
             <td>
-                <span data-bind="text: Comment"></span>
+                <span data-bind="text: comment"></span>
             </td>
         </tr>
     </tbody>
