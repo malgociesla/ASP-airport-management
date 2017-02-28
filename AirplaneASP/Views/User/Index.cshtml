@@ -78,10 +78,10 @@
                 <span data-bind="text: to()"></span>
             </td>
             <td>
-                <span data-bind="text: moment(departureDT).format('L LTS')"></span>
+                <span data-bind="text: departureDT"></span>
             </td>
             <td>
-                <span data-bind="text: moment(arrivalDT).format('L LTS')"></span>
+                <span data-bind="text: arrivalDT"></span>
             </td>
             <td>
                 <span data-bind="text: company"></span>
@@ -92,4 +92,6 @@
         </tr>
     </tbody>
 </table>
+@Scripts.Render("~/bundles/date-formatting")
+@Scripts.Render("~/bundles/dialog-handler")
 @Scripts.Render("~/bundles/timetable")

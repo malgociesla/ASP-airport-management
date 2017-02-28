@@ -1,33 +1,3 @@
-
-ko.bindingHandlers.dialog = {
-    init: function (element, valueAccessor, allBindingsAccessor) {
-        var options = ko.utils.unwrapObservable(valueAccessor()) || {};
-        //do in a setTimeout, so the applyBindings doesn't bind twice from element being copied and moved to bottom
-        setTimeout(function () {
-            options.close = function () {
-                allBindingsAccessor().dialogVisible(false);
-            };
-
-            $(element).dialog(options);
-        }, 0);
-
-        //handle disposal (not strictly necessary in this scenario)
-        ko.utils.domNodeDisposal.addDisposeCallback(element, function () {
-            $(element).dialog("destroy");
-        });
-    },
-    update: function (element, valueAccessor, allBindingsAccessor) {
-        var shouldBeOpen = ko.utils.unwrapObservable(allBindingsAccessor().dialogVisible),
-            $el = $(element),
-            dialog = $el.data("uiDialog") || $el.data("dialog");
-
-        //don't call open/close before initilization
-        if (dialog) {
-            $el.dialog(shouldBeOpen ? "open" : "close");
-        }
-    }
-};
-
 var webApiUrl = "http://localhost:4993/api";
 
 function City(data) {
@@ -43,8 +13,8 @@ function Schedule(data) {
     self.id = data.ID;
     self.flightID = data.FlightID;
     self.flightStateID = data.FlightStateID;
-    self.departureDT = data.DepartureDT;
-    self.arrivalDT = data.ArrivalDT;
+    self.departureDT = formatDateTime(data.DepartureDT);
+    self.arrivalDT = formatDateTime(data.ArrivalDT);
     self.comment = data.Comment;
     self.cityDeparture = data.CityDeparture;
     self.countryDeparture = data.CountryDeparture;
@@ -61,8 +31,8 @@ function Schedule(data) {
 
 function CityListModel() {
     var self = this;
-    self.startDate = ko.observable(moment(Date.now()).format("L"));
-    self.endDate = ko.observable(moment(Date.now()).add(24, 'hours').format("L"));
+    self.startDate = ko.observable(getToday());
+    self.endDate = ko.observable(getTomorrow(getToday()));
     self.cities = ko.observableArray([]);
     self.chosenCities = function () {
         return ko.utils.arrayFilter(self.cities(), function (city) {
@@ -95,9 +65,11 @@ function CityListModel() {
         });
     };
     self.loadSchedules = function () {
-        var startDateString = moment(self.startDate()).toJSON();
-        var endDateString = moment(self.endDate()).toJSON();
-        var selectedCityIDsString = self.chosenCities().map(function (city) { return city.id; });
+        var startDateString = toJSONDate(self.startDate());
+        var endDateString = toJSONDate(self.endDate());
+        var selectedCityIDsString = self.chosenCities().map(function (city) {
+            return city.id;
+        });
         $.getJSON(webApiUrl +
                     "/Schedule/schedules", {
                         startdate: startDateString,

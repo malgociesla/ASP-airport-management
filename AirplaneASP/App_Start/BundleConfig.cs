@@ -26,8 +26,14 @@ namespace AirplaneASP
             bundles.Add(new ScriptBundle("~/bundles/moment").Include(
                         "~/Scripts/moment.min.js"));
 
+            bundles.Add(new ScriptBundle("~/bundles/date-formatting").Include(
+                        "~/Scripts/date-formatting.js"));
+
+            bundles.Add(new ScriptBundle("~/bundles/dialog-handler").Include(
+            "~/Scripts/dialog-handler.js"));
+
             bundles.Add(new ScriptBundle("~/bundles/timetable").Include(
-            "~/Scripts/timetable.js"));
+                        "~/Scripts/timetable.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're
             // ready for production, use the build tool at http://modernizr.com to pick only the tests you need.
