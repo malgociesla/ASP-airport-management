@@ -13,12 +13,12 @@ namespace AirplaneASP
 {
     public class EmailService : IIdentityMessageService
     {
-        public Task SendAsync(IdentityMessage message)
+        public async Task SendAsync(IdentityMessage message)
         {
-            return configEmailSender(message);
+            await configEmailSender(message);
         }
 
-        private Task configEmailSender(IdentityMessage message)
+        private async Task configEmailSender(IdentityMessage message)
         {
             // Credentials:
             var mailAddressFrom = ConfigurationManager.AppSettings["mailAddress"];
@@ -48,7 +48,7 @@ namespace AirplaneASP
             mail.Body = message.Body;
 
             // Send:
-            return client.SendMailAsync(mail);
+            await client.SendMailAsync(mail);
         }
     }
 

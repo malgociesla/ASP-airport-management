@@ -1,0 +1,170 @@
+[2/28/2017 12:30:39 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:39 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:41 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:42 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:42 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:42 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:56 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:56 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:30:57 PM]	http://localhost:2016/Shared/Error	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:38:55 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:38:56 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:38:59 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:38:59 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:39:21 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:39:21 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:41:28 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:41:29 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:55:49 PM]	http://localhost:2016/Shared/Error	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:55:51 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:55:51 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:55:51 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:13 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:13 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:15 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:16 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:38 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:39 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:58 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:58 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 12:59:59 PM]	http://localhost:2016/Shared/Error	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:38 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:39 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:40 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:41 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:51 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:51 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:21:51 PM]	http://localhost:2016/Shared/Error	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:39:47 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:39:48 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:39:50 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:39:51 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:40:40 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:40:40 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:41:24 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:41:24 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:41:30 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:41:30 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:03 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:04 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:12 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:12 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:42 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:43:43 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:44:36 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 1:44:36 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:19:34 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:19:34 PM]	http://localhost:2016/Account/ConfirmEmail?userId=68c57e1a-841e-4558-9f21-eeca47de44be&code=2zFS8ZwKGAdX8SCRSFrWahwgBav%2BQHByDgBM1WIIN1EeZQ%2BBIhE0L7q0uh%2BYqvuTQBbXaB5G9oi6%2FoDlSKvXQyV51Hx379y%2BMN1VZ9%2FNlCfQdS%2BXFgssNViZmDsBg6t%2FdWaEBuYEZtmm7qs0vPnuu2nYJVZa4TorKDALitIOOJ%2BnA%2BBKrcHiJXxzusDgXPHe	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:19:44 PM]	http://localhost:2016/Account/ConfirmEmail?userId=68c57e1a-841e-4558-9f21-eeca47de44be&code=2zFS8ZwKGAdX8SCRSFrWahwgBav%2BQHByDgBM1WIIN1EeZQ%2BBIhE0L7q0uh%2BYqvuTQBbXaB5G9oi6%2FoDlSKvXQyV51Hx379y%2BMN1VZ9%2FNlCfQdS%2BXFgssNViZmDsBg6t%2FdWaEBuYEZtmm7qs0vPnuu2nYJVZa4TorKDALitIOOJ%2BnA%2BBKrcHiJXxzusDgXPHe	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:19:45 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:16 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:17 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:18 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:18 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:21 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:23:22 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:40 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:41 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:42 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:42 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:55 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:24:56 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:06 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:07 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:08 PM]	http://localhost:2016/Account/Register	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:09 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:23 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:23 PM]	http://localhost:2016/Account/ConfirmEmail?userId=2fc95cf3-3814-4882-a7f2-b33a3af6ca43&code=qQNRcyDVRA9fvY2CIychaNKODGnO4mgVT2WVrXPxQLGLnoiQK%2FVuTqQHB6Fzz%2BVcrifqrLaqgWI0%2FYJEWUSsQdafORFbzzfKV0jcpsY9qZ3molEm4E5L4E9EV2kt9dV2ysAG14XZF4FOjsu2qjETERdKTyX0I0YEQV%2BvBY11NJK%2FDpwfo64H6%2BBnLQVgNVIr	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:26 PM]	http://localhost:2016/Account/ConfirmEmail?userId=2fc95cf3-3814-4882-a7f2-b33a3af6ca43&code=qQNRcyDVRA9fvY2CIychaNKODGnO4mgVT2WVrXPxQLGLnoiQK%2FVuTqQHB6Fzz%2BVcrifqrLaqgWI0%2FYJEWUSsQdafORFbzzfKV0jcpsY9qZ3molEm4E5L4E9EV2kt9dV2ysAG14XZF4FOjsu2qjETERdKTyX0I0YEQV%2BvBY11NJK%2FDpwfo64H6%2BBnLQVgNVIr	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:25:27 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:31:52 PM]		Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:31:53 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:33:05 PM]	http://localhost:2016/	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:33:06 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:33:13 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
+[2/28/2017 2:33:13 PM]	http://localhost:2016/Account/Login	Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/56.0.2924.87 Safari/537.36
+------------------------------------------------------------------------------------------------------------------------------
