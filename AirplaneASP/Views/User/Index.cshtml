@@ -129,10 +129,11 @@
     var WebApiUrl = "http://localhost:4993/api";
 
     function City(data) {
-        this.ID = data.ID;
-        this.CountryID = data.CountryID;
-        this.Name = data.Name;
-        this.isChecked = ko.observable(false);
+        self = this;
+        self.ID = data.ID;
+        self.CountryID = data.CountryID;
+        self.Name = data.Name;
+        self.isChecked = ko.observable(false);
     };
 
     function Schedule(data) {

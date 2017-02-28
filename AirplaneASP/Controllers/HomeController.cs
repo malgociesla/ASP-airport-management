@@ -13,35 +13,14 @@ namespace AirplaneASP.Controllers
         [HttpGet]
         public ActionResult Index()
         {
-            ICityService cityService= new CityService();
-            List<CityDTO> cityList = cityService.GetAll();
-
-            return View("Index",cityList);
+            return View();
         }
-
-        [HttpGet]
-        public ActionResult Remove(Guid cityID)
-        {
-            ICityService cityService = new CityService();
-            cityService.Remove(cityID);
-
-            return Index();
-        }
-
 
         public ActionResult About()
         {
             ViewBag.Message = "Your application description page.";
 
             return View();
-        }
-
-        public ActionResult Countries()
-        {
-            ICountryService countryService = new CountryService();
-            List<CountryDTO> countryList = countryService.GetAll();
-
-            return View(countryList);
         }
     }
 }
