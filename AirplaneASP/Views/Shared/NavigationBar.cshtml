@@ -10,13 +10,13 @@
     @if (!User.Identity.IsAuthenticated)
     {
         <ul class="nav navbar-nav">
-            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
+            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
         </ul>
     }
     else if (User.IsInRole("ADMIN"))
     {
     <ul class="nav navbar-nav">
-        <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
+        <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Schedules" ? "active" : "")">@Html.ActionLink("Schedules", "List", "Schedules")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Flights" ? "active" : "")">@Html.ActionLink("Flights", "List", "Flights")</li>
         <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Cities" ? "active" : "")">@Html.ActionLink("Cities", "List", "Cities")</li>
@@ -27,7 +27,7 @@
     else if (User.IsInRole("USER"))
     {
         <ul class="nav navbar-nav">
-            <li class="@(ViewContext.RouteData.Values["Action"].ToString() == "Index" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
+            <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "Home" ? "active" : "")">@Html.ActionLink("Home", "Index", "Home")</li>
             <li class="@(ViewContext.RouteData.Values["Controller"].ToString() == "User" ? "active" : "")">@Html.ActionLink("User", "Index", "User")</li>
         </ul>
     }
