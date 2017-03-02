@@ -7,6 +7,7 @@ using AirportService;
 using AirportService.DTO;
 using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -42,6 +43,10 @@ namespace AirplaneASP.Controllers
         //}
         public ActionResult Index()
         {
+            ViewBag.WebApiURL = ConfigurationManager.AppSettings["webApiURL"].ToString();
+            ViewBag.WebApi_getCities = ConfigurationManager.AppSettings["webApi_getCities"].ToString();
+            ViewBag.WebApi_getSchedules = ConfigurationManager.AppSettings["webApi_getSchedules"].ToString();
+
             return View();
         }
 

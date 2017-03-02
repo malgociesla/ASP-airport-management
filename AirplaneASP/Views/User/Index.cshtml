@@ -1,6 +1,7 @@
 ﻿@{
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_Layout.cshtml";
+    
 }
 
 <h2>User page</h2>
@@ -15,7 +16,7 @@
     </ul>
     <button data-bind="click: open">Edit</button>
 @*Cities dialog*@
-    <div id="dialog" data-bind="dialog: {autoOpen: false, title: 'Select cities'}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen">
+    <div id="dialog" data-bind="dialog: {autoOpen: false, title: dialogTitle}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen">
         @*<ul data-bind="foreach: cities">
             <li>
                 <input type="checkbox" data-bind="checked: isChecked" />
@@ -106,3 +107,7 @@
 @Scripts.Render("~/bundles/date-formatting")
 @Scripts.Render("~/bundles/dialog-handler")
 @Scripts.Render("~/bundles/timetable")
+
+<script type="text/javascript">
+    runTimetable("@ViewBag.WebApiURL", "@ViewBag.WebApi_getCities", "@ViewBag.WebApi_getSchedules");
+</script>
