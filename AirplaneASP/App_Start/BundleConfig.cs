@@ -49,19 +49,7 @@ namespace AirplaneASP
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/jqueryui").Include(
-              "~/Content/themes/base/core.css",
-              "~/Content/themes/base/resizable.css",
-              "~/Content/themes/base/selectable.css",
-              "~/Content/themes/base/accordion.css",
-              "~/Content/themes/base/autocomplete.css",
-              "~/Content/themes/base/button.css",
-              "~/Content/themes/base/dialog.css",
-              "~/Content/themes/base/slider.css",
-              "~/Content/themes/base/tabs.css",
-              "~/Content/themes/base/datepicker.css",
-              "~/Content/themes/base/progressbar.css",
-              "~/Content/themes/base/theme.css"));
-
+              "~/Content/themes/base/jquery-ui.css"));
         }
     }
 }

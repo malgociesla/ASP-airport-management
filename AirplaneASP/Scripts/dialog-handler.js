@@ -1,6 +1,7 @@
 ko.bindingHandlers.dialog = {
     init: function (element, valueAccessor, allBindingsAccessor) {
         var options = ko.utils.unwrapObservable(valueAccessor()) || {};
+        options.label = "";
         //do in a setTimeout, so the applyBindings doesn't bind twice from element being copied and moved to bottom
         setTimeout(function () {
             options.close = function () {
