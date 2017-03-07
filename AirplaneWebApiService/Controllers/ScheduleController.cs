@@ -11,9 +11,9 @@ namespace AirplaneWebApiService.Controllers
     {
         private readonly IScheduleService _scheduleService;
 
-        public ScheduleController()
+        public ScheduleController(IScheduleService scheduleService)
         {
-            this._scheduleService = new ScheduleService();
+            this._scheduleService = scheduleService;
         }
 
         public IEnumerable<ScheduleDetailsDTO> GetListByCity(DateTime startDate, DateTime endDate, [FromUri]List<Guid> guid)

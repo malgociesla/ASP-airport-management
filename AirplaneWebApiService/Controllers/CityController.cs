@@ -14,10 +14,10 @@ namespace AirplaneWebApiService.Controllers
         private readonly ICityService _cityService;
         private readonly ICountryService _countryService;
 
-        public CityController()
+        public CityController(ICityService cityService, ICountryService countryService)
         {
-            this._cityService = new CityService();
-            this._countryService = new CountryService();
+            this._cityService = cityService;
+            this._countryService = countryService;
         }
         public IEnumerable<CityDTO> GetAll()
         {
