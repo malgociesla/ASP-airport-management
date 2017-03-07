@@ -1,8 +1,6 @@
-function runTimetable(webApiURL, webApi_getCities, webApi_getSchedules) {
+document.onload = runTimetable();
 
-    var webApiUrl = webApiURL;
-    var webApi_getCities = webApiURL + webApi_getCities;
-    var webApi_getSchedules = webApiURL + webApi_getSchedules;
+function runTimetable() {
 
     function City(data) {
         self = this;
@@ -41,7 +39,7 @@ function runTimetable(webApiURL, webApi_getCities, webApi_getSchedules) {
         self.chosenCities = function () {
             return ko.utils.arrayFilter(self.cities(), function (city) {
                 return city.isChecked();
-            })
+            });
         };
         self.schedules = ko.observableArray([]);
         self.chosenSchedules = function () {
@@ -52,7 +50,7 @@ function runTimetable(webApiURL, webApi_getCities, webApi_getSchedules) {
             });
         };
         self.loadCities = function () {
-            $.getJSON(webApi_getCities, function (data) {
+            $.getJSON(config.webApiUrl + config.webApi_getCities, function (data) {
                 var mappedCities = $.map(data, function (item) {
                     var city = new City(item);
                     if (self.chosenCities().length > 0) {
@@ -74,16 +72,16 @@ function runTimetable(webApiURL, webApi_getCities, webApi_getSchedules) {
             var selectedCityIDsString = self.chosenCities().map(function (city) {
                 return city.id;
             });
-            $.getJSON(webApi_getSchedules, {
-                            startdate: startDateString,
-                            enddate: endDateString,
-                            guid: selectedCityIDsString
-                        },
+            $.getJSON(config.webApiUrl + config.webApi_getSchedules, {
+                startdate: startDateString,
+                enddate: endDateString,
+                guid: selectedCityIDsString
+            },
                         function (data) {
-                            var mappedCities = $.map(data, function (item) {
+                            var mappedSchedules = $.map(data, function (item) {
                                 return new Schedule(item);
                             });
-                            self.schedules(mappedCities);
+                            self.schedules(mappedSchedules);
                         });
         };
         self.dialogTitle = 'Select cities';
@@ -96,7 +94,7 @@ function runTimetable(webApiURL, webApi_getCities, webApi_getSchedules) {
             self.loadSchedules();
             self.isOpen(false);
         };
-    }
+    };
 
     ko.applyBindings(new CityListModel());
 }

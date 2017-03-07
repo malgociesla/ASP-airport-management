@@ -33,6 +33,7 @@ namespace AirplaneASP
             "~/Scripts/dialog-handler.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/timetable").Include(
+                        "~/Scripts/timetable-config.js",
                         "~/Scripts/timetable.js"));
 
             // Use the development version of Modernizr to develop with and learn from. Then, when you're

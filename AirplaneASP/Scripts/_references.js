@@ -13,3 +13,4 @@
 /// <reference path="moment.min.js" />
 /// <reference path="respond.js" />
 /// <reference path="timetable.js" />
+/// <reference path="timetable-config.js" />
