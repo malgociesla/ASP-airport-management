@@ -45,7 +45,7 @@ function runTimetable() {
         self.chosenSchedules = function () {
             return ko.utils.arrayFilter(self.schedules(), function (schedule) {
                 return ko.utils.arrayFirst(self.chosenCities(), function (chosenCity) {
-                    return (chosenCity.name == schedule.cityArrival) || (chosenCity.name == schedule.cityDeparture);
+                    return (chosenCity.name === schedule.cityArrival) || (chosenCity.name === schedule.cityDeparture);
                 });
             });
         };
@@ -55,7 +55,7 @@ function runTimetable() {
                     var city = new City(item);
                     if (self.chosenCities().length > 0) {
                         var match = ko.utils.arrayFirst(self.chosenCities(), function (oldItem) {
-                            return oldItem.id == item.ID;
+                            return oldItem.id === item.ID;
                         });
                         if (match) {
                             city.isChecked = ko.observable(true);
