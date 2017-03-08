@@ -1,9 +1,8 @@
 ﻿@{
     ViewBag.Title = "User";
     Layout = "~/Views/Shared/_Layout.cshtml";
-    
-}
 
+}
 <h2>User page</h2>
 @*Cities section*@
 <div>
@@ -15,14 +14,14 @@
         </li>
     </ul>
     <button data-bind="click: open">Edit</button>
-@*Cities dialog*@
+    @*Cities dialog*@
     <div id="dialog" data-bind="dialog: {autoOpen: false, title: dialogTitle}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen">
         @*<ul data-bind="foreach: cities">
-            <li>
-                <input type="checkbox" data-bind="checked: isChecked" />
-                <span data-bind="text: name"></span>
-            </li>
-        </ul>*@
+                <li>
+                    <input type="checkbox" data-bind="checked: isChecked" />
+                    <span data-bind="text: name"></span>
+                </li>
+            </ul>*@
         @*<button data-bind="click: save">OK</button>*@
     </div>
 
@@ -33,29 +32,37 @@
                 <span data-bind="text: name"></span>
             </li>
         </ul>
-    <button data-bind="click: $parent.save">OK</button>
-</script>
+        <button data-bind="click: $parent.save">OK</button>
+    </script>
 
 </div>
 @*Filter date section*@
-<div class="form-inline">
-    <div class="form-group">
-        <label class="control-label col-md-2" for="FromDate">From date</label>
-        <div class="col-md-10">
-            <input data-bind="value: startDate" class="form-control text-box single-line" data-val="true" data-val-date="The field From date must be a date." id="FromDate" name="FromDate" type="date" />
-            <span class="field-validation-valid text-danger" data-valmsg-for="FromDate" data-valmsg-replace="true"></span>
+<div class="container">
+    <div class="form-inline">
+        <div class='col-md-5'>
+            <div class="form-group">
+                <div id='startDatePicker' class='input-group date'>
+                    <input type='text' class="form-control" data-bind="dateTimePicker: startDate" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <label class="control-label col-md-2" for="ToDate">To date</label>
-        <div class="col-md-10">
-            <input data-bind="value: endDate" class="form-control text-box single-line" data-val="true" data-val-date="The field To date must be a date." id="ToDate" name="ToDate" type="date" />
-            <span class="field-validation-valid text-danger" data-valmsg-for="ToDate" data-valmsg-replace="true"></span>
+        <div class='col-md-5'>
+            <div class="form-group">
+                <div id='endDatePicker' class='input-group date'>
+                    <input type='text' class="form-control" data-bind="dateTimePicker: endDate" />
+                    <span class="input-group-addon">
+                        <span class="glyphicon glyphicon-calendar"></span>
+                    </span>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="form-group">
-        <div class="col-md-offset-2 col-md-10">
-            <button data-bind="click: save">OK</button>
+        <div class='col-md-5'>
+            <div class="form-group">
+                    <button data-bind="click: save">OK</button>
+            </div>
         </div>
     </div>
 </div>

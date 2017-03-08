@@ -1,9 +1,9 @@
 function getToday() {
-    return formatDate(Date.now());
+    return moment(Date.now());
 }
 
 function getTomorrow(date) {
-    return formatDate(moment(date).add(24, 'hours'));
+    return moment(date).add(24, 'hours');
 }
 
 function formatDateTime(date) {
@@ -11,7 +11,7 @@ function formatDateTime(date) {
 }
 
 function formatDate(date) {
-    return moment(date).format("L");
+    return moment(date).format('L');
 }
 
 function toJSONDate(date) {

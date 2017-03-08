@@ -30,7 +30,8 @@ namespace AirplaneASP
                         "~/Scripts/date-formatting.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/dialog-handler").Include(
-            "~/Scripts/dialog-handler.js"));
+                        "~/Scripts/datetimepicker-handler.js",
+                        "~/Scripts/dialog-handler.js"));
 
             bundles.Add(new ScriptBundle("~/bundles/timetable").Include(
                         "~/Scripts/timetable-config.js",
@@ -43,10 +44,12 @@ namespace AirplaneASP
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
                       "~/Scripts/bootstrap.js",
+                      "~/Scripts/bootstrap-datetimepicker.js",
                       "~/Scripts/respond.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
                       "~/Content/bootstrap.css",
+                      "~/Content/bootstrap-datetimepicker.css",
                       "~/Content/site.css"));
 
             bundles.Add(new StyleBundle("~/Content/themes/base/jqueryui").Include(
