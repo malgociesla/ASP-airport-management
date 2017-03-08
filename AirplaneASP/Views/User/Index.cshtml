@@ -3,70 +3,62 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
-<h2>User page</h2>
 @*Cities section*@
-<div>
-    <p>Cities:</p>
+<div class="container">
+    <h2>User page</h2>
+    <h4>Cities</h4>
     <ul data-bind="foreach: chosenCities()">
-        @*<li data-bind="visible: isChecked">*@
         <li>
             <span data-bind="text: name"></span>
         </li>
     </ul>
-    <button data-bind="click: open">Edit</button>
+    <button class="btn btn-default" data-bind="click: open">Select cities</button>
+
     @*Cities dialog*@
-    <div id="dialog" data-bind="dialog: {autoOpen: false, title: dialogTitle}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen">
-        @*<ul data-bind="foreach: cities">
+    <div id="dialog" data-bind="dialog: {autoOpen: false, title: dialogTitle}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen"></div>
+
+    <script id="dialog-template" type="text/html">
+        <div class="form-group">
+            <ul data-bind="foreach: $data">
                 <li>
                     <input type="checkbox" data-bind="checked: isChecked" />
                     <span data-bind="text: name"></span>
                 </li>
-            </ul>*@
-        @*<button data-bind="click: save">OK</button>*@
-    </div>
-
-    <script id="dialog-template" type="text/html">
-        <ul data-bind="foreach: $data">
-            <li>
-                <input type="checkbox" data-bind="checked: isChecked" />
-                <span data-bind="text: name"></span>
-            </li>
-        </ul>
-        <button data-bind="click: $parent.save">OK</button>
+            </ul>
+        </div>
+        <button class="btn btn-default" data-bind="click: $parent.save">Select</button>
     </script>
 
 </div>
 @*Filter date section*@
-<div class="container">
-    <div class="form-inline">
-        <div class='col-md-5'>
-            <div class="form-group">
-                <div id='startDatePicker' class='input-group date'>
-                    <input type='text' class="form-control" data-bind="dateTimePicker: startDate" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-5'>
-            <div class="form-group">
-                <div id='endDatePicker' class='input-group date'>
-                    <input type='text' class="form-control" data-bind="dateTimePicker: endDate" />
-                    <span class="input-group-addon">
-                        <span class="glyphicon glyphicon-calendar"></span>
-                    </span>
-                </div>
-            </div>
-        </div>
-        <div class='col-md-5'>
-            <div class="form-group">
-                    <button data-bind="click: save">OK</button>
-            </div>
+<br />
+
+<div class="form-inline">
+    <div class="form-group">
+        <div id='startDatePicker' class='input-group date'>
+            <input type='text' class="form-control" data-bind="dateTimePicker: startDate" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
         </div>
     </div>
+    <div class="form-group">
+        <div id='endDatePicker' class='input-group date'>
+            <input type='text' class="form-control" data-bind="dateTimePicker: endDate" />
+            <span class="input-group-addon">
+                <span class="glyphicon glyphicon-calendar"></span>
+            </span>
+        </div>
+    </div>
+    <div class="input-group">
+        <span class="input-group-btn">
+            <button class="btn btn-default" data-bind="click: save">Apply</button>
+        </span>
+    </div>
 </div>
+
 @*Schedule section*@
+<br />
 <table class="table">
     <tr>
         <th>
