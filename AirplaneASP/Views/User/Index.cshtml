@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 
 }
+
 @*Cities section*@
 <div class="container">
     <h2>User page</h2>
@@ -17,7 +18,7 @@
     @*Cities dialog*@
     <div id="dialog" data-bind="dialog: {autoOpen: false, title: dialogTitle}, template: { name: 'dialog-template', data: cities, 'if': cities}, dialogVisible: isOpen"></div>
 
-    <script id="dialog-template" type="text/html">
+    @*<template id="dialog-template">
         <div class="form-group">
             <ul data-bind="foreach: $data">
                 <li>
@@ -27,12 +28,11 @@
             </ul>
         </div>
         <button class="btn btn-default" data-bind="click: $parent.save">Select</button>
-    </script>
+    </template>*@
 
 </div>
 @*Filter date section*@
 <br />
-
 <div class="form-inline">
     <div class="form-group">
         <div id='startDatePicker' class='input-group date'>

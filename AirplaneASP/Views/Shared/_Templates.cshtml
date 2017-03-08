@@ -1,0 +1,11 @@
+﻿<template id="dialog-template">
+    <div class="form-group">
+        <ul data-bind="foreach: $data">
+            <li>
+                <input type="checkbox" data-bind="checked: isChecked" />
+                <span data-bind="text: name"></span>
+            </li>
+        </ul>
+    </div>
+    <button class="btn btn-default" data-bind="click: $parent.save">Select</button>
+</template>
