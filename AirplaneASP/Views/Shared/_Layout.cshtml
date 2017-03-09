@@ -8,7 +8,6 @@
     @Styles.Render("~/Content/css")
     @Styles.Render("~/Content/themes/base/jqueryui")
 
-
     @Scripts.Render("~/bundles/modernizr")
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/moment")
@@ -16,11 +15,11 @@
     @Scripts.Render("~/bundles/jqueryui")
     @Scripts.Render("~/bundles/knockout")
     @*@Scripts.Render("~/bundles/knockoutmapping")*@
-
-    @*load html templates*@
-    @Html.Partial("~/Views/Shared/_Templates.cshtml")
 </head>
 <body>
+    @*load html templates*@
+    @Html.Partial("~/Views/Shared/_Templates.cshtml")
+
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
         @Html.Partial("NavigationBar")
