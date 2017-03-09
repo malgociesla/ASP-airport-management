@@ -55,3 +55,131 @@ Should know how to:
     * View execution plan
 - Use SQL Server Profiler
 Hope we will try to use all of these during the practice
+
+-notes-
+
+EF
+object relational mapping
+can use linq insetad of select
+change tracking
+identity resolution
+can focus on business logic instead of data access stuff
+
+Lazy loading - design pattern, to load data not earlier than it's needed - better efficiency [przeciwieństwo - eager loading]
+1. Lazy initialization - obj set to null, create obj just before returning it
+(we check for null in get, and if neccessary - load data)
+2. Virtual proxy - obj with the same interface as real obj; real obj is created when infterface method is called
+3. Ghost - load object in partial state
+4. Value holder - generic obj with lazy loading behavior, used to return obj data fields
+
+Cons: less readable code
+Pros: efficiency
+
+Lazy w C#:
+Lazy<T> - when we ititialize it, we show method witch should be used to load data
+
+EF
+eager - Include(), loading related types
+lazy - virtual 
+orm
+
+-------
+
+DI (dependency injection)
+1. enforce solid
+2. form of inversion of control (higher level code calls lower level code)
+3. we pass an interface to entity that will use it, not concrete class
+4. responsibility of providing dependecies (concrete classes in place of interfaces) lies on injector
+5. 
+
+DI types:
+constructor
+setter
+interface
+
+container = injector 
+
+SOLID (easy to maintail and extend)
+single responsibility
+open-closed
+Liskov substitution
+interface segregation
+dependency inversion
+
+-----
+
+Routing
+
+before - direct relationship between URL and physical files
+mvc - there's no direct correlation - there're actions
+now - patterns for urls - examin incoming and generate outgoing
+
+1. convention based routing
+2. attribute routing
+
+-----
+
+JS notes
+
+strict mode - foolproof check, run code with restrictions
+default var value - undefined
+(regular) == vs (strict) === comparison (1st + type conversion, 2nd - value and type)
+never init primitive object by new keyword
+avoid declaring global var (can be rewritten anywhere in scope of loaded page)
+global object - browser's window/tab
+global variables dies when app dies (they belong to html window object), remains available to new pages loaded into the same window
+variable that wasn't declared becomes automatically global (eg. car='fiat')
+typeof witll return 'object', whilst constructor will return specyfic constructor (eg. object/array)
+never use eval() - running text as code
+all numbers stored as 64-bits floats - to avoid errors in accuracy multiple and divide
+access: array[i], object.property or object["property"] or object[expression] (where expression is property name)
+null - 4 objects, undefined - 4 variables/properties/methods
+object must be defined to be null (lol), so null check 4 objects is: "if (typeof myObj !== "undefined" && myObj !== null)"
+js doesn't have block scope (eg. loop scope), there's global and local (function) scope
+performance - reduce activity in loops, reduce dom access,  reduce dom size, avoid unnecessary variables, avoid 'with' keyword
+performance - faster load with script at the bottom of the page/ defer='true': after page has finished parsing (works only for external scripts) [htttp spec: browsers should not download more than 2 components at once]
+js object.prototype - creating new objects
+With call() or apply() you can set the value of 'this', and invoke a function as a new method of an existing object.
+
+Closures (when using nested functions)
+http://stackoverflow.com/questions/111102/how-do-javascript-closures-work
+A closure in JavaScript is like keeping a copy of all the local variables, just as they were when a function exited.
+closures - function inside another function (we always use closure with nested functions); function with access to the parent scope, even after parent function has closed
+not using closure when using function constructor inside function
+in JS function reference also has a secret reference to the closure it was created in — similar to how delegates are a method pointer plus a secret reference to an object.
+closure - we can share variable, eg. create global counter (we have access to reference of this local variable), we don't want to create global variables, because they can be changed anytime
+in JS local variables are kept by reference
+There is a closure for each call to a function.
+Closure Example:
+"var gLogNumber, gIncreaseNumber, gSetNumber;
+function setupSomeGlobals() {
+  // Local variable that ends up within closure
+  var num = 42;
+  // Store some references to functions as global variables
+  gLogNumber = function() { console.log(num); }
+  gIncreaseNumber = function() { num++; }
+  gSetNumber = function(x) { num = x; }
+}
+
+setupSomeGlobals();
+gIncreaseNumber();
+gLogNumber(); // 43
+gSetNumber(5);
+gLogNumber(); // 5
+
+var oldLog = gLogNumber;
+
+setupSomeGlobals();
+gLogNumber(); // 42
+
+oldLog() // 5"
+
+----
+
+AJAX
+
+XMLHttpRequest obj - exchange data with a server behind the scenes
+All modern browsers (Chrome, IE7+, Firefox, Safari, and Opera) have a built-in XMLHttpRequest object.
+
+----
+
